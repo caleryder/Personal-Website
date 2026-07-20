@@ -1155,6 +1155,13 @@ function animateCompanyEnter(evt, id){
   destWordmark.style.opacity = '0';
 
   const deltaY = destRect.top - srcRect.top;
+  // If there's barely any vertical distance between the logo's Home
+  // position and its destination, there's no meaningful "drag up" to
+  // perform -- the content block never needs a vertical offset at all,
+  // and the logo's small height adjustment is folded into the left slide
+  // itself, so nothing is left to move afterward. That's what actually
+  // eliminates the up-motion, rather than just making it quick.
+  const skipRise = Math.abs(deltaY) < 20;
   const deltaX = destRect.left - srcRect.left;
 
   const innerTitle = block.querySelector('.page-title, .cs-headline');
@@ -1164,17 +1171,22 @@ function animateCompanyEnter(evt, id){
   const innerLede = block.querySelector('.lede');
 
   block.style.transition = 'none';
-  block.style.transform = `translateY(${-deltaY}px)`;
+  block.style.transform = skipRise ? 'translateY(0)' : `translateY(${-deltaY}px)`;
   [innerTitle, innerRole, innerYears].forEach(el=>{
     if(el){ el.style.transition = 'none'; el.style.color = 'var(--cream)'; el.style.transform = 'translateY(14px)'; }
   });
   if(innerLede){ innerLede.style.transition = 'none'; innerLede.style.opacity = '0'; }
 
-  // Stage 1: slide left only. Content stays hidden and untouched.
+  // Stage 1: slide left. When there's no meaningful rise stage coming
+  // later, the logo's small height adjustment (if any) is folded into
+  // this same slide, so it arrives at its true final height already --
+  // no separate "then it moves up" phase at all.
   requestAnimationFrame(()=>{
     requestAnimationFrame(()=>{
       clone.style.transition = `transform ${pace}s ${moveEase}`;
-      clone.style.transform = `translate3d(${deltaX}px, 0, 0)`;
+      clone.style.transform = skipRise
+        ? `translate3d(${deltaX}px, ${deltaY}px, 0)`
+        : `translate3d(${deltaX}px, 0, 0)`;
     });
   });
 
@@ -1204,20 +1216,12 @@ function animateCompanyEnter(evt, id){
     }, stagger * 3);
 
     // Stage 3: once the content has finished revealing, the logo and the
-    // now-visible content block rise together -- dragging it up into
-    // its final resting position. If there's barely any vertical distance
-    // to cover (e.g. Stori, whose Home position and destination are
-    // already close together), animating a rise would just be a pointless
-    // delay for motion nobody can see -- so that case snaps straight to
-    // the final position instead of running the full transition.
-    const skipRise = Math.abs(deltaY) < 20;
+    // content block rise together, dragging it up into their final
+    // resting position. When skipRise is true, both are already exactly
+    // where they need to be (folded into Stage 1 and the initial layout),
+    // so there's nothing left to animate here -- straight to the crossfade.
     setTimeout(()=>{
-      if(skipRise){
-        clone.style.transition = 'none';
-        clone.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
-        block.style.transition = 'none';
-        block.style.transform = 'translateY(0)';
-      } else {
+      if(!skipRise){
         clone.style.transition = `transform ${pace}s ${moveEase}`;
         clone.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
         block.style.transition = `transform ${pace}s ${moveEase}`;
