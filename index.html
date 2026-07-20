@@ -1103,11 +1103,11 @@ function animateCompanyEnter(evt, id){
 
   const srcRect = logoImg.getBoundingClientRect();
   const srcSrc = logoImg.src;
-  const moveEase = 'cubic-bezier(0.55,0.085,0.68,0.53)';
-  const stage1Duration = 0.55;
+  const moveEase = 'ease';
+  const pace = 0.32; // matches the image reveal pace, so motion feels consistent site-wide
 
   if(nameEl){
-    nameEl.style.transition = `opacity ${stage1Duration}s ease`;
+    nameEl.style.transition = `opacity ${pace}s ease`;
     nameEl.style.opacity = '0';
   }
   logoImg.style.opacity = '0';
@@ -1121,6 +1121,7 @@ function animateCompanyEnter(evt, id){
   clone.style.height = srcRect.height + 'px';
   clone.style.zIndex = '10000';
   clone.style.pointerEvents = 'none';
+  clone.style.willChange = 'transform';
   // The clone is appended to <body>, outside .company-mark, so it never
   // picks up the dark-mode invert filter from CSS. Apply it directly so
   // the clone matches the (white) destination logo for the whole trip
@@ -1128,13 +1129,13 @@ function animateCompanyEnter(evt, id){
   if(THEME === 'dark') clone.style.filter = 'invert(1)';
   document.body.appendChild(clone);
 
-  // Stage 1 (name dissolve + logo moving left) starts immediately, both
-  // running over the same slow duration, so the name fades away WHILE the
-  // logo travels, not before it.
+  // The clone's left/top are set once above and never animated again --
+  // all motion from here on uses transform (GPU-composited) instead of
+  // left/top (which forces a full layout recalculation on every frame).
+  // That's what was causing the choppiness.
   requestAnimationFrame(()=>{
-    const startLeft = srcRect.left - 60;
-    clone.style.transition = `left ${stage1Duration}s ${moveEase}`;
-    clone.style.left = startLeft + 'px';
+    clone.style.transition = `transform ${pace}s ${moveEase}`;
+    clone.style.transform = 'translate3d(-60px, 0, 0)';
   });
 
   setTimeout(()=>{
@@ -1156,6 +1157,7 @@ function animateCompanyEnter(evt, id){
     // finished sliding left. The content block starts offset by exactly
     // this same distance, so both travel the same vertical journey together.
     const deltaY = srcRect.top - destRect.top;
+    const deltaX = destRect.left - srcRect.left;
 
     const innerTitle = block.querySelector('.page-title, .cs-headline');
     const innerRole = block.querySelector('.role-meta div:nth-child(1)');
@@ -1170,10 +1172,11 @@ function animateCompanyEnter(evt, id){
     });
     if(innerLede){ innerLede.style.transition = 'none'; innerLede.style.opacity = '0'; }
 
-    // Finish Stage 1: bring the logo the rest of the way to the left edge.
-    clone.style.transition = `left 0.2s ${moveEase}`;
+    // Finish Stage 1: bring the logo the rest of the way to the left edge,
+    // still purely via transform.
+    clone.style.transition = `transform ${pace}s ${moveEase}`;
     requestAnimationFrame(()=>{
-      clone.style.left = destRect.left + 'px';
+      clone.style.transform = `translate3d(${deltaX}px, 0, 0)`;
     });
 
     setTimeout(()=>{
@@ -1200,10 +1203,10 @@ function animateCompanyEnter(evt, id){
 
       setTimeout(()=>{
         // Stage 2: logo and content now rise together, same distance, same
-        // duration, same slow-to-fast easing -- one linked motion.
-        const dur = '0.46s';
-        clone.style.transition = `top ${dur} ${moveEase}`;
-        clone.style.top = destRect.top + 'px';
+        // duration, same pace as the image reveal -- one linked motion.
+        const dur = `${pace}s`;
+        clone.style.transition = `transform ${dur} ${moveEase}`;
+        clone.style.transform = `translate3d(${deltaX}px, ${destRect.top - srcRect.top}px, 0)`;
         block.style.transition = `transform ${dur} ${moveEase}`;
         block.style.transform = 'translateY(0)';
 
@@ -1218,7 +1221,7 @@ function animateCompanyEnter(evt, id){
             clone.remove();
             initScrollReveal();
           }, 150);
-        }, 460);
+        }, pace * 1000);
       }, 220);
     }, 480);
   }, 550);
