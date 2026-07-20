@@ -720,7 +720,7 @@ function initScrollReveal(){
   // is reported as having zero intersection forever, no matter where it
   // scrolls to. getBoundingClientRect() is unaffected by clip-path, so a
   // plain scroll check is used instead.
-  const allTargets = document.querySelectorAll('.hero-img, .img-placeholder, .cs-section, .cs-section-label, .stat-row, .pillar-full, .body-copy, .leadership-block');
+  const allTargets = document.querySelectorAll('.hero-img, .img-placeholder, .cs-section, .cs-section-label, .section-title, .stat-row, .pillar-full, .body-copy, .leadership-block');
   const firstImg = document.querySelector('.hero-img, .img-placeholder');
   // A .cs-section-label nested inside a .cs-section (title+copy sharing one
   // block, e.g. "The challenge") should reveal in perfect lockstep with
@@ -1205,12 +1205,24 @@ function animateCompanyEnter(evt, id){
 
     // Stage 3: once the content has finished revealing, the logo and the
     // now-visible content block rise together -- dragging it up into
-    // its final resting position.
+    // its final resting position. If there's barely any vertical distance
+    // to cover (e.g. Stori, whose Home position and destination are
+    // already close together), animating a rise would just be a pointless
+    // delay for motion nobody can see -- so that case snaps straight to
+    // the final position instead of running the full transition.
+    const skipRise = Math.abs(deltaY) < 20;
     setTimeout(()=>{
-      clone.style.transition = `transform ${pace}s ${moveEase}`;
-      clone.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
-      block.style.transition = `transform ${pace}s ${moveEase}`;
-      block.style.transform = 'translateY(0)';
+      if(skipRise){
+        clone.style.transition = 'none';
+        clone.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+        block.style.transition = 'none';
+        block.style.transform = 'translateY(0)';
+      } else {
+        clone.style.transition = `transform ${pace}s ${moveEase}`;
+        clone.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+        block.style.transition = `transform ${pace}s ${moveEase}`;
+        block.style.transform = 'translateY(0)';
+      }
 
       setTimeout(()=>{
         // Clone and destination now share the same size and position --
@@ -1223,7 +1235,7 @@ function animateCompanyEnter(evt, id){
           clone.remove();
           initScrollReveal();
         }, 150);
-      }, pace * 1000);
+      }, skipRise ? 0 : pace * 1000);
     }, stagger * 3 + 200);
   };
   clone.addEventListener('transitionend', startStage2);
