@@ -687,29 +687,40 @@ function initScrollReveal(){
   // so it's excluded here to avoid both systems fighting over the same
   // element. Everything else -- images and text alike -- reveals top-down
   // as it scrolls into view, same treatment as the titles.
+  //
+  // This intentionally does NOT use IntersectionObserver: these elements
+  // start at clip-path:inset(0 0 100% 0), which collapses their rendered
+  // area to zero. IntersectionObserver computes intersection against the
+  // rendered/clipped box, not the layout box, so a fully clipped element
+  // is reported as having zero intersection forever, no matter where it
+  // scrolls to. getBoundingClientRect() is unaffected by clip-path, so a
+  // plain scroll check is used instead.
   const allTargets = document.querySelectorAll('.hero-img, .img-placeholder, .cs-section, .cs-section-label, .stat-row, .pillar-full, .body-copy, .leadership-block');
   const firstImg = document.querySelector('.hero-img, .img-placeholder');
-  const targets = Array.from(allTargets).filter(el => el !== firstImg);
-  if(!('IntersectionObserver' in window)){
-    targets.forEach(el => el.classList.add('is-visible'));
-    return;
+  let targets = Array.from(allTargets).filter(el => el !== firstImg);
+  if(targets.length === 0) return;
+
+  function checkReveal(){
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    targets = targets.filter(el => {
+      const rect = el.getBoundingClientRect();
+      if(rect.top < vh * 0.92 && rect.bottom > 0){
+        el.classList.add('is-visible');
+        return false;
+      }
+      return true;
+    });
+    if(targets.length === 0){
+      window.removeEventListener('scroll', checkReveal);
+      window.removeEventListener('resize', checkReveal);
+    }
   }
-  // Without this, elements already in the viewport at render time can have
-  // their clipped starting state and their revealed state coalesced into a
-  // single paint -- the browser never actually shows the "before" frame, so
-  // the transition is invisible and the image just appears instantly. Two
-  // rAFs force a real committed paint of the clipped state first.
+
   requestAnimationFrame(()=>{
     requestAnimationFrame(()=>{
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if(entry.isIntersecting){
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.15 });
-      targets.forEach(el => observer.observe(el));
+      checkReveal();
+      window.addEventListener('scroll', checkReveal, {passive:true});
+      window.addEventListener('resize', checkReveal);
     });
   });
 }
