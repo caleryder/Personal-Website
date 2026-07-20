@@ -258,7 +258,6 @@
     font-weight:800;
     letter-spacing:0.08em;
     text-transform:uppercase;
-    color:#BB2B00;
     margin-top:5.625rem;
     margin-bottom:0.9rem;
   }
@@ -389,14 +388,33 @@
   @media (min-width:1920px){
     .hero-img{max-width:1080px;}
   }
-  .hero-img, .img-placeholder,
-  .cs-section, .cs-section-label, .stat-row, .pillar-full, .body-copy, .leadership-block{
+  .hero-img, .img-placeholder{
     clip-path:inset(0 0 100% 0);
     transition:clip-path 0.32s ease;
   }
-  .hero-img.is-visible, .img-placeholder.is-visible,
-  .cs-section.is-visible, .cs-section-label.is-visible, .stat-row.is-visible, .pillar-full.is-visible, .body-copy.is-visible, .leadership-block.is-visible{
+  .hero-img.is-visible, .img-placeholder.is-visible{
     clip-path:inset(0 0 0% 0);
+  }
+  .cs-section, .stat-row, .pillar-full, .body-copy, .leadership-block{
+    color:var(--cream);
+    transform:translateY(14px);
+    transition:color 0.45s ease-out, transform 0.45s ease-out;
+  }
+  .cs-section.is-visible, .stat-row.is-visible, .pillar-full.is-visible, .body-copy.is-visible, .leadership-block.is-visible{
+    color:var(--pink);
+    transform:translateY(0);
+  }
+  .section-title, .cs-section-label{
+    color:var(--cream);
+    transform:translateY(14px);
+    transition:color 0.45s ease-out, transform 0.45s ease-out;
+  }
+  .section-title.is-visible, .cs-section-label.is-visible{
+    color:#BB2B00;
+    transform:translateY(0);
+  }
+  [data-theme="dark"] .section-title.is-visible, [data-theme="dark"] .cs-section-label.is-visible{
+    color:#FE6F43;
   }
   .hero-img img{width:100%; display:block;}
   .case-study-cta{
@@ -428,13 +446,8 @@
     font-weight:800;
     letter-spacing:0.08em;
     text-transform:uppercase;
-    color:#BB2B00;
     margin-top:5.625rem;
     margin-bottom:0.6rem;
-  }
-  [data-theme="dark"] .section-title,
-  [data-theme="dark"] .cs-section-label{
-    color:#FE6F43;
   }
   .cs-section{margin-bottom:2.0625rem;}
   .cs-section:has(+ .cs-section-label){margin-bottom:0;}
@@ -697,7 +710,15 @@ function initScrollReveal(){
   // plain scroll check is used instead.
   const allTargets = document.querySelectorAll('.hero-img, .img-placeholder, .cs-section, .cs-section-label, .stat-row, .pillar-full, .body-copy, .leadership-block');
   const firstImg = document.querySelector('.hero-img, .img-placeholder');
-  let targets = Array.from(allTargets).filter(el => el !== firstImg);
+  // A .cs-section-label nested inside a .cs-section (title+copy sharing one
+  // block, e.g. "The challenge") should reveal in perfect lockstep with
+  // that section, not as an independently-timed target -- so it's excluded
+  // here and instead revealed explicitly alongside its parent below.
+  let targets = Array.from(allTargets).filter(el => {
+    if(el === firstImg) return false;
+    if(el.classList.contains('cs-section-label') && el.parentElement && el.parentElement.classList.contains('cs-section')) return false;
+    return true;
+  });
   if(targets.length === 0) return;
 
   function checkReveal(){
@@ -706,6 +727,10 @@ function initScrollReveal(){
       const rect = el.getBoundingClientRect();
       if(rect.top < vh * 0.92 && rect.bottom > 0){
         el.classList.add('is-visible');
+        if(el.classList.contains('cs-section')){
+          const nestedLabel = el.querySelector('.cs-section-label');
+          if(nestedLabel) nestedLabel.classList.add('is-visible');
+        }
         return false;
       }
       return true;
@@ -1141,7 +1166,7 @@ function animateCompanyEnter(evt, id){
     block.style.transition = 'none';
     block.style.transform = `translateY(${deltaY}px)`;
     [innerTitle, innerRole, innerYears].forEach(el=>{
-      if(el){ el.style.transition = 'none'; el.style.clipPath = 'inset(0 0 100% 0)'; }
+      if(el){ el.style.transition = 'none'; el.style.color = 'var(--cream)'; el.style.transform = 'translateY(14px)'; }
     });
     if(innerLede){ innerLede.style.transition = 'none'; innerLede.style.opacity = '0'; }
 
@@ -1157,15 +1182,15 @@ function animateCompanyEnter(evt, id){
       // years, then the image, already correctly spaced since this is the
       // real laid-out block.
       requestAnimationFrame(()=>{
-        const fastClip = 'clip-path 0.32s ease';
+        const fastClip = 'color 0.45s ease-out, transform 0.45s ease-out';
         const fastOpacity = 'opacity 0.32s ease';
         const stagger = 150;
-        if(innerTitle){ innerTitle.style.transition = fastClip; innerTitle.style.clipPath = 'inset(0 0 0% 0)'; }
+        if(innerTitle){ innerTitle.style.transition = fastClip; innerTitle.style.color = 'var(--pink)'; innerTitle.style.transform = 'translateY(0)'; }
         setTimeout(()=>{
-          if(innerRole){ innerRole.style.transition = fastClip; innerRole.style.clipPath = 'inset(0 0 0% 0)'; }
+          if(innerRole){ innerRole.style.transition = fastClip; innerRole.style.color = 'var(--pink)'; innerRole.style.transform = 'translateY(0)'; }
         }, stagger);
         setTimeout(()=>{
-          if(innerYears){ innerYears.style.transition = fastClip; innerYears.style.clipPath = 'inset(0 0 0% 0)'; }
+          if(innerYears){ innerYears.style.transition = fastClip; innerYears.style.color = 'var(--pink)'; innerYears.style.transform = 'translateY(0)'; }
         }, stagger * 2);
         setTimeout(()=>{
           if(innerHero) innerHero.classList.add('is-visible');
@@ -1247,11 +1272,11 @@ function revealTitleBlock(){
   const yearsEl = document.querySelector('.role-meta div:nth-child(2)');
   const heroEl = document.querySelector('.hero-img, .img-placeholder');
   if(!title) return;
-  const fast = 'clip-path 0.32s ease';
+  const fast = 'color 0.45s ease-out, transform 0.45s ease-out';
   const stagger = 150;
 
   [title, roleEl, yearsEl].forEach(el=>{
-    if(el){ el.style.transition = 'none'; el.style.clipPath = 'inset(0 0 100% 0)'; }
+    if(el){ el.style.transition = 'none'; el.style.color = 'var(--cream)'; el.style.transform = 'translateY(14px)'; }
   });
   if(heroEl) heroEl.classList.remove('is-visible');
 
@@ -1260,12 +1285,13 @@ function revealTitleBlock(){
   requestAnimationFrame(()=>{
     requestAnimationFrame(()=>{
       title.style.transition = fast;
-      title.style.clipPath = 'inset(0 0 0% 0)';
+      title.style.color = 'var(--pink)';
+      title.style.transform = 'translateY(0)';
       setTimeout(()=>{
-        if(roleEl){ roleEl.style.transition = fast; roleEl.style.clipPath = 'inset(0 0 0% 0)'; }
+        if(roleEl){ roleEl.style.transition = fast; roleEl.style.color = 'var(--pink)'; roleEl.style.transform = 'translateY(0)'; }
       }, stagger);
       setTimeout(()=>{
-        if(yearsEl){ yearsEl.style.transition = fast; yearsEl.style.clipPath = 'inset(0 0 0% 0)'; }
+        if(yearsEl){ yearsEl.style.transition = fast; yearsEl.style.color = 'var(--pink)'; yearsEl.style.transform = 'translateY(0)'; }
       }, stagger * 2);
       setTimeout(()=>{
         if(heroEl) heroEl.classList.add('is-visible');
