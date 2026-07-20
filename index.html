@@ -390,7 +390,7 @@
   }
   .hero-img, .img-placeholder{
     clip-path:inset(0 0 100% 0);
-    transition:clip-path 0.32s ease;
+    transition:clip-path 0.45s ease;
   }
   .hero-img.is-visible, .img-placeholder.is-visible{
     clip-path:inset(0 0 0% 0);
@@ -1104,7 +1104,7 @@ function animateCompanyEnter(evt, id){
   const srcRect = logoImg.getBoundingClientRect();
   const srcSrc = logoImg.src;
   const moveEase = 'ease';
-  const pace = 0.32; // matches the image reveal pace, so motion feels consistent site-wide
+  const pace = 0.45; // matches text and image reveal pace, so all motion feels consistent
 
   if(nameEl){
     nameEl.style.transition = `opacity ${pace}s ease`;
@@ -1125,11 +1125,9 @@ function animateCompanyEnter(evt, id){
   if(THEME === 'dark') clone.style.filter = 'invert(1)';
   document.body.appendChild(clone);
 
-  // The destination page is rendered immediately (instead of after a
-  // delay) specifically so the logo's real end position is known right
-  // away. That lets the whole journey run as one continuous transform
-  // transition instead of two separate motions stitched together with a
-  // dead pause in between -- which is what was causing the stutter.
+  // The destination page is rendered immediately so the logo's real end
+  // position is known right away, letting each stage hand off to the
+  // next with no gap in between.
   SKIP_NEXT_RENDER = true;
   location.hash = 'company/' + id;
   document.getElementById('content').innerHTML = renderCompany(id);
@@ -1160,20 +1158,29 @@ function animateCompanyEnter(evt, id){
   });
   if(innerLede){ innerLede.style.transition = 'none'; innerLede.style.opacity = '0'; }
 
-  // One continuous diagonal move, start to finish, no pause partway.
+  // Stage 1: slide left, and simultaneously resize to the destination's
+  // actual size if it differs (some logos render at a different size on
+  // the company page than on Home) -- so there's no size "pop" later at
+  // the crossfade, regardless of how the two contexts are sized.
   requestAnimationFrame(()=>{
     requestAnimationFrame(()=>{
-      clone.style.transition = `transform ${pace}s ${moveEase}`;
-      clone.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
-      block.style.transition = `transform ${pace}s ${moveEase}`;
-      block.style.transform = 'translateY(0)';
+      clone.style.transition = `transform ${pace}s ${moveEase}, width ${pace}s ${moveEase}, height ${pace}s ${moveEase}`;
+      clone.style.transform = `translate3d(${deltaX}px, 0, 0)`;
+      clone.style.width = destRect.width + 'px';
+      clone.style.height = destRect.height + 'px';
     });
   });
 
-  setTimeout(()=>{
-    // The logo has arrived. Now the page content emerges top-down as a
-    // descending cascade: title, then role, then years, then the image,
-    // already correctly spaced since this is the real laid-out block.
+  // transitionend (not a timer) triggers Stage 2, so it starts the instant
+  // Stage 1 actually finishes -- no estimated delay, no gap.
+  const startStage2 = (e)=>{
+    if(e.propertyName !== 'transform') return;
+    clone.removeEventListener('transitionend', startStage2);
+
+    // Stage 2: the logo has reached the left edge, still at its original
+    // (low) height. Now the content emerges top-down as a descending
+    // cascade -- title, then role, then years, then the image -- while
+    // everything stays at this same low position, not yet risen.
     const fastClip = 'color 0.45s ease-out, transform 0.45s ease-out';
     const fastOpacity = 'opacity 0.32s ease';
     const stagger = 150;
@@ -1189,17 +1196,30 @@ function animateCompanyEnter(evt, id){
       if(innerLede){ innerLede.style.transition = fastOpacity; innerLede.style.opacity = '1'; }
     }, stagger * 3);
 
-    // Clone and destination now share the same size and position -- swap
-    // with a short crossfade and clean up.
-    clone.style.transition = 'opacity 0.15s ease';
-    clone.style.opacity = '0';
-    destWordmark.style.transition = 'opacity 0.15s ease';
-    destWordmark.style.opacity = '1';
+    // Stage 3: once the content has finished revealing, the logo and the
+    // now-visible content block rise together -- dragging it up into
+    // its final resting position.
     setTimeout(()=>{
-      clone.remove();
-      initScrollReveal();
-    }, 150);
-  }, pace * 1000);
+      clone.style.transition = `transform ${pace}s ${moveEase}`;
+      clone.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+      block.style.transition = `transform ${pace}s ${moveEase}`;
+      block.style.transform = 'translateY(0)';
+
+      setTimeout(()=>{
+        // Clone and destination now share the same size and position --
+        // swap with a short crossfade and clean up.
+        clone.style.transition = 'opacity 0.15s ease';
+        clone.style.opacity = '0';
+        destWordmark.style.transition = 'opacity 0.15s ease';
+        destWordmark.style.opacity = '1';
+        setTimeout(()=>{
+          clone.remove();
+          initScrollReveal();
+        }, 150);
+      }, pace * 1000);
+    }, stagger * 3 + 200);
+  };
+  clone.addEventListener('transitionend', startStage2);
 }
 
 function render(){
