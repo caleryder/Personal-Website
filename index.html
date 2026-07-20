@@ -1122,109 +1122,84 @@ function animateCompanyEnter(evt, id){
   clone.style.zIndex = '10000';
   clone.style.pointerEvents = 'none';
   clone.style.willChange = 'transform';
-  // The clone is appended to <body>, outside .company-mark, so it never
-  // picks up the dark-mode invert filter from CSS. Apply it directly so
-  // the clone matches the (white) destination logo for the whole trip
-  // instead of showing the raw black artwork mid-animation.
   if(THEME === 'dark') clone.style.filter = 'invert(1)';
   document.body.appendChild(clone);
 
-  // The clone's left/top are set once above and never animated again --
-  // all motion from here on uses transform (GPU-composited) instead of
-  // left/top (which forces a full layout recalculation on every frame).
-  // That's what was causing the choppiness.
+  // The destination page is rendered immediately (instead of after a
+  // delay) specifically so the logo's real end position is known right
+  // away. That lets the whole journey run as one continuous transform
+  // transition instead of two separate motions stitched together with a
+  // dead pause in between -- which is what was causing the stutter.
+  SKIP_NEXT_RENDER = true;
+  location.hash = 'company/' + id;
+  document.getElementById('content').innerHTML = renderCompany(id);
+  document.getElementById('siteFooter').innerHTML = connectFooter();
+  window.scrollTo(0,0);
+  cursorEl.classList.remove('cursor-hover');
+
+  const destWordmark = document.querySelector('.company-wordmark img');
+  const block = document.getElementById('anim-reveal-block');
+  if(!destWordmark || !block){ clone.remove(); return; }
+
+  const destRect = destWordmark.getBoundingClientRect();
+  destWordmark.style.opacity = '0';
+
+  const deltaY = destRect.top - srcRect.top;
+  const deltaX = destRect.left - srcRect.left;
+
+  const innerTitle = block.querySelector('.page-title, .cs-headline');
+  const innerRole = block.querySelector('.role-meta div:nth-child(1)');
+  const innerYears = block.querySelector('.role-meta div:nth-child(2)');
+  const innerHero = block.querySelector('.hero-img, .img-placeholder');
+  const innerLede = block.querySelector('.lede');
+
+  block.style.transition = 'none';
+  block.style.transform = `translateY(${-deltaY}px)`;
+  [innerTitle, innerRole, innerYears].forEach(el=>{
+    if(el){ el.style.transition = 'none'; el.style.color = 'var(--cream)'; el.style.transform = 'translateY(14px)'; }
+  });
+  if(innerLede){ innerLede.style.transition = 'none'; innerLede.style.opacity = '0'; }
+
+  // One continuous diagonal move, start to finish, no pause partway.
   requestAnimationFrame(()=>{
-    clone.style.transition = `transform ${pace}s ${moveEase}`;
-    clone.style.transform = 'translate3d(-60px, 0, 0)';
+    requestAnimationFrame(()=>{
+      clone.style.transition = `transform ${pace}s ${moveEase}`;
+      clone.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+      block.style.transition = `transform ${pace}s ${moveEase}`;
+      block.style.transform = 'translateY(0)';
+    });
   });
 
   setTimeout(()=>{
-    SKIP_NEXT_RENDER = true;
-    location.hash = 'company/' + id;
-    document.getElementById('content').innerHTML = renderCompany(id);
-    document.getElementById('siteFooter').innerHTML = connectFooter();
-    window.scrollTo(0,0);
-    cursorEl.classList.remove('cursor-hover');
-
-    const destWordmark = document.querySelector('.company-wordmark img');
-    const block = document.getElementById('anim-reveal-block');
-    if(!destWordmark || !block){ clone.remove(); return; }
-
-    const destRect = destWordmark.getBoundingClientRect();
-    destWordmark.style.opacity = '0';
-
-    // How far below its final resting spot the logo still is once it has
-    // finished sliding left. The content block starts offset by exactly
-    // this same distance, so both travel the same vertical journey together.
-    const deltaY = srcRect.top - destRect.top;
-    const deltaX = destRect.left - srcRect.left;
-
-    const innerTitle = block.querySelector('.page-title, .cs-headline');
-    const innerRole = block.querySelector('.role-meta div:nth-child(1)');
-    const innerYears = block.querySelector('.role-meta div:nth-child(2)');
-    const innerHero = block.querySelector('.hero-img, .img-placeholder');
-    const innerLede = block.querySelector('.lede');
-
-    block.style.transition = 'none';
-    block.style.transform = `translateY(${deltaY}px)`;
-    [innerTitle, innerRole, innerYears].forEach(el=>{
-      if(el){ el.style.transition = 'none'; el.style.color = 'var(--cream)'; el.style.transform = 'translateY(14px)'; }
-    });
-    if(innerLede){ innerLede.style.transition = 'none'; innerLede.style.opacity = '0'; }
-
-    // Finish Stage 1: bring the logo the rest of the way to the left edge,
-    // still purely via transform.
-    clone.style.transition = `transform ${pace}s ${moveEase}`;
-    requestAnimationFrame(()=>{
-      clone.style.transform = `translate3d(${deltaX}px, 0, 0)`;
-    });
-
+    // The logo has arrived. Now the page content emerges top-down as a
+    // descending cascade: title, then role, then years, then the image,
+    // already correctly spaced since this is the real laid-out block.
+    const fastClip = 'color 0.45s ease-out, transform 0.45s ease-out';
+    const fastOpacity = 'opacity 0.32s ease';
+    const stagger = 150;
+    if(innerTitle){ innerTitle.style.transition = fastClip; innerTitle.style.color = 'var(--pink)'; innerTitle.style.transform = 'translateY(0)'; }
     setTimeout(()=>{
-      // Stage 1.5: the logo has reached the left edge. Now the page content
-      // emerges top-down as a descending cascade: title, then role, then
-      // years, then the image, already correctly spaced since this is the
-      // real laid-out block.
-      requestAnimationFrame(()=>{
-        const fastClip = 'color 0.45s ease-out, transform 0.45s ease-out';
-        const fastOpacity = 'opacity 0.32s ease';
-        const stagger = 150;
-        if(innerTitle){ innerTitle.style.transition = fastClip; innerTitle.style.color = 'var(--pink)'; innerTitle.style.transform = 'translateY(0)'; }
-        setTimeout(()=>{
-          if(innerRole){ innerRole.style.transition = fastClip; innerRole.style.color = 'var(--pink)'; innerRole.style.transform = 'translateY(0)'; }
-        }, stagger);
-        setTimeout(()=>{
-          if(innerYears){ innerYears.style.transition = fastClip; innerYears.style.color = 'var(--pink)'; innerYears.style.transform = 'translateY(0)'; }
-        }, stagger * 2);
-        setTimeout(()=>{
-          if(innerHero) innerHero.classList.add('is-visible');
-          if(innerLede){ innerLede.style.transition = fastOpacity; innerLede.style.opacity = '1'; }
-        }, stagger * 3);
-      });
+      if(innerRole){ innerRole.style.transition = fastClip; innerRole.style.color = 'var(--pink)'; innerRole.style.transform = 'translateY(0)'; }
+    }, stagger);
+    setTimeout(()=>{
+      if(innerYears){ innerYears.style.transition = fastClip; innerYears.style.color = 'var(--pink)'; innerYears.style.transform = 'translateY(0)'; }
+    }, stagger * 2);
+    setTimeout(()=>{
+      if(innerHero) innerHero.classList.add('is-visible');
+      if(innerLede){ innerLede.style.transition = fastOpacity; innerLede.style.opacity = '1'; }
+    }, stagger * 3);
 
-      setTimeout(()=>{
-        // Stage 2: logo and content now rise together, same distance, same
-        // duration, same pace as the image reveal -- one linked motion.
-        const dur = `${pace}s`;
-        clone.style.transition = `transform ${dur} ${moveEase}`;
-        clone.style.transform = `translate3d(${deltaX}px, ${destRect.top - srcRect.top}px, 0)`;
-        block.style.transition = `transform ${dur} ${moveEase}`;
-        block.style.transform = 'translateY(0)';
-
-        setTimeout(()=>{
-          // Clone and destination now share the same size and position --
-          // swap with a short crossfade and clean up.
-          clone.style.transition = 'opacity 0.15s ease';
-          clone.style.opacity = '0';
-          destWordmark.style.transition = 'opacity 0.15s ease';
-          destWordmark.style.opacity = '1';
-          setTimeout(()=>{
-            clone.remove();
-            initScrollReveal();
-          }, 150);
-        }, pace * 1000);
-      }, 220);
-    }, 480);
-  }, 550);
+    // Clone and destination now share the same size and position -- swap
+    // with a short crossfade and clean up.
+    clone.style.transition = 'opacity 0.15s ease';
+    clone.style.opacity = '0';
+    destWordmark.style.transition = 'opacity 0.15s ease';
+    destWordmark.style.opacity = '1';
+    setTimeout(()=>{
+      clone.remove();
+      initScrollReveal();
+    }, 150);
+  }, pace * 1000);
 }
 
 function render(){
