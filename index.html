@@ -349,12 +349,24 @@
 
   .company-wordmark{
     margin:0 0 2.5rem;
-    width:46px;
-    height:30px;
+    width:38.08px;
+    height:24.64px;
     display:flex;
     align-items:center;
   }
   .company-wordmark img{max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain;}
+  @media (min-width:700px){
+    .company-wordmark{width:46.24px; height:29.92px;}
+  }
+  @media (min-width:1024px){
+    .company-wordmark{width:51.68px; height:33.44px;}
+  }
+  @media (min-width:1440px){
+    .company-wordmark{width:58.48px; height:37.84px;}
+  }
+  @media (min-width:1920px){
+    .company-wordmark{width:68px; height:44px;}
+  }
   .company-wordmark img[alt="Stori logo"],
   .company-wordmark img[alt="Meta logo"],
   .company-wordmark img[alt="Journi logo"]{transform:scale(1.2);}
@@ -1158,16 +1170,11 @@ function animateCompanyEnter(evt, id){
   });
   if(innerLede){ innerLede.style.transition = 'none'; innerLede.style.opacity = '0'; }
 
-  // Stage 1: slide left, and simultaneously resize to the destination's
-  // actual size if it differs (some logos render at a different size on
-  // the company page than on Home) -- so there's no size "pop" later at
-  // the crossfade, regardless of how the two contexts are sized.
+  // Stage 1: slide left only. Content stays hidden and untouched.
   requestAnimationFrame(()=>{
     requestAnimationFrame(()=>{
-      clone.style.transition = `transform ${pace}s ${moveEase}, width ${pace}s ${moveEase}, height ${pace}s ${moveEase}`;
+      clone.style.transition = `transform ${pace}s ${moveEase}`;
       clone.style.transform = `translate3d(${deltaX}px, 0, 0)`;
-      clone.style.width = destRect.width + 'px';
-      clone.style.height = destRect.height + 'px';
     });
   });
 
