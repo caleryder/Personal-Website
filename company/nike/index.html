@@ -3,53 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>
-(function(){
-  var hash = location.hash.replace('#','');
-  if(!hash) return;
-  var parts = hash.split('#')[0].split('/');
-  var route = parts[0], id = parts[1];
-  var CASE_STUDY = {stori:'/case-studies/stori/', meta:'/case-studies/meta/', foureyes:'/case-studies/foureyes/'};
-  var target = null;
-  if(route === 'home' || route === '') { return; }
-  else if(route === 'values') { target = id ? '/values/#' + id : '/values/'; }
-  else if(route === 'company') {
-    target = (id === 'nike') ? '/company/nike/' : (CASE_STUDY[id] || '/');
-  } else if(route === 'case-study') {
-    target = CASE_STUDY[id] || '/';
-  } else if(route === 'locked') {
-    target = (id === 'nike') ? '/case-studies/nike/' : '/';
-  }
-  if(target) location.replace(target);
-})();
-</script>
-<title>Cale Thompson — VP of Product Design</title>
-<meta name="description" content="Cale Thompson is a VP of Product Design with 13+ years leading design at Stori, Meta, Nike, Foureyes, and Cambia Health. Case studies, design principles, and how to get in touch.">
-<link rel="canonical" href="https://calethompson.com/">
+<title>Nike — Cale Thompson</title>
+<meta name="description" content="Cale Thompson led data-driven retail experiences with Nike's national retail partners as Design Director, 2020–2021.">
+<link rel="canonical" href="https://calethompson.com/company/nike/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Cormorant+Infant:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/site.css">
 
-<meta property="og:title" content="Cale Thompson — VP of Product Design">
-<meta property="og:description" content="Cale Thompson is a VP of Product Design with 13+ years leading design at Stori, Meta, Nike, Foureyes, and Cambia Health. Case studies, design principles, and how to get in touch.">
-<meta property="og:url" content="https://calethompson.com/">
+<meta property="og:title" content="Nike — Cale Thompson">
+<meta property="og:description" content="Cale Thompson led data-driven retail experiences with Nike's national retail partners as Design Director, 2020–2021.">
+<meta property="og:url" content="https://calethompson.com/company/nike/">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://calethompson.com/assets/img/og/default.png">
+<meta property="og:image" content="https://calethompson.com/assets/img/og/nike.jpg">
 <meta property="og:site_name" content="Cale Thompson">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cale Thompson — VP of Product Design">
-<meta name="twitter:description" content="Cale Thompson is a VP of Product Design with 13+ years leading design at Stori, Meta, Nike, Foureyes, and Cambia Health. Case studies, design principles, and how to get in touch.">
-<meta name="twitter:image" content="https://calethompson.com/assets/img/og/default.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Cale Thompson",
-  "jobTitle": "VP of Product Design",
-  "url": "https://calethompson.com",
-  "sameAs": ["https://www.linkedin.com/in/cale~thompson/"]
-}
-</script>
+<meta name="twitter:title" content="Nike — Cale Thompson">
+<meta name="twitter:description" content="Cale Thompson led data-driven retail experiences with Nike's national retail partners as Design Director, 2020–2021.">
+<meta name="twitter:image" content="https://calethompson.com/assets/img/og/nike.jpg">
+
 </head>
 <body>
 <div id="siteHeader">
@@ -65,14 +36,15 @@
   </div>
 </div>
 <div class="page" id="content">
-<div class="company-list">
-    <a class="company-row" href="/case-studies/stori/" onclick="animateCompanyEnter(event, this.href)"><span class="company-name">Stori</span><span class="company-mark"><img src="/assets/img/logos/stori.svg" alt="Stori logo" width="60" height="40" loading="lazy"></span></a>
-    <a class="company-row" href="/case-studies/meta/" onclick="animateCompanyEnter(event, this.href)"><span class="company-name">Meta</span><span class="company-mark"><img src="/assets/img/logos/meta.svg" alt="Meta logo" width="60" height="40" loading="lazy"></span></a>
-    <a class="company-row" href="/company/nike/" onclick="animateCompanyEnter(event, this.href)"><span class="company-name">Nike</span><span class="company-mark"><img src="/assets/img/logos/nike.svg" alt="Nike logo" width="60" height="40" loading="lazy"></span></a>
-    <a class="company-row" href="/case-studies/foureyes/" onclick="animateCompanyEnter(event, this.href)"><span class="company-name">Foureyes</span><span class="company-mark"><img src="/assets/img/logos/foureyes.svg" alt="Foureyes logo" width="60" height="40" loading="lazy"></span></a>
-    <a class="company-row" href="/case-studies/ai-native-practice/" onclick="animateCompanyEnter(event, this.href)"><span class="company-name company-name-gradient">AI Native</span><span class="company-mark"><span class="ai-native-icon-mark" role="img" aria-label="AI Native logo"></span></span></a>
+<div class="company-wordmark"><img src="/assets/img/logos/nike.svg" alt="Nike logo"></div>
+<h2 class="page-title"><span data-en="Scaled a data-driven approach accelerating decision making and growth" data-es="Escalé un enfoque basado en datos que aceleró la toma de decisiones y el crecimiento">Scaled a data-driven approach accelerating decision making and growth</span></h2>
+<div class="role-meta">
+  <div><b><span data-en="ROLE" data-es="PUESTO">ROLE</span></b> <span data-en="DESIGN DIRECTOR · REMOTE" data-es="DIRECTOR DE DISEÑO · REMOTO">DESIGN DIRECTOR · REMOTE</span></div>
+  <div><b><span data-en="YEARS" data-es="AÑOS">YEARS</span></b> <span data-en="2020–2021" data-es="2020–2021">2020–2021</span></div>
 </div>
-<h1 class="home-bio" data-en="I&#8217;m a Product Design leader who is user and bottom line obsessed, high-craft, cross-functionally proven, AI-native, and happiest when my team is." data-es="Soy un líder de Product Design obsesionado con el usuario y los resultados de negocio, con un alto estándar de calidad, probado en equipos multifuncionales, nativo en IA, y feliz cuando mi equipo lo está.">I&#8217;m a Product Design leader who is user and bottom line obsessed, high-craft, cross-functionally proven, AI-native, and happiest when my team is.</h1>
+<div class="hero-img hero-img-primary"><img src="/assets/img/nike/hero.webp" alt="Nike retail experience" width="1200" height="767" loading="eager"></div>
+<p class="lede" data-en="I led data-driven retail experiences with Nike’s national retail partners, helping grow their wholesale business after Nike’s shift to DTC. I helped to build a testing program that identified and scaled targeted customer experience improvements, driving better business results." data-es="Lideré experiencias de retail basadas en datos con los socios minoristas nacionales de Nike, ayudando a hacer crecer su negocio mayorista tras el cambio de Nike hacia DTC. Ayudé a construir un programa de pruebas que identificó y escaló mejoras específicas en la experiencia del cliente, impulsando mejores resultados de negocio.">I led data-driven retail experiences with Nike’s national retail partners, helping grow their wholesale business after Nike’s shift to DTC. I helped to build a testing program that identified and scaled targeted customer experience improvements, driving better business results.</p>
+<a class="case-study-cta" style="display:inline-block; margin-bottom:1rem;" href="/case-studies/nike/" data-en="Case study" data-es="Caso de estudio">Case study</a>
 <div class="section-block">
   <div class="section-title" data-en="The principles I lead with" data-es="Los principios que guían mi liderazgo">The principles I lead with</div>
   <div class="body-copy"><p data-en="The best teams I&#8217;ve worked with were built on a handful of beliefs that shaped how we worked, made decisions, and raised the quality bar." data-es="Los mejores equipos con los que he trabajado se construyeron sobre un puñado de creencias que dieron forma a cómo trabajábamos, tomábamos decisiones y elevábamos el estándar de calidad.">The best teams I&#8217;ve worked with were built on a handful of beliefs that shaped how we worked, made decisions, and raised the quality bar.</p></div>
