@@ -3,53 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>
-(function(){
-  var hash = location.hash.replace('#','');
-  if(!hash) return;
-  var parts = hash.split('#')[0].split('/');
-  var route = parts[0], id = parts[1];
-  var CASE_STUDY = {stori:'/case-studies/stori/', meta:'/case-studies/meta/', foureyes:'/case-studies/foureyes/'};
-  var target = null;
-  if(route === 'home' || route === '') { return; }
-  else if(route === 'values') { target = id ? '/values/#' + id : '/values/'; }
-  else if(route === 'company') {
-    target = (id === 'nike') ? '/company/nike/' : (CASE_STUDY[id] || '/');
-  } else if(route === 'case-study') {
-    target = CASE_STUDY[id] || '/';
-  } else if(route === 'locked') {
-    target = (id === 'nike') ? '/case-studies/nike/' : '/';
-  }
-  if(target) location.replace(target);
-})();
-</script>
-<title>Cale Thompson — VP of Product Design</title>
-<meta name="description" content="Cale Thompson is a VP of Product Design with 13+ years leading design at Stori, Meta, Nike, Foureyes, and Cambia Health. Case studies, design principles, and how to get in touch.">
-<link rel="canonical" href="https://calethompson.com/">
+<title>Nike — Password Protected | Cale Thompson</title>
+<meta name="description" content="Cale Thompson's Nike case study is password protected. Browse the Stori, Meta, Foureyes, and AI-native practice case studies.">
+<link rel="canonical" href="https://calethompson.com/case-studies/nike/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Cormorant+Infant:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/site.css">
 
-<meta property="og:title" content="Cale Thompson — VP of Product Design">
-<meta property="og:description" content="Cale Thompson is a VP of Product Design with 13+ years leading design at Stori, Meta, Nike, Foureyes, and Cambia Health. Case studies, design principles, and how to get in touch.">
-<meta property="og:url" content="https://calethompson.com/">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://calethompson.com/assets/img/og/default.png">
+<meta property="og:title" content="Nike — Password Protected | Cale Thompson">
+<meta property="og:description" content="Cale Thompson's Nike case study is password protected. Browse the Stori, Meta, Foureyes, and AI-native practice case studies.">
+<meta property="og:url" content="https://calethompson.com/case-studies/nike/">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://calethompson.com/assets/img/og/nike.jpg">
 <meta property="og:site_name" content="Cale Thompson">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cale Thompson — VP of Product Design">
-<meta name="twitter:description" content="Cale Thompson is a VP of Product Design with 13+ years leading design at Stori, Meta, Nike, Foureyes, and Cambia Health. Case studies, design principles, and how to get in touch.">
-<meta name="twitter:image" content="https://calethompson.com/assets/img/og/default.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Cale Thompson",
-  "jobTitle": "VP of Product Design",
-  "url": "https://calethompson.com",
-  "sameAs": ["https://www.linkedin.com/in/cale~thompson/"]
-}
-</script>
+<meta name="twitter:title" content="Nike — Password Protected | Cale Thompson">
+<meta name="twitter:description" content="Cale Thompson's Nike case study is password protected. Browse the Stori, Meta, Foureyes, and AI-native practice case studies.">
+<meta name="twitter:image" content="https://calethompson.com/assets/img/og/nike.jpg">
+
 </head>
 <body>
 <div id="siteHeader">
@@ -65,23 +36,16 @@
   </div>
 </div>
 <div class="page" id="content">
-<div class="company-list">
+<div class="gate-wrap">
+  <div class="gate-field gate-field-pill">
+    <input type="password" id="gatePasswordInput" placeholder="Enter password" data-en-placeholder="Enter password" data-es-placeholder="Ingresa la contraseña">
+    <button onclick="handleGateSubmit(this)" aria-label="Unlock"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></button>
+  </div>
+  <div class="company-list gate-company-list">
     <a class="company-row" href="/case-studies/stori/"><span class="company-name">Stori</span><span class="company-mark"><img src="/assets/img/logos/stori.svg" alt="Stori logo" width="60" height="40" loading="lazy"></span></a>
     <a class="company-row" href="/case-studies/meta/"><span class="company-name">Meta</span><span class="company-mark"><img src="/assets/img/logos/meta.svg" alt="Meta logo" width="60" height="40" loading="lazy"></span></a>
-    <a class="company-row" href="/company/nike/"><span class="company-name">Nike</span><span class="company-mark"><img src="/assets/img/logos/nike.svg" alt="Nike logo" width="60" height="40" loading="lazy"></span></a>
     <a class="company-row" href="/case-studies/foureyes/"><span class="company-name">Foureyes</span><span class="company-mark"><img src="/assets/img/logos/foureyes.svg" alt="Foureyes logo" width="60" height="40" loading="lazy"></span></a>
     <a class="company-row" href="/case-studies/ai-native-practice/"><span class="company-name company-name-gradient">AI Native</span><span class="company-mark"><span class="ai-native-icon-mark" role="img" aria-label="AI Native logo"></span></span></a>
-</div>
-<h1 class="home-bio" data-en="I&#8217;m a Product Design leader who is user and bottom line obsessed, high-craft, cross-functionally proven, AI-native, and happiest when my team is." data-es="Soy un líder de Product Design obsesionado con el usuario y los resultados de negocio, con un alto estándar de calidad, probado en equipos multifuncionales, nativo en IA, y feliz cuando mi equipo lo está.">I&#8217;m a Product Design leader who is user and bottom line obsessed, high-craft, cross-functionally proven, AI-native, and happiest when my team is.</h1>
-<div class="section-block">
-  <div class="section-title" data-en="The principles I lead with" data-es="Los principios que guían mi liderazgo">The principles I lead with</div>
-  <div class="body-copy"><p data-en="The best teams I&#8217;ve worked with were built on a handful of beliefs that shaped how we worked, made decisions, and raised the quality bar." data-es="Los mejores equipos con los que he trabajado se construyeron sobre un puñado de creencias que dieron forma a cómo trabajábamos, tomábamos decisiones y elevábamos el estándar de calidad.">The best teams I&#8217;ve worked with were built on a handful of beliefs that shaped how we worked, made decisions, and raised the quality bar.</p></div>
-  <div class="pillar-links">
-    <a href="/values/#quality" data-en="Quality and craft are a daily discipline" data-es="La calidad y el oficio son una disciplina diaria">Quality and craft are a daily discipline</a>
-    <a href="/values/#alignment" data-en="Alignment is the operating system" data-es="La alineación es el sistema operativo">Alignment is the operating system</a>
-    <a href="/values/#envisioning" data-en="Envisioning is design’s superpower" data-es="Visualizar es el superpoder del diseño">Envisioning is design’s superpower</a>
-    <a href="/values/#ai" data-en="AI unlocks higher-value design" data-es="La IA desbloquea diseño de mayor valor">AI unlocks higher-value design</a>
-    <a href="/values/#impact" data-en="Impact is the measure of great design" data-es="El impacto es la medida del gran diseño">Impact is the measure of great design</a>
   </div>
 </div>
 </div>
