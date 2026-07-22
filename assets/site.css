@@ -488,23 +488,33 @@
   .pillar-detail,
   .pillar-quote p,
   .pillar-quote-attribution,
-  .body-copy, .body-copy p, .body-copy a,
-  .leadership-block,
+  .leadership-block, .leadership-block p, .leadership-block a,
   .case-study-cta,
-  .pillar-links a,
   .locked-cta{
     color:#481C1E;
   }
   .cs-section-label{
     color:#6F4A48;
   }
+  /* .body-copy and .pillar-links are shared with the home page's own
+     "principles" section, so -- same reasoning as .section-title above --
+     they're scoped by sibling position instead of targeted directly. */
   .company-wordmark ~ .section-block .section-title{
     color:#6F4A48;
   }
-  .cs-section a:hover, .body-copy a:hover, .pillar-full a:hover,
-  .pillar-links a:hover,
+  .company-wordmark ~ .section-block .body-copy,
+  .company-wordmark ~ .section-block .body-copy p,
+  .company-wordmark ~ .section-block .body-copy a,
+  .company-wordmark ~ .section-block .pillar-links a{
+    color:#481C1E;
+  }
+  .cs-section a:hover, .pillar-full a:hover,
   .case-study-cta:hover,
   .locked-cta:hover{
+    color:#6F4A48;
+  }
+  .company-wordmark ~ .section-block .body-copy a:hover,
+  .company-wordmark ~ .section-block .pillar-links a:hover{
     color:#6F4A48;
   }
   [data-theme="dark"] .cs-headline,
@@ -520,10 +530,8 @@
   [data-theme="dark"] .pillar-detail,
   [data-theme="dark"] .pillar-quote p,
   [data-theme="dark"] .pillar-quote-attribution,
-  [data-theme="dark"] .body-copy, [data-theme="dark"] .body-copy p, [data-theme="dark"] .body-copy a,
-  [data-theme="dark"] .leadership-block,
+  [data-theme="dark"] .leadership-block, [data-theme="dark"] .leadership-block p, [data-theme="dark"] .leadership-block a,
   [data-theme="dark"] .case-study-cta,
-  [data-theme="dark"] .pillar-links a,
   [data-theme="dark"] .locked-cta{
     color:#E8E8E8;
   }
@@ -533,10 +541,19 @@
   [data-theme="dark"] .company-wordmark ~ .section-block .section-title{
     color:#BFC0C3;
   }
-  [data-theme="dark"] .cs-section a:hover, [data-theme="dark"] .body-copy a:hover, [data-theme="dark"] .pillar-full a:hover,
-  [data-theme="dark"] .pillar-links a:hover,
+  [data-theme="dark"] .company-wordmark ~ .section-block .body-copy,
+  [data-theme="dark"] .company-wordmark ~ .section-block .body-copy p,
+  [data-theme="dark"] .company-wordmark ~ .section-block .body-copy a,
+  [data-theme="dark"] .company-wordmark ~ .section-block .pillar-links a{
+    color:#E8E8E8;
+  }
+  [data-theme="dark"] .cs-section a:hover, [data-theme="dark"] .pillar-full a:hover,
   [data-theme="dark"] .case-study-cta:hover,
   [data-theme="dark"] .locked-cta:hover{
+    color:#BFC0C3;
+  }
+  [data-theme="dark"] .company-wordmark ~ .section-block .body-copy a:hover,
+  [data-theme="dark"] .company-wordmark ~ .section-block .pillar-links a:hover{
     color:#BFC0C3;
   }
   .hero-img img{width:100%; height:auto; display:block;}
@@ -670,7 +687,7 @@
     color:var(--pink);
     font-size:1.1333rem;
   }
-  .gate-field-pill input::placeholder{color:#F38483; opacity:1;}
+  .gate-field-pill input::placeholder{color:var(--pink); opacity:1;}
   .gate-field-pill input:focus{outline:none; border-color:#EA3337;}
   .gate-field-pill button{
     position:absolute;
