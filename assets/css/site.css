@@ -1,0 +1,904 @@
+@view-transition {
+  navigation: auto;
+}
+
+/* Company-row clicks get a custom JS staged animation (see
+   animateCompanyEnter in site.js) instead of the browser's default
+   shared-element view-transition. The two were fighting each other: the
+   native transition ties the logo's motion to the whole-page crossfade,
+   which visually dragged the destination page's layout along with it
+   instead of a clean, independent left-then-up move. */
+
+:root{
+    --cream:#FBF6E6;
+    --cream-2:#F5EFDC;
+    --pink:#FE3C01;
+    --pink-dark:#BB2B00;
+    --maxw: 700px;
+  }
+  :root[data-theme="dark"]{
+    --cream:#212121;
+    --cream-2:#2B2B2B;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0; height:100%;}
+  body{
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+    background:var(--cream);
+    color:var(--pink);
+    font-family:"Host Grotesk", "Helvetica Neue", Arial, sans-serif;
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (min-width:1024px){
+    body{font-size:20px;}
+  }
+  @media (min-width:1440px){
+    body{font-size:20px;}
+  }
+  @media (min-width:1920px){
+    body{font-size:20px;}
+  }
+  h1,h2,h3{
+    font-family:"Host Grotesk", sans-serif;
+    font-weight:800;
+    color:var(--pink);
+    line-height:1.15;
+    margin:0;
+  }
+  a{color:var(--pink); text-decoration:underline; text-decoration-thickness:1.5px; text-underline-offset:2px;}
+  a:hover{color:var(--pink-dark);}
+  p{color:var(--pink); margin:0 0 1rem;}
+  button{font-family:inherit;}
+
+  .page{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 2rem 5rem;
+    flex:1 0 auto;
+    width:100%;
+    box-sizing:border-box;
+  }
+  @media (min-width:900px){
+    .page{padding:0 2.5rem 6rem;}
+  }
+  @media (min-width:1024px){
+    /* box-sizing:border-box means max-width includes the padding below,
+       so this is 1014px (the target content width, matching images and
+       text) + 2*3rem (48px) padding = 1110px. */
+    .page{max-width:1110px; padding:0 3rem 7rem;}
+  }
+  @media (min-width:1440px){
+    /* 1170px content width + 2*3rem (48px) padding = 1266px. */
+    .page{max-width:1266px; padding:0 3rem 7.5rem;}
+  }
+  @media (min-width:1920px){
+    /* 1404px content width + 2*3.5rem (56px) padding = 1516px. */
+    .page{max-width:1516px; padding:0 3.5rem 8.5rem;}
+  }
+
+  #siteHeader, #siteFooter{
+    width:100%;
+    box-sizing:border-box;
+    flex-shrink:0;
+  }
+  .top-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    width:100%;
+    margin:0 0 4.5rem;
+    padding:1.5rem 2rem 0;
+    box-sizing:border-box;
+  }
+  @media (min-width:900px){
+    .top-row{padding:2rem 2.5rem 0;}
+  }
+  @media (min-width:1024px){
+    .top-row{padding:2.25rem 3rem 0;}
+  }
+  @media (min-width:1440px){
+    .top-row{padding:2.5rem 3rem 0;}
+  }
+  @media (min-width:1920px){
+    .top-row{padding:3rem 3.5rem 0;}
+  }
+  .logo{
+    font-family:"Host Grotesk", sans-serif;
+    font-weight:800;
+    font-size:15px;
+    line-height:1;
+    color:var(--pink);
+    text-decoration:none;
+    display:inline-block;
+    border:none;
+    background:none;
+    padding:0;
+    flex-shrink:0;
+  }
+  .top-row-right{
+    display:flex;
+    align-items:center;
+    gap:2.475rem;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .clock{
+    font-size:0.85rem;
+    color:var(--pink);
+    white-space:nowrap;
+  }
+  .theme-toggle{
+    background:none;
+    border:none;
+    color:var(--pink);
+    padding:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+  }
+  .theme-toggle:hover{color:var(--pink-dark);}
+  .theme-toggle svg{height:14px !important; width:auto; display:block;}
+  .mail-icon-btn svg{height:13px !important;}
+  .resume-icon-btn svg{height:17px !important;}
+  .linkedin-box{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .lang-toggle{
+    font-size:0.85rem;
+    font-weight:500;
+    letter-spacing:0.02em;
+  }
+
+  .page-title{
+    font-size:2rem;
+    font-weight:800;
+    margin-bottom:1.25rem;
+  }
+  .cs-headline{
+    font-size:2rem;
+    font-weight:800;
+    margin-bottom:1.25rem;
+  }
+  .home-bio{
+    font-family:"Host Grotesk", sans-serif;
+    font-weight:400;
+    color:var(--pink);
+    line-height:1.25;
+    font-size:1.5rem;
+    margin-bottom:2.75rem;
+  }
+  /* Base font-size only, moved here (ahead of the desktop breakpoints
+     below) so those breakpoints correctly win the cascade at desktop
+     widths. The rest of each rule's styling (margin, line-height, etc.)
+     stays where it already was, further down. */
+  .lede{font-size:1.5rem;}
+  .cs-lede{font-size:1.5rem;}
+  .cs-subhead{font-size:1.5rem;}
+  @media (min-width:700px){
+    .page-title{font-size:2.5rem;}
+    .cs-headline{font-size:2.5rem;}
+    .home-bio{font-size:1.7rem;}
+    .lede{font-size:1.7rem;}
+  }
+  @media (min-width:1024px){
+    .page-title{font-size:3.5rem; max-width:63.375rem;}
+    .cs-headline{font-size:3.5rem; max-width:63.375rem;}
+    .home-bio{font-size:2.375rem; max-width:63.375rem;}
+    .lede{font-size:2.3125rem; max-width:63.375rem;}
+    .cs-lede{font-size:2.0625rem; max-width:63.375rem;}
+    .cs-subhead{font-size:2.0625rem;}
+    .cs-section{max-width:63.375rem;}
+    .body-copy{max-width:63.375rem;}
+    .leadership-block{max-width:63.375rem;}
+  }
+  @media (min-width:1440px){
+    .page-title{font-size:3.875rem; max-width:73.125rem;}
+    .cs-headline{font-size:3.875rem; max-width:73.125rem;}
+    .home-bio{font-size:2.625rem; max-width:73.125rem;}
+    .lede{font-size:2.5rem; max-width:73.125rem;}
+    .cs-lede{font-size:2.25rem; max-width:73.125rem;}
+    .cs-subhead{font-size:2.25rem;}
+    .cs-section{max-width:73.125rem;}
+    .body-copy{max-width:73.125rem;}
+    .leadership-block{max-width:73.125rem;}
+  }
+  @media (min-width:1920px){
+    .page-title{font-size:4.5rem; max-width:87.75rem;}
+    .cs-headline{font-size:4.5rem; max-width:87.75rem;}
+    .home-bio{font-size:3rem; max-width:87.75rem;}
+    .lede{font-size:2.75rem; max-width:87.75rem;}
+    .cs-lede{font-size:2.5rem; max-width:87.75rem;}
+    .cs-subhead{font-size:2.5rem;}
+    .cs-section{max-width:87.75rem;}
+    .body-copy{max-width:87.75rem;}
+    .leadership-block{max-width:87.75rem;}
+  }
+
+  .lede{margin-bottom:0.75rem; line-height:1.25;}
+
+  .company-list{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:0.083rem;
+    margin-top:4.5rem;
+    margin-bottom:3rem;
+  }
+  .company-row{
+    display:flex;
+    align-items:center;
+    gap:1.35rem;
+    text-decoration:none;
+    font-size:2.8rem;
+    line-height:1;
+  }
+  @media (min-width:700px){
+    .company-row{font-size:3.4rem;}
+  }
+  @media (min-width:1024px){
+    .company-row{font-size:4.75rem;}
+  }
+  @media (min-width:1440px){
+    .company-row{font-size:5.375rem;}
+  }
+  @media (min-width:1920px){
+    .company-row{font-size:6.25rem;}
+  }
+  .company-row:hover .company-name{color:var(--pink-dark);}
+  :root:not([data-theme="dark"]) .company-row:hover .company-mark img{filter:invert(1) brightness(0.298);}
+  [data-theme="dark"] .company-row:hover .company-mark img{filter:invert(1) brightness(0.863);}
+
+  .company-mark{
+    width:0.85em;
+    height:0.55em;
+    display:flex;align-items:center;justify-content:flex-start;
+    flex-shrink:0;
+  }
+  .company-mark img{max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain;}
+  .company-mark img[alt="Stori logo"],
+  .company-mark img[alt="Meta logo"],
+  .company-mark img[alt="Journi logo"]{transform:scale(1.2);}
+  .company-mark img[alt="Foureyes logo"]{transform:scale(0.66);}
+  .ai-native-icon-mark{
+    display:block;
+    width:17px;
+    height:17px;
+    transform:scale(1.653125);
+    -webkit-mask-image:url(/assets/img/logos/ai-native.svg);
+    mask-image:url(/assets/img/logos/ai-native.svg);
+    -webkit-mask-size:contain;
+    mask-size:contain;
+    -webkit-mask-repeat:no-repeat;
+    mask-repeat:no-repeat;
+    -webkit-mask-position:left center;
+    mask-position:left center;
+    background-color:#403F3C;
+  }
+  [data-theme="dark"] .ai-native-icon-mark{background-color:#BFC0C3;}
+  /* Exact target color, matching what the site's other icons land on when
+     hovered (approximated via filter for pure-black logos, but the mask
+     technique here lets us hit this precisely rather than approximate it). */
+  .company-row:hover .ai-native-icon-mark{background-color:#4C4C4C;}
+  [data-theme="dark"] .company-mark img,
+  [data-theme="dark"] .company-wordmark img{filter:invert(1);}
+  .company-name{
+    font-weight:800;
+    color:var(--pink);
+  }
+  .company-name-gradient{
+    background:linear-gradient(90deg, #FACD74 0%, #ED6A39 33%, #C13488 66%, #6058A6 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  /* The generic .company-row:hover .company-name rule sets a solid color,
+     which would paint over and hide the gradient entirely. Override with a
+     darkened version of the same gradient instead, so hovering AI Native
+     darkens consistently with how every other row darkens on hover. */
+  .company-row:hover .company-name-gradient{
+    background:linear-gradient(90deg, #B69554 0%, #AC4D29 33%, #8C2663 66%, #464079 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  .section-block{margin-bottom:0;}
+  .section-title{
+    font-size:0.8rem;
+    font-weight:800;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    margin-top:5.625rem;
+    margin-bottom:0.9rem;
+  }
+  .body-copy{}
+
+  .pillar-links{display:flex; flex-direction:column; align-items:flex-start; gap:0.5rem; margin-top:1.25rem;}
+  .pillar-links a{
+    font-style:normal;
+    font-weight:800;
+    font-size:1.4rem;
+    text-decoration:none;
+  }
+  .pillar-links a:hover{text-decoration:underline;}
+
+  .link-item{
+    font-weight:400;
+    font-size:1.05rem;
+  }
+  .talk-list{display:flex; flex-direction:column; align-items:flex-start; gap:0.6rem;}
+  .talk-row{display:flex; align-items:center; gap:0.5rem;}
+  .talk-row svg{height:16px; width:auto; display:block;}
+  button.talk-row{
+    background:none;
+    border:none;
+    padding:0;
+    font-family:inherit;
+    font-weight:400;
+    font-size:1.05rem;
+    color:var(--pink);
+    text-decoration:underline;
+    text-decoration-thickness:1.5px;
+    text-underline-offset:2px;
+    text-align:left;
+  }
+  button.talk-row:hover{color:var(--pink-dark);}
+
+  .footer-block{
+    margin-top:8rem;
+    width:100%;
+    padding:0 2rem 1.5rem;
+    box-sizing:border-box;
+  }
+  @media (min-width:900px){
+    .footer-block{padding:0 2.5rem 2rem;}
+  }
+  @media (min-width:1024px){
+    .footer-block{padding:0 3rem 2.25rem;}
+  }
+  @media (min-width:1440px){
+    .footer-block{padding:0 3rem 2.5rem;}
+  }
+  @media (min-width:1920px){
+    .footer-block{padding:0 3.5rem 3rem;}
+  }
+  .footer-divider{
+    border-top:1.5px solid var(--pink);
+    margin:1.25rem 0 0.75rem;
+  }
+  .footer-meta{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;
+    font-size:0.85rem;
+  }
+  .footer-location{display:inline-flex; align-items:center; gap:0.35rem; flex-wrap:wrap;}
+  .footer-state-icon{display:inline-flex; align-items:center; color:var(--pink);}
+  .footer-state-icon svg{height:0.75em; width:auto; display:block;}
+
+  .pillar-full{margin-bottom:3.85rem; max-width:38rem;}
+  .pillar-full h3{font-size:1.35rem; margin-bottom:0.6rem;}
+  .pillar-full .pillar-body{font-size:1.05rem; margin-bottom:0.75rem;}
+  .pillar-detail{
+    font-size:0.88rem;
+    margin-bottom:0.6rem;
+  }
+  .pillar-quote{
+    margin:1.1rem 0 1.1rem;
+    max-width:36rem;
+  }
+  .pillar-quote p{
+    font-family:"Cormorant Infant", serif;
+    font-style:italic;
+    font-size:1.35rem;
+    line-height:1.25;
+    margin:0 0 0.4rem;
+  }
+  .pillar-quote-attribution{
+    font-weight:700;
+    font-size:0.85rem;
+  }
+
+  /* These pixel dimensions are hand-calculated to match .company-mark's
+     em-based size (0.85em/0.55em of .company-row's font-size) at each
+     matching breakpoint (700/1024/1440/1920, same as .company-row). If
+     .company-row's font-size ever changes, these values need
+     recalculating to match, or the destination logo (here) will render
+     at a different size than the home page row icon it animates from --
+     this exact mismatch is what happened when desktop text was scaled
+     1.25x without updating these. */
+  .company-wordmark{
+    margin:4.5rem 0 2.5rem;
+    width:38.08px;
+    height:24.64px;
+    display:flex;
+    align-items:center;
+  }
+  .company-wordmark img{max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain;}
+  @media (min-width:700px){
+    .company-wordmark{width:46.24px; height:29.92px;}
+  }
+  @media (min-width:1024px){
+    .company-wordmark{width:64.6px; height:41.8px;}
+  }
+  @media (min-width:1440px){
+    .company-wordmark{width:73.1px; height:47.3px;}
+  }
+  @media (min-width:1920px){
+    .company-wordmark{width:85px; height:55px;}
+  }
+  .company-wordmark img[alt="Stori logo"],
+  .company-wordmark img[alt="Meta logo"],
+  .company-wordmark img[alt="Journi logo"]{transform:scale(1.2);}
+  .company-wordmark img[alt="Foureyes logo"]{transform:scale(0.66);}
+  .company-wordmark img[alt="AI Native logo"]{transform:scale(1.653125);}
+  .role-meta{
+    font-size:0.85rem;
+    margin-bottom:2rem;
+  }
+  .role-meta div{margin-bottom:0.3rem;}
+  .hero-img{
+    width:100%;
+    max-width:640px;
+    overflow:hidden;
+    margin-bottom:4.125rem;
+    background:var(--cream-2);
+  }
+  .hero-img.rounded-corners{
+    border-radius:9.8px;
+  }
+  .hero-img + .hero-img,
+  .hero-img + .img-placeholder,
+  .img-placeholder + .hero-img,
+  .img-placeholder + .img-placeholder{
+    margin-top:-3.375rem;
+  }
+  @media (min-width:1024px){
+    /* .page itself is now wide enough (see .page above) to hold images at
+       their full target size, so this is a plain max-width -- no need to
+       break out of .page anymore. This keeps images and text sharing the
+       exact same container, so they stay aligned to the same edges. */
+    .hero-img{max-width:1014px;}
+  }
+  @media (min-width:1440px){
+    .hero-img{max-width:1170px;}
+  }
+  @media (min-width:1920px){
+    .hero-img{max-width:1404px;}
+  }
+  /* Vertical wipe reveal: images start clipped down to a sliver at the
+     top edge, then grow downward to full height as they're scrolled to
+     -- matching initScrollReveal in site.js, which adds .is-visible.
+     The primary/header image on each page (.hero-img-primary) is
+     excluded and stays always visible immediately -- above-the-fold
+     content must not depend on a script finishing in time to be seen.
+     This was tried once before and reverted (a not-yet-revealed image
+     still reserves its full space but shows nothing, which looks like a
+     blank gap if the reveal is ever slow or blocked) -- initScrollReveal
+     already has solid fallbacks for that (an immediate on-load check,
+     plus scroll/resize listeners), so the risk is accepted here as a
+     deliberate tradeoff for the visual effect, the same way many sites
+     with this kind of reveal do. */
+  .hero-img:not(.hero-img-primary), .img-placeholder{
+    clip-path:inset(0 0 100% 0);
+    transition:clip-path 1s ease;
+  }
+  .hero-img:not(.hero-img-primary).is-visible, .img-placeholder.is-visible{
+    clip-path:inset(0 0 0% 0);
+  }
+  .hero-img-primary{
+    clip-path:inset(0 0 0% 0);
+    margin-bottom:2rem;
+  }
+  .cs-section, .stat-row, .pillar-full, .body-copy, .leadership-block{
+    color:var(--pink);
+  }
+  .section-title, .cs-section-label{
+    color:#BB2B00;
+  }
+  [data-theme="dark"] .section-title, [data-theme="dark"] .cs-section-label{
+    color:#FE6F43;
+  }
+
+  /* ---------- Case-study / company (Nike) / values page copy color ----------
+     These three page types use a different text color from the header,
+     footer, gate page, and home page, which all keep the original
+     --pink/--pink-dark theme untouched. Scoped to the specific classes
+     these three page types actually use. .section-title is the one
+     exception -- the home page also uses that same class for its own
+     "principles" label, so instead of targeting the class directly (which
+     would recolor the home page too), it's scoped by sibling position:
+     only a .section-title that comes after a .company-wordmark counts,
+     and only company/case-study pages have a .company-wordmark. */
+  .cs-headline,
+  .page-title,
+  .role-meta,
+  .cs-lede,
+  .lede,
+  .cs-section, .cs-section p, .cs-section a,
+  .cs-subhead,
+  .stat-row, .stat-num, .stat-label,
+  .pillar-full, .pillar-full h3, .pillar-full a,
+  .pillar-body,
+  .pillar-detail,
+  .pillar-quote p,
+  .pillar-quote-attribution,
+  .leadership-block, .leadership-block p, .leadership-block a,
+  .case-study-cta,
+  .locked-cta{
+    color:#481C1E;
+  }
+  .cs-section-label{
+    color:#6F4A48;
+  }
+  /* .body-copy and .pillar-links are shared with the home page's own
+     "principles" section, so -- same reasoning as .section-title above --
+     they're scoped by sibling position instead of targeted directly. */
+  .company-wordmark ~ .section-block .section-title{
+    color:#6F4A48;
+  }
+  .company-wordmark ~ .section-block .body-copy,
+  .company-wordmark ~ .section-block .body-copy p,
+  .company-wordmark ~ .section-block .body-copy a,
+  .company-wordmark ~ .section-block .pillar-links a{
+    color:#481C1E;
+  }
+  .cs-section a:hover, .pillar-full a:hover,
+  .case-study-cta:hover,
+  .locked-cta:hover{
+    color:#6F4A48;
+  }
+  .company-wordmark ~ .section-block .body-copy a:hover,
+  .company-wordmark ~ .section-block .pillar-links a:hover{
+    color:#6F4A48;
+  }
+  [data-theme="dark"] .cs-headline,
+  [data-theme="dark"] .page-title,
+  [data-theme="dark"] .role-meta,
+  [data-theme="dark"] .cs-lede,
+  [data-theme="dark"] .lede,
+  [data-theme="dark"] .cs-section, [data-theme="dark"] .cs-section p, [data-theme="dark"] .cs-section a,
+  [data-theme="dark"] .cs-subhead,
+  [data-theme="dark"] .stat-row, [data-theme="dark"] .stat-num, [data-theme="dark"] .stat-label,
+  [data-theme="dark"] .pillar-full, [data-theme="dark"] .pillar-full h3, [data-theme="dark"] .pillar-full a,
+  [data-theme="dark"] .pillar-body,
+  [data-theme="dark"] .pillar-detail,
+  [data-theme="dark"] .pillar-quote p,
+  [data-theme="dark"] .pillar-quote-attribution,
+  [data-theme="dark"] .leadership-block, [data-theme="dark"] .leadership-block p, [data-theme="dark"] .leadership-block a,
+  [data-theme="dark"] .case-study-cta,
+  [data-theme="dark"] .locked-cta{
+    color:#E8E8E8;
+  }
+  [data-theme="dark"] .cs-section-label{
+    color:#BFC0C3;
+  }
+  [data-theme="dark"] .company-wordmark ~ .section-block .section-title{
+    color:#BFC0C3;
+  }
+  [data-theme="dark"] .company-wordmark ~ .section-block .body-copy,
+  [data-theme="dark"] .company-wordmark ~ .section-block .body-copy p,
+  [data-theme="dark"] .company-wordmark ~ .section-block .body-copy a,
+  [data-theme="dark"] .company-wordmark ~ .section-block .pillar-links a{
+    color:#E8E8E8;
+  }
+  [data-theme="dark"] .cs-section a:hover, [data-theme="dark"] .pillar-full a:hover,
+  [data-theme="dark"] .case-study-cta:hover,
+  [data-theme="dark"] .locked-cta:hover{
+    color:#BFC0C3;
+  }
+  [data-theme="dark"] .company-wordmark ~ .section-block .body-copy a:hover,
+  [data-theme="dark"] .company-wordmark ~ .section-block .pillar-links a:hover{
+    color:#BFC0C3;
+  }
+  .hero-img img{width:100%; height:auto; display:block;}
+  .case-study-cta{
+    display:inline-block;
+    font-weight:800;
+    font-size:1.4rem;
+    margin:0;
+    text-decoration:none;
+  }
+  .case-study-cta:hover{text-decoration:underline;}
+  .locked-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:0.5rem;
+    font-weight:800;
+    font-size:1.05rem;
+    color:var(--pink);
+    background:none;
+    border:1.5px solid var(--pink);
+    border-radius:10px;
+    padding:0.6rem 1.1rem;
+    margin:0.5rem 0 2.5rem;
+  }
+  .locked-cta:hover{background:var(--cream-2);}
+
+  .cs-lede{margin:1.75rem 0 2.25rem; line-height:1.4;}
+  .cs-section-label{
+    font-size:0.78rem;
+    font-weight:800;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    margin-top:5.625rem;
+    margin-bottom:0.6rem;
+  }
+  .cs-section{margin-bottom:2.0625rem;}
+  .cs-section:has(+ .cs-section-label){margin-bottom:0;}
+  .cs-subhead{font-weight:700; margin-bottom:0.5rem;}
+  .stat-row{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    text-align:left;
+    gap:1.25rem;
+    margin:1.5rem 0 5.15625rem;
+  }
+  .stat-row:has(+ .cs-section-label){margin-bottom:0;}
+  /* Without this, a stat-row right after an image inherits the image's
+     large 4.125rem bottom margin via margin collapsing, doubling the gap
+     compared to text-to-image spacing (33px vs 66px). Pull it back down
+     to match. */
+  .hero-img + .stat-row, .img-placeholder + .stat-row{margin-top:-2.0625rem;}
+  .stat{display:flex; align-items:baseline; gap:0.6rem; text-align:left;}
+  .stat-num{font-family:"Cormorant Infant", serif; font-weight:700; font-size:2.4375rem; line-height:1; text-align:left; flex-shrink:0;}
+  .stat-label{font-size:0.85rem; text-align:left;}
+  .img-placeholder{
+    width:100%; max-width:640px;
+    height:400px;
+    background:#FFFFFF;
+    margin:1.5rem 0 2.0625rem;
+  }
+  @media (min-width:1024px){
+    .img-placeholder{max-width:780px; height:460px;}
+  }
+  @media (min-width:1440px){
+    .img-placeholder{max-width:900px; height:520px;}
+  }
+  @media (min-width:1920px){
+    .img-placeholder{max-width:1080px; height:600px;}
+  }
+  .leadership-block{
+    margin-top:2.5rem;
+  }
+
+  .gate-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    max-width:26rem;
+    margin:2.5625rem auto 0;
+  }
+  .gate-field{
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+    margin:1.5rem 0 0.75rem;
+    width:100%;
+  }
+  .gate-logo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:1.4rem;
+    margin-right:0.6rem;
+    flex-shrink:0;
+  }
+  .gate-logo img{max-height:100%; width:auto; object-fit:contain;}
+  [data-theme="dark"] .gate-logo img{filter:invert(1);}
+  .gate-company-list{margin-top:2.5rem;}
+  .gate-field input{
+    flex:1;
+    padding:0.7rem 0.9rem;
+    border:1.5px solid var(--pink);
+    border-radius:8px;
+    font-size:1rem;
+    background:transparent;
+    color:var(--pink);
+    font-family:inherit;
+  }
+  .gate-field input::placeholder{color:var(--pink); opacity:0.7;}
+  .gate-field input:focus{outline:none; border-color:var(--pink-dark);}
+  .gate-field button{
+    background:var(--pink);
+    color:var(--cream);
+    border:none;
+    border-radius:8px;
+    padding:0.7rem 1.3rem;
+    font-weight:700;
+  }
+  .gate-field button:hover{background:var(--pink-dark);}
+
+  /* Pill-shaped variant with an inset circular arrow button, per reference design */
+  .gate-field-pill{position:relative; transform:scale(0.75); transform-origin:left center;}
+  .gate-field-pill input{
+    width:100%;
+    padding:1rem 4rem 1rem 1.5rem;
+    border:2px solid #EA3337;
+    border-radius:999px;
+    box-sizing:border-box;
+    background:transparent;
+    color:var(--pink);
+    font-size:1.1333rem;
+  }
+  .gate-field-pill input::placeholder{color:var(--pink); opacity:1;}
+  .gate-field-pill input:focus{outline:none; border-color:#EA3337;}
+  .gate-field-pill button{
+    position:absolute;
+    right:0.4rem;
+    top:50%;
+    transform:translateY(-50%);
+    width:2.75rem;
+    height:2.75rem;
+    padding:0;
+    border-radius:50%;
+    background:#EA3337;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .gate-field-pill button:hover{background:#D4272B;}
+  .gate-field-pill button svg{width:1.15rem; height:1.15rem; display:block;}
+  [data-theme="dark"] .gate-field-pill button svg{stroke:var(--cream);}
+
+  .gate-hint{font-size:0.95rem;}
+  .gate-note{margin-top:1rem; font-size:0.9rem;}
+
+  .flag-note{
+    background:#FFF6EC;
+    border:1px solid #E6B67A;
+    border-radius:8px;
+    padding:0.6rem 0.9rem;
+    font-size:0.8rem;
+    color:#8A5A1E;
+    margin-bottom:1.5rem;
+    max-width:38rem;
+  }
+  *{cursor:none !important;}
+  input, textarea{cursor:text !important;}
+  .custom-cursor{
+    position:fixed;
+    top:0; left:0;
+    width:0; height:0;
+    pointer-events:none;
+    z-index:9999;
+  }
+  .custom-cursor::before{
+    content:'';
+    position:absolute;
+    top:0; left:0;
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--pink);
+    transform:translate(-50%,-50%) scale(1);
+    transition:transform 0.15s ease;
+  }
+  .custom-cursor.cursor-hover::before{
+    transform:translate(-50%,-50%) scale(0.5);
+  }
+  .custom-cursor::after{
+    content:'';
+    position:absolute;
+    top:0; left:0;
+    width:24px; height:24px;
+    border-radius:50%;
+    border:0.5px solid var(--pink);
+    background:transparent;
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0;
+    transition:transform 0.15s ease, opacity 0.15s ease;
+  }
+  .custom-cursor.cursor-hover::after{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1;
+  }
+  [data-theme="dark"] .custom-cursor::before{
+    background:#E8E8E8;
+  }
+  [data-theme="dark"] .custom-cursor::after{
+    border-color:#E8E8E8;
+  }
+  html:not([data-theme="dark"]):not(:has(#content .home-bio)) .custom-cursor::before{
+    background:#481C1E;
+  }
+  html:not([data-theme="dark"]):not(:has(#content .home-bio)) .custom-cursor::after{
+    border-color:#481C1E;
+  }
+  @media (hover:none){
+    body{cursor:auto;}
+    .custom-cursor{display:none;}
+  }
+
+  /* ---------- Header/footer color for all non-home pages ----------
+     Home page keeps the original --pink/--pink-dark header and footer.
+     Every other page (case studies, company/Nike, values, and the
+     password gate) gets the new palette instead. Scoped via :has(),
+     checking for .home-bio -- the one element unique to the home
+     page's markup -- rather than listing every other page type. */
+  body:not(:has(#content .home-bio)) #siteHeader,
+  body:not(:has(#content .home-bio)) #siteFooter,
+  body:not(:has(#content .home-bio)) .logo,
+  body:not(:has(#content .home-bio)) .theme-toggle,
+  body:not(:has(#content .home-bio)) .footer-state-icon{
+    color:#481C1E;
+  }
+  body:not(:has(#content .home-bio)) .theme-toggle:hover{
+    color:#6F4A48;
+  }
+  body:not(:has(#content .home-bio)) .footer-divider{
+    border-top-color:#481C1E;
+  }
+  [data-theme="dark"]:not(:has(#content .home-bio)) #siteHeader,
+  [data-theme="dark"]:not(:has(#content .home-bio)) #siteFooter,
+  [data-theme="dark"]:not(:has(#content .home-bio)) .logo,
+  [data-theme="dark"]:not(:has(#content .home-bio)) .theme-toggle,
+  [data-theme="dark"]:not(:has(#content .home-bio)) .footer-state-icon{
+    color:#E8E8E8;
+  }
+  [data-theme="dark"]:not(:has(#content .home-bio)) .theme-toggle:hover{
+    color:#BFC0C3;
+  }
+  [data-theme="dark"]:not(:has(#content .home-bio)) .footer-divider{
+    border-top-color:#E8E8E8;
+  }
+
+  /* ---------- Scroll-reveal text fade ----------
+     Fades text in place (no movement) as it scrolls into view, reaching
+     full opacity quickly. Applied per-element (not to whole section
+     wrappers) so a label/subhead naturally reaches full opacity slightly
+     before the paragraph beneath it, since each crosses the reveal
+     threshold at its own scroll position -- see initScrollReveal in
+     site.js. The page's headline and lede are NOT included here at
+     all -- each page only ever has one of each, so initScrollReveal
+     always treats it as "the first" and deliberately never reveals it
+     (staying always visible instead, avoiding a flash of invisible
+     content above the fold). Giving them opacity:0 here with no
+     corresponding JS reveal would make them permanently invisible.
+     Images are handled separately (via clip-path, not opacity) -- see
+     the clip-path reveal rules above for how images fade/wipe in. */
+  .cs-subhead,
+  .cs-section p, .cs-section-label, .section-title, .stat-row,
+  .pillar-full h3, .pillar-body, .pillar-detail, .pillar-quote p, .pillar-quote-attribution,
+  .body-copy p, .leadership-block p{
+    opacity:0;
+    transition:opacity 0.5s ease;
+  }
+  .cs-subhead.is-visible,
+  .cs-section p.is-visible, .cs-section-label.is-visible, .section-title.is-visible, .stat-row.is-visible,
+  .pillar-full h3.is-visible, .pillar-body.is-visible, .pillar-detail.is-visible, .pillar-quote p.is-visible, .pillar-quote-attribution.is-visible,
+  .body-copy p.is-visible, .leadership-block p.is-visible{
+    opacity:1;
+  }
+
+  /* ---------- Desktop content text scale (1.25x) ----------
+     Companion to the desktop image growth above -- these selectors
+     didn't already have their own per-breakpoint sizing, so rather than
+     scaling an existing tier, this adds one desktop-only override at
+     1.25x their base size. Scoped the same way as the image change:
+     desktop only (1024px+), and excluding the header, footer, and the
+     password gate page, none of which are touched here. */
+  @media (min-width:1024px){
+    .section-title{font-size:1rem;}
+    .pillar-links a{font-size:1.75rem;}
+    .link-item{font-size:1.3125rem;}
+    button.talk-row{font-size:1.3125rem;}
+    .pillar-full h3{font-size:1.6875rem;}
+    .pillar-full .pillar-body{font-size:1.3125rem;}
+    .pillar-detail{font-size:1.1rem;}
+    .pillar-quote p{font-size:1.6875rem;}
+    .pillar-quote-attribution{font-size:1.0625rem;}
+    .role-meta{font-size:1.0625rem;}
+    .case-study-cta{font-size:1.75rem;}
+    .locked-cta{font-size:1.3125rem;}
+    .cs-section-label{font-size:0.975rem;}
+    .stat-num{font-size:3.046875rem;}
+    .stat-label{font-size:1.0625rem;}
+  }
