@@ -206,6 +206,11 @@
   .lede{font-size:1.5rem;}
   .cs-lede{font-size:1.5rem;}
   .cs-subhead{font-size:1.5rem;}
+  .pillar-full{max-width:38rem;}
+  /* .pillar-quote is always 75% of .pillar-full's max-width at the
+     matching breakpoint, so the quote reads as a narrower column
+     against the body copy around it. */
+  .pillar-quote{max-width:28.5rem;}
   @media (min-width:700px){
     .page-title{font-size:2.5rem;}
     .cs-headline{font-size:2.5rem;}
@@ -222,6 +227,8 @@
     .cs-section{max-width:63.375rem;}
     .body-copy{max-width:63.375rem;}
     .leadership-block{max-width:63.375rem;}
+    .pillar-full{max-width:63.375rem;}
+    .pillar-quote{max-width:47.53125rem;}
   }
   @media (min-width:1440px){
     .page-title{font-size:3.875rem; max-width:73.125rem;}
@@ -233,6 +240,8 @@
     .cs-section{max-width:73.125rem;}
     .body-copy{max-width:73.125rem;}
     .leadership-block{max-width:73.125rem;}
+    .pillar-full{max-width:73.125rem;}
+    .pillar-quote{max-width:54.84375rem;}
   }
   @media (min-width:1920px){
     .page-title{font-size:4.5rem; max-width:87.75rem;}
@@ -244,6 +253,8 @@
     .cs-section{max-width:87.75rem;}
     .body-copy{max-width:87.75rem;}
     .leadership-block{max-width:87.75rem;}
+    .pillar-full{max-width:87.75rem;}
+    .pillar-quote{max-width:65.8125rem;}
   }
 
   .lede{margin-bottom:0.75rem; line-height:1.25;}
@@ -414,7 +425,7 @@
   .footer-state-icon{display:inline-flex; align-items:center; color:var(--pink);}
   .footer-state-icon svg{height:0.75em; width:auto; display:block;}
 
-  .pillar-full{margin-bottom:3.85rem; max-width:38rem;}
+  .pillar-full{margin-bottom:3.85rem;}
   .pillar-full h3{font-size:1.35rem; margin-bottom:0.6rem;}
   .pillar-full .pillar-body{font-size:1.05rem; margin-bottom:0.75rem;}
   .pillar-detail{
@@ -423,7 +434,6 @@
   }
   .pillar-quote{
     margin:1.1rem 0 1.1rem;
-    max-width:36rem;
   }
   .pillar-quote p{
     font-family:"Cormorant Infant", serif;
