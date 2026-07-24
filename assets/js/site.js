@@ -1,0 +1,578 @@
+/* Cale Thompson portfolio — shared site behavior.
+   All page content is server-rendered HTML. This file only enhances it:
+   theme toggle, language toggle, scroll-reveal animation, custom cursor,
+   copy-email, and the title-block reveal cascade. Nothing here is required
+   for the page's text content to be present or readable. */
+
+const EMAIL = "cale.ryder@gmail.com";
+
+/* Some embedding contexts (e.g. sandboxed preview iframes) block storage
+   access entirely, throwing on any localStorage call. Wrap it so that
+   degrades to "don't persist" instead of breaking the whole script. */
+function safeStorageGet(key){
+  try { return localStorage.getItem(key); } catch(e){ return null; }
+}
+function safeStorageSet(key, value){
+  try { localStorage.setItem(key, value); } catch(e){ /* ignore */ }
+}
+
+/* ---------- icons (inline SVG strings, unchanged from the original) ---------- */
+function sunIcon(){
+  return `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 7.99512H16" stroke="currentColor"/><path d="M0 7.99512H2" stroke="currentColor"/><path d="M7.99512 2L7.99512 0" stroke="currentColor"/><path d="M7.99512 16L7.99512 14" stroke="currentColor"/><path d="M3.75391 3.76099L2.33969 2.34677" stroke="currentColor"/><path d="M13.6533 13.6604L12.2391 12.2462" stroke="currentColor"/><path d="M3.75391 12.2461L2.33969 13.6603" stroke="currentColor"/><path d="M13.6533 2.34668L12.2391 3.76089" stroke="currentColor"/><circle cx="8" cy="7.99512" r="4" fill="currentColor"/></svg>`;
+}
+function moonIcon(){
+  return `<svg viewBox="0 0 9 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 12C1.60766 12 0.761143 11.8045 4.76385e-08 11.4551C2.06535 10.507 3.5 8.42136 3.5 6C3.5 3.57878 2.06515 1.49406 1.00135e-06 0.545898C0.76124 0.196396 1.60751 -6.0256e-07 2.5 -5.24536e-07C5.81371 -2.34843e-07 8.5 2.68629 8.5 6C8.5 9.31371 5.81371 12 2.5 12Z" fill="currentColor"/></svg>`;
+}
+
+/* ---------- theme toggle ---------- */
+let THEME = safeStorageGet('theme') || 'light';
+function applyThemeToDOM(){
+  document.documentElement.setAttribute('data-theme', THEME);
+  document.querySelectorAll('.theme-toggle.theme-icon').forEach(btn=>{
+    btn.innerHTML = THEME === 'dark' ? sunIcon() : moonIcon();
+  });
+}
+function toggleTheme(){
+  THEME = THEME === 'light' ? 'dark' : 'light';
+  safeStorageSet('theme', THEME);
+  applyThemeToDOM();
+}
+
+/* ---------- language toggle ---------- */
+let LANG = safeStorageGet('lang') || 'en';
+function t(en, es){ return LANG === 'es' ? es : en; }
+
+function applyLangToDOM(){
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-en][data-es]').forEach(el=>{
+    el.textContent = LANG === 'es' ? el.getAttribute('data-es') : el.getAttribute('data-en');
+  });
+  document.querySelectorAll('[data-en-html][data-es-html]').forEach(el=>{
+    el.innerHTML = LANG === 'es' ? el.getAttribute('data-es-html') : el.getAttribute('data-en-html');
+  });
+  document.querySelectorAll('[data-en-placeholder][data-es-placeholder]').forEach(el=>{
+    el.placeholder = LANG === 'es' ? el.getAttribute('data-es-placeholder') : el.getAttribute('data-en-placeholder');
+  });
+  document.querySelectorAll('.lang-toggle').forEach(btn=>{
+    btn.textContent = LANG === 'en' ? 'ES' : 'EN';
+  });
+}
+function toggleLang(){
+  LANG = LANG === 'en' ? 'es' : 'en';
+  safeStorageSet('lang', LANG);
+  applyLangToDOM();
+}
+
+/* ---------- password gate (Nike) ----------
+   This never checked a real password in the original site either -- it
+   always just clears the field and says "Incorrect." The case study is
+   simply not published; this is a deliberate "protected" presentation,
+   not a real access-control mechanism. */
+function handleGateSubmit(btn){
+  const input = document.getElementById('gatePasswordInput');
+  if(!input) return;
+  input.value = '';
+  input.placeholder = t('Incorrect. Try again please.','Incorrecto. Intenta de nuevo, por favor.');
+  input.focus();
+}
+
+/* ---------- copy email ---------- */
+function headerCopyEmail(el){
+  const original = el.innerHTML;
+  const done = () => {
+    el.innerHTML = '<span style="font-size:11px; font-weight:300; letter-spacing:0.04em; white-space:nowrap;">' + t('COPIED','COPIADO') + '</span>';
+    setTimeout(()=>{ el.innerHTML = original; }, 2000);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(EMAIL).then(done).catch(done);
+  } else {
+    done();
+  }
+}
+
+/* ---------- clock (footer) ---------- */
+function clockParts(){
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Los_Angeles',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  }).formatToParts(new Date());
+  let h='', m='', ap='';
+  parts.forEach(p=>{
+    if(p.type==='hour') h=p.value;
+    if(p.type==='minute') m=p.value;
+    if(p.type==='dayPeriod') ap=p.value.toUpperCase();
+  });
+  return `${h}:${m} ${ap}`;
+}
+function tickClock(){
+  const el = document.getElementById('clockDisplay');
+  if(el) el.textContent = clockParts();
+}
+
+/* ---------- scroll reveal ---------- */
+function initScrollReveal(){
+  // The page's headline and lede are handled entirely by CSS defaults --
+  // always visible immediately, no fade -- so they're intentionally not
+  // queried here at all. Above-the-fold content must not depend on a
+  // script finishing in time to be seen. Same reasoning for
+  // .hero-img-primary (the header/top image on each page), excluded
+  // below alongside the text elements.
+  const allTargets = document.querySelectorAll('.cs-subhead, .cs-section p, .cs-section-label, .section-title, .stat-row, .pillar-full h3, .pillar-body, .pillar-detail, .pillar-quote p, .pillar-quote-attribution, .body-copy p, .leadership-block p, .hero-img:not(.hero-img-primary), .img-placeholder');
+  let targets = Array.from(allTargets);
+  if(targets.length === 0) return;
+
+  function checkReveal(){
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    targets = targets.filter(el => {
+      const rect = el.getBoundingClientRect();
+      if(rect.top < vh * 0.7 && rect.bottom > 0){
+        el.classList.add('is-visible');
+        return false;
+      }
+      return true;
+    });
+    if(targets.length === 0){
+      window.removeEventListener('scroll', checkReveal);
+      window.removeEventListener('resize', checkReveal);
+    }
+  }
+
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      checkReveal();
+      window.addEventListener('scroll', checkReveal, {passive:true});
+      window.addEventListener('resize', checkReveal);
+    });
+  });
+}
+
+/* Only the primary/header image on each page (.hero-img-primary) and the
+   very first headline+lede stay immediately visible via CSS defaults --
+   above-the-fold content must not depend on a script finishing in time
+   to be seen. Everything else -- text and images alike -- fades/wipes
+   in via initScrollReveal as the visitor scrolls to it, which is fine
+   since that only affects content not yet seen. See the clip-path
+   comment in site.css for the image reveal's specific mechanics. */
+
+/* ---------- custom cursor ---------- */
+/* Adapts to whatever's actually beneath it: dark cursor over light
+   backgrounds, light cursor over dark backgrounds. An earlier version
+   used mix-blend-mode:difference for this, which is unreliable against
+   this site's actual colors -- it mathematically produces almost no
+   visible contrast against colors close to white (this site's cream
+   background), and it only blends correctly within a single stacking
+   context, which many elements on this page (position:relative,
+   transforms) break out of. This version instead directly samples the
+   real pixel color under the cursor -- the page's theme when over plain
+   background, the actual image pixel when over an image -- and switches
+   an explicit class based on what it measures, giving verifiable
+   control instead of relying on browser blend-mode compositing. */
+function initCustomCursor(){
+  const cursorEl = document.createElement('div');
+  cursorEl.className = 'custom-cursor';
+  document.body.appendChild(cursorEl);
+
+  // One small offscreen canvas per image, drawn once and reused for
+  // every subsequent sample -- cheap to read from on every mousemove.
+  const imageSamplers = new WeakMap();
+  function getSampler(img){
+    if(imageSamplers.has(img)) return imageSamplers.get(img);
+    const w = 64;
+    const h = Math.max(1, Math.round(w * (img.naturalHeight / img.naturalWidth || 1)));
+    let ctx = null;
+    try{
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      ctx = c.getContext('2d', {willReadFrequently:true});
+      ctx.drawImage(img, 0, 0, w, h);
+    } catch(e){ ctx = null; } // e.g. image not yet decoded
+    const sampler = {ctx, w, h};
+    imageSamplers.set(img, sampler);
+    return sampler;
+  }
+
+  document.addEventListener('mousemove', (e) => {
+    cursorEl.style.left = e.clientX + 'px';
+    cursorEl.style.top = e.clientY + 'px';
+
+    let overDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+    const imgEl = e.target.closest('img');
+    if(imgEl && imgEl.complete && imgEl.naturalWidth > 0){
+      const sampler = getSampler(imgEl);
+      if(sampler.ctx){
+        const rect = imgEl.getBoundingClientRect();
+        const relX = (e.clientX - rect.left) / rect.width;
+        const relY = (e.clientY - rect.top) / rect.height;
+        const sx = Math.min(sampler.w - 1, Math.max(0, Math.floor(relX * sampler.w)));
+        const sy = Math.min(sampler.h - 1, Math.max(0, Math.floor(relY * sampler.h)));
+        try{
+          const px = sampler.ctx.getImageData(sx, sy, 1, 1).data;
+          const luminance = 0.299*px[0] + 0.587*px[1] + 0.114*px[2];
+          overDark = luminance < 140;
+        } catch(e){ /* fall back to page-theme default already set above */ }
+      }
+    }
+
+    cursorEl.classList.toggle('cursor-on-dark', overDark);
+  });
+  document.addEventListener('mouseover', (e) => {
+    if(e.target.closest('a, button, input')){
+      cursorEl.classList.add('cursor-hover');
+    }
+  });
+  document.addEventListener('mouseout', (e) => {
+    if(e.target.closest('a, button, input')){
+      cursorEl.classList.remove('cursor-hover');
+    }
+  });
+}
+
+/* ---------- pillar reorder (values page) ---------- */
+function reorderPillarFromHash(){
+  const hash = location.hash.replace('#', '');
+  if(!hash) return;
+  const target = document.getElementById(hash);
+  if(!target || !target.classList.contains('pillar-full')) return;
+  const container = target.parentElement;
+  const firstPillar = container.querySelector('.pillar-full');
+  if(firstPillar !== target){
+    container.insertBefore(target, firstPillar);
+  }
+  // The browser's native "scroll to #fragment" doesn't reliably happen at
+  // one predictable moment. On mobile Safari in particular, it can fire
+  // again later than expected -- e.g. after web fonts finish loading and
+  // the page reflows -- well after an early double-rAF guard has already
+  // run and moved on, leaving the target pillar's heading scrolled to the
+  // very top of the screen, hiding the header and page title above it.
+  // Reassert scroll-to-top at several points instead of trusting a single
+  // early attempt to win.
+  function forceScrollTop(){ window.scrollTo(0, 0); }
+  requestAnimationFrame(() => {
+    requestAnimationFrame(forceScrollTop);
+  });
+  setTimeout(forceScrollTop, 100);
+  setTimeout(forceScrollTop, 400);
+  setTimeout(forceScrollTop, 800);
+  window.addEventListener('load', forceScrollTop, {once:true});
+}
+
+/* ---------- company row click: staged left-then-up clone animation ----------
+   The clone and the real page content need to move in sync for the whole
+   animation, not just land in the same spot. The real content can only be
+   revealed by moving vertically (translateY) -- it has no way to also
+   shift horizontally. So if the clone ever moves diagonally (both left
+   and top changing at once) while the real content only moves
+   vertically, their paths diverge for the whole animation and only meet
+   at the very end -- which looks exactly like two separate icons
+   converging, not one logo moving. To avoid that, horizontal and
+   vertical motion are kept in two separate stages: the clone moves
+   sideways FIRST (while the real content isn't visible yet at all), and
+   only once it's already aligned horizontally does the vertical rise
+   begin -- at which point both the clone (via `top`) and the real
+   content (via `translateY`) are moving purely vertically, in sync.
+
+   The destination position is estimated with a probe element sized to
+   match the real logo exactly (same width/height as the real image) so
+   the estimate is accurate up front, rather than guessing with an empty
+   div and correcting later. */
+function animateCompanyEnter(evt, destUrl){
+  const row = evt.currentTarget;
+  const logoEl = row.querySelector('.company-mark img, .company-mark .ai-native-icon-mark');
+  const nameEl = row.querySelector('.company-name');
+  if(!logoEl) return; // let the plain href handle navigation
+
+  evt.preventDefault();
+  evt.stopPropagation();
+
+  const srcRect = logoEl.getBoundingClientRect();
+  const isMask = logoEl.classList.contains('ai-native-icon-mark');
+  const content = document.getElementById('content');
+  const stagger = 450;
+
+  // Build a probe that matches the real destination logo's own box
+  // exactly (same tag, same width/height) instead of an empty div, so
+  // the measured position is accurate from the start.
+  const probeWrap = document.createElement('div');
+  probeWrap.className = 'company-wordmark';
+  let probeMark;
+  if(isMask){
+    probeMark = document.createElement('span');
+    probeMark.className = 'ai-native-icon-mark';
+  } else {
+    probeMark = document.createElement('img');
+    probeMark.width = 60;
+    probeMark.height = 40;
+  }
+  probeWrap.appendChild(probeMark);
+  content.insertBefore(probeWrap, content.firstChild);
+  const destRect = probeMark.getBoundingClientRect();
+  content.removeChild(probeWrap);
+  const upDistance = srcRect.top - destRect.top;
+
+  if(nameEl){ nameEl.style.transition = `opacity ${stagger}ms ease`; nameEl.style.opacity = '0'; }
+  // Explicitly kill any transition this element might inherit from CSS
+  // (e.g. a hover-state opacity transition on .company-mark img) and force
+  // the browser to commit that *before* setting opacity. Without this, the
+  // original icon can fade out gradually while the clone -- which starts
+  // at this exact same spot -- is already sliding away, producing a
+  // visible "doubled" icon for the length of that fade.
+  logoEl.style.transition = 'none';
+  logoEl.style.opacity = '0';
+  void logoEl.offsetWidth; // force reflow so the no-transition state is committed
+
+  let clone;
+  if(isMask){
+    clone = document.createElement('span');
+    clone.className = 'ai-native-icon-mark';
+  } else {
+    clone = document.createElement('img');
+    clone.src = logoEl.src;
+    clone.alt = '';
+    if(THEME === 'dark') clone.style.filter = 'invert(1)';
+  }
+  clone.style.position = 'fixed';
+  clone.style.left = srcRect.left + 'px';
+  clone.style.top = srcRect.top + 'px';
+  clone.style.width = srcRect.width + 'px';
+  clone.style.height = srcRect.height + 'px';
+  clone.style.margin = '0';
+  clone.style.transform = 'none';
+  clone.style.zIndex = '10000';
+  clone.style.pointerEvents = 'none';
+  document.body.appendChild(clone);
+
+  // STAGE 1: pure horizontal move. Width/height/top are never touched, so
+  // there is no resize and no vertical drift during this phase. The real
+  // page content is not shown at all yet, so there is nothing for the
+  // clone to be out of sync with.
+  requestAnimationFrame(() => {
+    clone.style.transition = `left ${stagger}ms ease`;
+    clone.style.left = destRect.left + 'px';
+  });
+
+  function applyNewContent(html, title){
+    content.innerHTML = html;
+    if(title) document.title = title;
+
+    // Re-measure the real logo now that it actually exists, rather than
+    // trusting the probe -- this is the actual final target for stage 2.
+    // Every wordmark image now has explicit width/height, so this is
+    // accurate immediately with no need to wait for the image to load.
+    const realMark = content.querySelector('.company-wordmark');
+    const realMarkImg = realMark ? (realMark.querySelector('img, .ai-native-icon-mark') || realMark) : null;
+    const realDestRect = realMarkImg ? realMarkImg.getBoundingClientRect() : destRect;
+    const realUpDistance = srcRect.top - realDestRect.top;
+
+    content.style.transition = 'none';
+    content.style.transform = `translateY(${realUpDistance}px)`;
+    void content.offsetHeight; // force reflow so the transition below actually animates
+
+    requestAnimationFrame(() => {
+      // STAGE 2: the content block and the clone rise the same distance,
+      // in sync -- both moving purely vertically now that stage 1 has
+      // already aligned them horizontally -- so the logo and the page
+      // arrive together with no divergence in their paths.
+      content.style.transition = `transform ${stagger}ms ease`;
+      content.style.transform = 'translateY(0)';
+      clone.style.transition = `top ${stagger}ms ease, width ${stagger}ms ease, height ${stagger}ms ease`;
+      clone.style.top = realDestRect.top + 'px';
+      // Snap horizontal to the re-measured value too, in case it drifted
+      // slightly from the probe's estimate -- this alone (with no
+      // transition) can't produce a visible divergence, since it's a
+      // one-time correction applied before stage 2's motion begins.
+      clone.style.left = realDestRect.left + 'px';
+      // Some destination wordmarks have their own CSS scale (e.g.
+      // Foureyes renders smaller, AI Native larger) that the clone --
+      // sized to match the row icon -- never picks up on its own.
+      // getBoundingClientRect() already reflects the real element's
+      // size *after* that scaling, so resizing the clone to match
+      // (animated, alongside the position) makes it arrive at the
+      // correct size instead of visibly popping to a different size
+      // the instant it's swapped for the real element.
+      clone.style.width = realDestRect.width + 'px';
+      clone.style.height = realDestRect.height + 'px';
+    });
+
+    setTimeout(() => {
+      clone.remove();
+      content.style.transition = '';
+      content.style.transform = '';
+      if(typeof applyLangToDOM === 'function') applyLangToDOM();
+      if(typeof initScrollReveal === 'function') initScrollReveal();
+      if(typeof reorderPillarFromHash === 'function') reorderPillarFromHash();
+      if(typeof renderRoute !== 'function'){
+        history.pushState({}, '', destUrl);
+      }
+    }, stagger + 30);
+  }
+
+  setTimeout(() => {
+    // In the interactive preview, page content is already in memory.
+    if(typeof ROUTES === 'object' && ROUTES[destUrl]){
+      applyNewContent(ROUTES[destUrl].html, ROUTES[destUrl].title);
+      return;
+    }
+    // In production, fetch the real destination page and lift its #content.
+    fetch(destUrl).then(r => {
+      if(!r.ok) throw new Error('fetch failed: ' + r.status);
+      return r.text();
+    }).then(html => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const newContent = doc.getElementById('content');
+      applyNewContent(newContent ? newContent.innerHTML : '', doc.title);
+    }).catch(() => {
+      window.location.href = destUrl;
+    });
+  }, stagger);
+}
+
+// Keep the back/forward button correct after a pushState-based transition.
+window.addEventListener('popstate', () => {
+  location.reload();
+});
+
+/* ---------- persistent header ---------- */
+function initHeaderScroll(){
+  const header = document.getElementById('siteHeader');
+  if(!header) return;
+  function checkScroll(){
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  }
+  checkScroll(); // in case the page loads already scrolled (e.g. back/forward nav)
+  window.addEventListener('scroll', checkScroll, {passive:true});
+}
+
+/* ---------- CT contrast-adaptive color ----------
+   Now that the header background is transparent, real page content
+   (text, images, different section colors) scrolls directly behind the
+   fixed CT logo. This detects what's actually behind CT's on-screen
+   position as the page scrolls and only overrides CT's color when that
+   background is genuinely too close in tone to stay legible -- CT keeps
+   its normal page-default color (orange on home, maroon/light-gray
+   elsewhere) the rest of the time. Reuses the same per-image pixel
+   sampling approach as the custom cursor (see initCustomCursor), since
+   the same problem -- "what color is really behind this fixed point,
+   including inside arbitrary photos/screenshots" -- applies here too. */
+function initHeaderContrast(){
+  const logo = document.querySelector('.logo');
+  if(!logo) return;
+
+  function luminance(r,g,b){ return 0.299*r + 0.587*g + 0.114*b; }
+
+  function parseRGB(colorStr){
+    const m = colorStr && colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    return m ? [parseInt(m[1]), parseInt(m[2]), parseInt(m[3])] : null;
+  }
+
+  // CT's true default color for the current page/theme -- deliberately
+  // not read via getComputedStyle, since that could already reflect an
+  // override from a previous check, creating a feedback loop.
+  function defaultLogoColor(){
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const isHome = !!document.querySelector('#content .home-bio');
+    if(isHome) return [254, 60, 1]; // var(--pink)
+    return isDark ? [232, 232, 232] : [72, 28, 30]; // #E8E8E8 : #481C1E
+  }
+
+  const imageSamplers = new WeakMap();
+  function getSampler(img){
+    if(imageSamplers.has(img)) return imageSamplers.get(img);
+    const w = 32;
+    const h = Math.max(1, Math.round(w * (img.naturalHeight / img.naturalWidth || 1)));
+    let ctx = null;
+    try{
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      ctx = c.getContext('2d', {willReadFrequently:true});
+      ctx.drawImage(img, 0, 0, w, h);
+    } catch(e){ ctx = null; }
+    const sampler = {ctx, w, h};
+    imageSamplers.set(img, sampler);
+    return sampler;
+  }
+
+  function colorBehindLogo(x, y){
+    const stack = document.elementsFromPoint ? document.elementsFromPoint(x, y) : [];
+    const behind = stack.find(el => !el.closest('#siteHeader'));
+    if(!behind) return null;
+
+    const imgEl = behind.tagName === 'IMG' ? behind : behind.closest('img');
+    if(imgEl && imgEl.complete && imgEl.naturalWidth > 0){
+      const sampler = getSampler(imgEl);
+      if(sampler.ctx){
+        const rect = imgEl.getBoundingClientRect();
+        const relX = (x - rect.left) / rect.width;
+        const relY = (y - rect.top) / rect.height;
+        const sx = Math.min(sampler.w - 1, Math.max(0, Math.floor(relX * sampler.w)));
+        const sy = Math.min(sampler.h - 1, Math.max(0, Math.floor(relY * sampler.h)));
+        try{
+          const px = sampler.ctx.getImageData(sx, sy, 1, 1).data;
+          return [px[0], px[1], px[2]];
+        } catch(e){ /* fall through to background-color walk */ }
+      }
+    }
+
+    // Not an image: walk up for the nearest real (non-transparent)
+    // background-color.
+    let el = behind;
+    while(el && el !== document.documentElement){
+      const bg = getComputedStyle(el).backgroundColor;
+      const rgb = parseRGB(bg);
+      if(rgb && bg !== 'rgba(0, 0, 0, 0)') return rgb;
+      el = el.parentElement;
+    }
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return isDark ? [33, 33, 33] : [251, 246, 230];
+  }
+
+  function checkContrast(){
+    const rect = logo.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const bg = colorBehindLogo(x, y);
+    if(!bg) return;
+
+    const bgLum = luminance(bg[0], bg[1], bg[2]);
+    const fg = defaultLogoColor();
+    const fgLum = luminance(fg[0], fg[1], fg[2]);
+
+    const lowContrast = Math.abs(bgLum - fgLum) < 60;
+    if(lowContrast){
+      logo.classList.toggle('logo-contrast-dark', bgLum >= 128);
+      logo.classList.toggle('logo-contrast-light', bgLum < 128);
+    } else {
+      logo.classList.remove('logo-contrast-dark', 'logo-contrast-light');
+    }
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if(!ticking){
+      requestAnimationFrame(() => { checkContrast(); ticking = false; });
+      ticking = true;
+    }
+  }, {passive:true});
+  checkContrast();
+}
+
+/* ---------- init ---------- */
+function initPage(){
+  applyThemeToDOM();
+  applyLangToDOM();
+  reorderPillarFromHash();
+  initCustomCursor();
+  initHeaderScroll();
+  initHeaderContrast();
+  tickClock();
+  setInterval(tickClock, 15000);
+  initScrollReveal();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', initPage);
+} else {
+  initPage();
+}
