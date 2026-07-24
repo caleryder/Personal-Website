@@ -283,9 +283,15 @@
   }
   @media (min-width:1440px){
     .company-row{font-size:5.375rem;}
+    /* The password gate's list sits in the narrow, fixed-width
+       .gate-wrap column (26rem) rather than the full .page width, so it
+       can't grow as large as the home page's list without "Foureyes" (an
+       unbreakable word) overflowing and forcing "AI Native" to wrap. */
+    .gate-company-list .company-row{font-size:4.9rem;}
   }
   @media (min-width:1920px){
     .company-row{font-size:6.25rem;}
+    .gate-company-list .company-row{font-size:4.9rem;}
   }
   .company-row:hover .company-name{color:var(--pink-dark);}
   :root:not([data-theme="dark"]) .company-row:hover .company-mark img{filter:invert(1) brightness(0.298);}
