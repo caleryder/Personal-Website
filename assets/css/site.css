@@ -207,10 +207,10 @@
   .cs-lede{font-size:1.5rem;}
   .cs-subhead{font-size:1.5rem;}
   .pillar-full{max-width:38rem;}
-  /* .pillar-quote is always 75% of .pillar-full's max-width at the
-     matching breakpoint, so the quote reads as a narrower column
-     against the body copy around it. */
-  .pillar-quote{max-width:28.5rem;}
+  /* .pillar-quote and .pillar-detail ("So I..."/"At [company]...") are
+     always 75% of .pillar-full's max-width at the matching breakpoint,
+     so they read as a narrower column against the body copy around them. */
+  .pillar-quote, .pillar-detail{max-width:28.5rem;}
   @media (min-width:700px){
     .page-title{font-size:2.5rem;}
     .cs-headline{font-size:2.5rem;}
@@ -228,7 +228,7 @@
     .body-copy{max-width:63.375rem;}
     .leadership-block{max-width:63.375rem;}
     .pillar-full{max-width:63.375rem;}
-    .pillar-quote{max-width:47.53125rem;}
+    .pillar-quote, .pillar-detail{max-width:47.53125rem;}
   }
   @media (min-width:1440px){
     .page-title{font-size:3.875rem; max-width:73.125rem;}
@@ -241,7 +241,7 @@
     .body-copy{max-width:73.125rem;}
     .leadership-block{max-width:73.125rem;}
     .pillar-full{max-width:73.125rem;}
-    .pillar-quote{max-width:54.84375rem;}
+    .pillar-quote, .pillar-detail{max-width:54.84375rem;}
   }
   @media (min-width:1920px){
     .page-title{font-size:4.5rem; max-width:87.75rem;}
@@ -254,7 +254,7 @@
     .body-copy{max-width:87.75rem;}
     .leadership-block{max-width:87.75rem;}
     .pillar-full{max-width:87.75rem;}
-    .pillar-quote{max-width:65.8125rem;}
+    .pillar-quote, .pillar-detail{max-width:65.8125rem;}
   }
 
   .lede{margin-bottom:0.75rem; line-height:1.25;}
