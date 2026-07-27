@@ -438,6 +438,12 @@
     font-size:0.88rem;
     margin-bottom:0.6rem;
   }
+  /* Just the "So..."/"At [company]..." lead-in gets the Role/Years
+     label treatment -- rest of the sentence stays as normal body text. */
+  .pillar-detail b{
+    font-size:0.85rem;
+    font-weight:700;
+  }
   .pillar-quote{
     margin:1.1rem 0 1.1rem;
   }
@@ -668,6 +674,12 @@
     margin:0.5rem 0 2.5rem;
   }
   .locked-cta:hover{background:var(--cream-2);}
+  /* .case-study-cta is reused here for the home page's own CTA (same
+     spacing/typography), but the home page keeps the site's pink
+     treatment (constant across light/dark) rather than the muted
+     case-study palette above, which is fixed per-theme. */
+  body:has(#content .home-bio) .case-study-cta{color:var(--pink);}
+  body:has(#content .home-bio) .case-study-cta:hover{color:var(--pink-dark);}
 
   .cs-lede{margin:1.75rem 0 2.25rem; line-height:1.4;}
   .cs-section-label{
@@ -913,14 +925,26 @@
   .cs-subhead,
   .cs-section p, .cs-section-label, .section-title, .stat-row,
   .pillar-full h3, .pillar-body, .pillar-detail, .pillar-quote p, .pillar-quote-attribution,
-  .body-copy p, .leadership-block p{
+  body:not(:has(#content .home-bio)) .body-copy p, .leadership-block p{
     opacity:0;
     transition:opacity 0.5s ease;
   }
   .cs-subhead.is-visible,
   .cs-section p.is-visible, .cs-section-label.is-visible, .section-title.is-visible, .stat-row.is-visible,
   .pillar-full h3.is-visible, .pillar-body.is-visible, .pillar-detail.is-visible, .pillar-quote p.is-visible, .pillar-quote-attribution.is-visible,
-  .body-copy p.is-visible, .leadership-block p.is-visible{
+  body:not(:has(#content .home-bio)) .body-copy p.is-visible, .leadership-block p.is-visible{
+    opacity:1;
+  }
+  /* Home page's principles paragraphs fade in together as a single block
+     (rather than staggered per-paragraph like everywhere else), with its
+     CTA link fading in the same way once it's scrolled to next. */
+  body:has(#content .home-bio) .body-copy,
+  body:has(#content .home-bio) .case-study-cta{
+    opacity:0;
+    transition:opacity 0.5s ease;
+  }
+  body:has(#content .home-bio) .body-copy.is-visible,
+  body:has(#content .home-bio) .case-study-cta.is-visible{
     opacity:1;
   }
 
@@ -939,6 +963,7 @@
     .pillar-full h3{font-size:1.6875rem;}
     .pillar-full .pillar-body{font-size:1.3125rem;}
     .pillar-detail{font-size:1.1rem;}
+    .pillar-detail b{font-size:1.0625rem;}
     .pillar-quote p{font-size:1.6875rem;}
     .pillar-quote-attribution{font-size:1.0625rem;}
     .role-meta{font-size:1.0625rem;}
