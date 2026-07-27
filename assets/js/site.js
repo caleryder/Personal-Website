@@ -127,7 +127,7 @@ function initScrollReveal(){
     const vh = window.innerHeight || document.documentElement.clientHeight;
     targets = targets.filter(el => {
       const rect = el.getBoundingClientRect();
-      if(rect.top < vh * 0.7 && rect.bottom > 0){
+      if(rect.top < vh * 0.75 && rect.bottom > 0){
         el.classList.add('is-visible');
         return false;
       }
