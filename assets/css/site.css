@@ -507,6 +507,22 @@
   .hero-img.rounded-corners{
     border-radius:9.8px;
   }
+  /* Device-mockup video embed: fixed light-gray backdrop (not the
+     theme-aware --cream-2 used elsewhere) so the phone mockup reads
+     consistently in both light and dark mode, like a product photo. */
+  .hero-img.nova-embed{
+    aspect-ratio:1368/876;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#EEEEEE !important;
+  }
+  .hero-img.nova-embed video{
+    height:78%;
+    width:auto;
+    max-width:90%;
+    display:block;
+  }
   .hero-img + .hero-img,
   .hero-img + .img-placeholder,
   .img-placeholder + .hero-img,
