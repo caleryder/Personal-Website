@@ -315,9 +315,10 @@
     flex-shrink:0;
   }
   .company-mark img{height:100%; width:auto; display:block;}
-  /* Meta's mark is visually heavier than the others at the same optical
-     height, so it's dialed down slightly to match. */
-  .company-mark img[alt="Meta logo"]{height:80%;}
+  /* Meta and Nike read heavier than the others at the same optical
+     height, so they're dialed down slightly to match. */
+  .company-mark img[alt="Meta logo"],
+  .company-mark img[alt="Nike logo"]{height:80%;}
   .ai-native-icon-mark{
     display:block;
     width:0.55em;
@@ -468,39 +469,36 @@
     font-size:0.85rem;
   }
 
-  /* These pixel dimensions are hand-calculated to match .company-mark's
-     em-based size (0.85em/0.55em of .company-row's font-size) at each
-     matching breakpoint (700/1024/1440/1920, same as .company-row). If
-     .company-row's font-size ever changes, these values need
-     recalculating to match, or the destination logo (here) will render
-     at a different size than the home page row icon it animates from --
-     this exact mismatch is what happened when desktop text was scaled
-     1.25x without updating these. */
+  /* Height-only sizing (width follows each logo's own aspect ratio),
+     same approach as .company-mark and for the same reason -- this is
+     the destination .animateCompanyEnter measures against, so it needs
+     to match .company-mark's rendered size exactly at every breakpoint
+     or the logo visibly jumps size when the transition lands. These
+     pixel heights are hand-calculated to match .company-mark's em-based
+     height (0.55em of .company-row's font-size) at each matching
+     breakpoint (700/1024/1440/1920, same as .company-row) -- if
+     .company-row's font-size ever changes, these need recalculating. */
   .company-wordmark{
     margin:4.5rem 0 2.5rem;
-    width:38.08px;
     height:24.64px;
     display:flex;
     align-items:center;
   }
-  .company-wordmark img{max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain;}
+  .company-wordmark img{height:100%; width:auto; display:block;}
   @media (min-width:700px){
-    .company-wordmark{width:46.24px; height:29.92px;}
+    .company-wordmark{height:29.92px;}
   }
   @media (min-width:1024px){
-    .company-wordmark{width:64.6px; height:41.8px;}
+    .company-wordmark{height:41.8px;}
   }
   @media (min-width:1440px){
-    .company-wordmark{width:73.1px; height:47.3px;}
+    .company-wordmark{height:47.3px;}
   }
   @media (min-width:1920px){
-    .company-wordmark{width:85px; height:55px;}
+    .company-wordmark{height:55px;}
   }
-  .company-wordmark img[alt="Stori logo"],
   .company-wordmark img[alt="Meta logo"],
-  .company-wordmark img[alt="Journi logo"]{transform:scale(1.2);}
-  .company-wordmark img[alt="Foureyes logo"]{transform:scale(0.66);}
-  .company-wordmark img[alt="AI Native logo"]{transform:scale(1.653125);}
+  .company-wordmark img[alt="Nike logo"]{height:80%;}
   .role-meta{
     font-size:0.85rem;
     margin-bottom:2rem;
