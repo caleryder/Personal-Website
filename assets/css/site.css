@@ -58,7 +58,7 @@
   .page{
     max-width:var(--maxw);
     margin:0 auto;
-    padding:0 2rem 5rem;
+    padding:0 1rem 5rem;
     flex:1 0 auto;
     width:100%;
     box-sizing:border-box;
@@ -116,11 +116,12 @@
     gap:1rem;
     width:100%;
     margin:0 0 4.5rem;
-    padding:1.5rem 2rem 0;
+    padding:1.5rem 1rem 0;
     box-sizing:border-box;
   }
   @media (min-width:900px){
     .top-row{padding:2rem 2.5rem 0;}
+    .hero-img-primary{width:auto; margin-left:0; margin-right:0;}
   }
   @media (min-width:1024px){
     .top-row{padding:2.25rem 3rem 0;}
@@ -297,22 +298,30 @@
   :root:not([data-theme="dark"]) .company-row:hover .company-mark img{filter:invert(1) brightness(0.298);}
   [data-theme="dark"] .company-row:hover .company-mark img{filter:invert(1) brightness(0.863);}
 
+  /* Every logo mark is sized to the same visual (optical) height rather
+     than a shared bounding box -- the source marks have wildly different
+     native aspect ratios (Stori is tall and narrow, Nike is a wide flat
+     swoosh, Foureyes is a perfect square), so matching height and letting
+     width follow each mark's own ratio is what makes them read as the
+     same size, the way a real "as seen in" logo bar does. This replaced
+     an earlier approach of a fixed-width box plus hand-tuned per-logo
+     transform:scale() corrections, which drifted out of sync (Nike had
+     no correction at all) and made the visible gap to each company name
+     inconsistent, since the box's dead space (not the logo's own edge)
+     is what the row's gap was actually measuring from. */
   .company-mark{
-    width:0.85em;
     height:0.55em;
-    display:flex;align-items:center;justify-content:flex-start;
+    display:flex;align-items:center;
     flex-shrink:0;
   }
-  .company-mark img{max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain;}
-  .company-mark img[alt="Stori logo"],
-  .company-mark img[alt="Meta logo"],
-  .company-mark img[alt="Journi logo"]{transform:scale(1.2);}
-  .company-mark img[alt="Foureyes logo"]{transform:scale(0.66);}
+  .company-mark img{height:100%; width:auto; display:block;}
+  /* Meta's mark is visually heavier than the others at the same optical
+     height, so it's dialed down slightly to match. */
+  .company-mark img[alt="Meta logo"]{height:80%;}
   .ai-native-icon-mark{
     display:block;
-    width:17px;
-    height:17px;
-    transform:scale(1.653125);
+    width:0.55em;
+    height:0.55em;
     -webkit-mask-image:url(/assets/img/logos/ai-native.svg);
     mask-image:url(/assets/img/logos/ai-native.svg);
     -webkit-mask-size:contain;
@@ -403,7 +412,7 @@
   .footer-block{
     margin-top:8rem;
     width:100%;
-    padding:0 2rem 1.5rem;
+    padding:0 1rem 1.5rem;
     box-sizing:border-box;
   }
   @media (min-width:900px){
@@ -565,6 +574,13 @@
   .hero-img-primary{
     clip-path:inset(0 0 0% 0);
     margin-bottom:2rem;
+    /* Flush with the viewport edges on mobile (breaking out of .page's
+       side padding), unlike every other image on the page. Reset back
+       to a normal inset image at 900px+, alongside .page's own padding
+       change at that breakpoint. */
+    width:calc(100% + 2rem);
+    margin-left:-1rem;
+    margin-right:-1rem;
   }
   .cs-section, .stat-row, .pillar-full, .body-copy, .leadership-block{
     color:var(--pink);
