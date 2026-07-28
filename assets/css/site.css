@@ -276,11 +276,17 @@
     font-size:2.8rem;
     line-height:1;
   }
+  /* Home page only -- the password gate reuses .company-row too, and
+     isn't part of this request. */
+  body:has(#content .home-bio) .company-row{gap:2.025rem;}
   @media (min-width:700px){
     .company-row{font-size:3.4rem;}
   }
   @media (min-width:1024px){
     .company-row{font-size:4.75rem;}
+    /* Nike, desktop only: 10% smaller again on top of the 80% above
+       (80% * 0.9 = 72% of the shared optical height). */
+    body:has(#content .home-bio) .company-mark img[alt="Nike logo"]{height:72%;}
   }
   @media (min-width:1440px){
     .company-row{font-size:5.375rem;}
