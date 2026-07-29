@@ -679,9 +679,14 @@
     color:#E8E8E8;
   }
   [data-theme="dark"] .cs-section a:hover, [data-theme="dark"] .pillar-full a:hover,
-  [data-theme="dark"] .case-study-cta:hover,
   [data-theme="dark"] .locked-cta:hover{
     color:#BFC0C3;
+  }
+  /* Same accent used by the all-caps section titles (e.g. "How I lead"),
+     so the pill buttons pick up that color on hover in dark mode --
+     border and arrow follow automatically via currentColor. */
+  [data-theme="dark"] .case-study-cta:hover{
+    color:#FE6F43;
   }
   [data-theme="dark"] .company-wordmark ~ .section-block .body-copy a:hover,
   [data-theme="dark"] .company-wordmark ~ .section-block .pillar-links a:hover{
@@ -723,6 +728,7 @@
      case-study palette above, which is fixed per-theme. */
   body:has(#content .home-bio) .case-study-cta{color:var(--pink);}
   body:has(#content .home-bio) .case-study-cta:hover{color:var(--pink-dark);}
+  [data-theme="dark"] body:has(#content .home-bio) .case-study-cta:hover{color:#FE6F43;}
 
   .cs-lede{margin:1.75rem 0 2.25rem; line-height:1.4;}
   .cs-section-label{
