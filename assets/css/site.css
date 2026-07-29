@@ -730,7 +730,9 @@
   body:has(#content .home-bio) .case-study-cta:hover{color:var(--pink-dark);}
   [data-theme="dark"] body:has(#content .home-bio) .case-study-cta:hover{color:#FE6F43;}
 
-  .cs-lede{margin:1.75rem 0 2.25rem; line-height:1.4;}
+  /* line-height matches .home-bio and .lede so summaries read at the
+     same leading as the rest of the large type. */
+  .cs-lede{margin:1.75rem 0 2.25rem; line-height:1.25;}
   .cs-section-label{
     font-size:0.78rem;
     font-weight:800;
