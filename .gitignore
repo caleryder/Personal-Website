@@ -1,0 +1,14 @@
+# Local Claude Code config. settings.local.json is machine-specific, and
+# launch.json only describes the local preview server.
+.claude/
+
+# Stale backup snapshot of the whole site that lives inside the repo. It
+# has its own CNAME/sitemap.xml/robots.txt, so committing it would publish
+# a second, outdated copy of the site at /Personal Website/.
+Personal Website/
+
+# Scratch file from the Nova video work. Not a real page.
+nova-preview-test.html
+
+# macOS noise
+.DS_Store
