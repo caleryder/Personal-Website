@@ -689,13 +689,20 @@
   }
   .hero-img img{width:100%; height:auto; display:block;}
   .case-study-cta{
-    display:inline-block;
-    font-weight:800;
+    display:inline-flex;
+    align-items:center;
+    gap:0.5rem;
+    font-weight:400;
     font-size:1.4rem;
     margin:0;
     text-decoration:none;
+    border:1.5px solid currentColor;
+    border-radius:999px;
+    padding:0.6rem 1.5rem;
+    transition:background-color 0.2s ease;
   }
-  .case-study-cta:hover{text-decoration:underline;}
+  .case-study-cta:hover{background-color:var(--cream-2); text-decoration:none;}
+  .case-study-cta svg{width:0.9em; height:0.9em; flex-shrink:0; display:block;}
   .locked-cta{
     display:inline-flex;
     align-items:center;
@@ -843,6 +850,11 @@
   }
   .gate-field-pill button:hover{background:#D4272B;}
   .gate-field-pill button svg{width:1.15rem; height:1.15rem; display:block;}
+  [data-theme="dark"] .gate-field-pill input{border-color:#FFFFFF; color:#FFFFFF;}
+  [data-theme="dark"] .gate-field-pill input::placeholder{color:#FFFFFF;}
+  [data-theme="dark"] .gate-field-pill input:focus{border-color:#FFFFFF;}
+  [data-theme="dark"] .gate-field-pill button{background:#FFFFFF;}
+  [data-theme="dark"] .gate-field-pill button:hover{background:#E8E8E8;}
   [data-theme="dark"] .gate-field-pill button svg{stroke:var(--cream);}
 
   .gate-hint{font-size:0.95rem;}
