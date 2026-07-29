@@ -621,6 +621,7 @@
   .pillar-quote-attribution,
   .leadership-block, .leadership-block p, .leadership-block a,
   .case-study-cta,
+  .cs-note,
   .locked-cta{
     color:#481C1E;
   }
@@ -663,6 +664,7 @@
   [data-theme="dark"] .pillar-quote-attribution,
   [data-theme="dark"] .leadership-block, [data-theme="dark"] .leadership-block p, [data-theme="dark"] .leadership-block a,
   [data-theme="dark"] .case-study-cta,
+  [data-theme="dark"] .cs-note,
   [data-theme="dark"] .locked-cta{
     color:#E8E8E8;
   }
