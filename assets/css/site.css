@@ -443,7 +443,7 @@
     font-size:0.85rem;
     font-weight:400;
   }
-  .footer-location{display:inline-flex; align-items:center; gap:0.35rem; flex-wrap:wrap;}
+  .footer-location{display:inline-flex; align-items:center; gap:0.35rem; flex-wrap:wrap; text-transform:uppercase;}
   .footer-state-icon{display:inline-flex; align-items:center; color:var(--pink);}
   .footer-state-icon svg{height:0.75em; width:auto; display:block;}
 
