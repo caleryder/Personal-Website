@@ -763,9 +763,12 @@
      compared to text-to-image spacing (33px vs 66px). Pull it back down
      to match. */
   .hero-img + .stat-row, .img-placeholder + .stat-row{margin-top:-2.0625rem;}
-  .stat{display:flex; align-items:baseline; gap:0.6rem; text-align:left;}
+  /* Summary stacks under the number. The 0.3rem gap matches the
+     ROLE -> YEARS spacing in .role-meta so the pair reads as tight,
+     while .stat-row's own gap keeps metrics apart as before. */
+  .stat{display:flex; flex-direction:column; align-items:flex-start; gap:0.3rem; text-align:left;}
   .stat-num{font-family:"Cormorant Infant", serif; font-weight:700; font-size:2.4375rem; line-height:1; text-align:left; flex-shrink:0;}
-  .stat-label{font-size:0.85rem; text-align:left;}
+  .stat-label{font-size:0.85rem; text-align:left; font-weight:700;}
   .img-placeholder{
     width:100%; max-width:640px;
     height:400px;
