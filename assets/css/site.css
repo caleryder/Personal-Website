@@ -741,7 +741,9 @@
   }
   .cs-section{margin-bottom:2.0625rem;}
   .cs-section:has(+ .cs-section-label){margin-bottom:0;}
-  .cs-subhead{font-weight:700; margin-bottom:0.5rem;}
+  /* line-height matches .home-bio. Without it these inherit body's 1.6,
+     which reads far too loose for a wrapping title. */
+  .cs-subhead{font-weight:700; margin-bottom:0.5rem; line-height:1.25;}
   .stat-row{
     display:flex;
     flex-direction:column;
