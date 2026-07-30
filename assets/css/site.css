@@ -279,8 +279,22 @@
   /* Home page only -- the password gate reuses .company-row too, and
      isn't part of this request. */
   body:has(#content .home-bio) .company-row{gap:2.025rem;}
+  /* .company-list's 4.5rem/3rem margins are the same absolute size at
+     every width, so on a phone they push the list much further down the
+     viewport than they do on desktop. Trim both by a quarter for mobile
+     and restore them from 700px up, where the original spacing reads
+     correctly. Scoped to the home page because the password gate shares
+     .company-list. */
+  body:has(#content .home-bio) .company-list{
+    margin-top:3.375rem;
+    margin-bottom:2.25rem;
+  }
   @media (min-width:700px){
     .company-row{font-size:3.4rem;}
+    body:has(#content .home-bio) .company-list{
+      margin-top:4.5rem;
+      margin-bottom:3rem;
+    }
   }
   @media (min-width:1024px){
     .company-row{font-size:4.75rem;}
