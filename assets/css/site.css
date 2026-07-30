@@ -360,7 +360,7 @@
     mask-repeat:no-repeat;
     -webkit-mask-position:left center;
     mask-position:left center;
-    background-color:#403F3C;
+    background-color:var(--pink);
   }
   [data-theme="dark"] .ai-native-icon-mark{background-color:#BFC0C3;}
   /* Exact target color, matching what the site's other icons land on when
