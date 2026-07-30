@@ -723,11 +723,9 @@
   [data-theme="dark"] .locked-cta:hover{
     color:#BFC0C3;
   }
-  /* Same accent used by the all-caps section titles (e.g. "How I lead"),
-     so the pill buttons pick up that color on hover in dark mode --
-     border and arrow follow automatically via currentColor. */
+  /* Follow the same hover color as light mode for consistency across themes. */
   [data-theme="dark"] .case-study-cta:hover{
-    color:#FE6F43;
+    color:#6F4A48;
   }
   [data-theme="dark"] .company-wordmark ~ .section-block .body-copy a:hover,
   [data-theme="dark"] .company-wordmark ~ .section-block .pillar-links a:hover{
