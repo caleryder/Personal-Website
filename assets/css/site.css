@@ -287,8 +287,8 @@
      correctly. Scoped to the home page because the password gate shares
      .company-list. */
   body:has(#content .home-bio) .company-list{
-    margin-top:3.375rem;
-    margin-bottom:2.25rem;
+    margin-top:2.53rem;
+    margin-bottom:1.69rem;
   }
   @media (min-width:700px){
     .company-row{font-size:3.4rem;}
