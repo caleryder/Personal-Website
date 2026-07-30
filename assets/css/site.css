@@ -188,6 +188,14 @@
     font-weight:800;
     margin-bottom:1.25rem;
   }
+  /* On mobile, tighten the top margin to match other pages (4.5rem → 1.43rem,
+     75% reduction). Restore at 700px and above. */
+  @media (max-width:699px){
+    .page-title{
+      margin-top:1.43rem !important;
+      margin-bottom:3.09rem !important;
+    }
+  }
   .cs-headline{
     font-size:2rem;
     font-weight:800;
@@ -504,6 +512,15 @@
     height:24.64px;
     display:flex;
     align-items:center;
+  }
+  /* On mobile case study pages, tighten the top margin to match the
+     home page's reduced spacing (4.5rem → 1.43rem, 75% reduction).
+     Restore at 700px and above. */
+  @media (max-width:699px){
+    .company-wordmark{
+      margin-top:1.43rem;
+      margin-bottom:1.88rem;
+    }
   }
   .company-wordmark img{height:100%; width:auto; display:block;}
   @media (min-width:700px){
