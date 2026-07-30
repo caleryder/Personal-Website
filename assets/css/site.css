@@ -2,54 +2,13 @@
   navigation: auto;
 }
 
-/* Company logo shared-element transition.
-
-   Giving a home-page .company-mark and its destination .company-wordmark
-   the same view-transition-name is all the browser needs to morph one
-   into the other across a navigation. It runs on the compositor, so
-   there is nothing to measure, clone, or keep in sync by hand -- which
-   is what the old JS implementation (animateCompanyEnter) was doing, and
-   why it flickered: it animated left/top/width/height, which are layout
-   properties and can never be composited, and it rebuilt the whole page
-   mid-flight.
-
-   The API requires each name to appear at most once per document. That
-   holds here: the home page and the Nike gate each render a set of
-   .company-mark logos with distinct alt text, and every destination page
-   renders exactly one .company-wordmark. */
-.company-mark img[alt="Stori logo"],
-.company-wordmark img[alt="Stori logo"]{view-transition-name:logo-stori;}
-.company-mark img[alt="Meta logo"],
-.company-wordmark img[alt="Meta logo"]{view-transition-name:logo-meta;}
-.company-mark img[alt="Nike logo"],
-.company-wordmark img[alt="Nike logo"]{view-transition-name:logo-nike;}
-.company-mark img[alt="Foureyes logo"],
-.company-wordmark img[alt="Foureyes logo"]{view-transition-name:logo-foureyes;}
-/* Source is a mask-image span, destination is a real img -- the morph
-   works across different element types. */
-.company-mark .ai-native-icon-mark,
-.company-wordmark img[alt="AI Native logo"]{view-transition-name:logo-ai-native;}
-
-::view-transition-group(logo-stori),
-::view-transition-group(logo-meta),
-::view-transition-group(logo-nike),
-::view-transition-group(logo-foureyes),
-::view-transition-group(logo-ai-native){
-  animation-duration:460ms;
-  animation-timing-function:cubic-bezier(0.4, 0, 0.2, 1);
-}
-::view-transition-old(root),
-::view-transition-new(root){animation-duration:320ms;}
-
-@media (prefers-reduced-motion:reduce){
-  ::view-transition-group(logo-stori),
-  ::view-transition-group(logo-meta),
-  ::view-transition-group(logo-nike),
-  ::view-transition-group(logo-foureyes),
-  ::view-transition-group(logo-ai-native),
-  ::view-transition-old(root),
-  ::view-transition-new(root){animation:none;}
-}
+/* Company-row clicks are handled by animateCompanyEnter in site.js, not
+   by the browser's default shared-element view-transition. The native
+   one interpolates the logo straight to its destination, but the motion
+   here is deliberately staged -- left first, then up, with the logo
+   dragging the incoming page up with it -- which the native transition
+   has no way to express. `navigation: auto` above still applies to every
+   other navigation on the site. */
 
 :root{
     --cream:#FBF6E6;

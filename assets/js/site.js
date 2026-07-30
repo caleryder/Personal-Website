@@ -259,9 +259,190 @@ function reorderPillarFromHash(){
   window.addEventListener('load', forceScrollTop, {once:true});
 }
 
-/* The company-logo transition between the home page and each case
-   study is handled entirely in CSS via view-transition-name (see the
-   top of site.css). The rows are plain links -- no JS involved. */
+/* ---------- company row click: left, then up ----------
+   The logo slides horizontally into the destination's column first, and
+   only then rises -- carrying the incoming page up with it. Both move
+   the same distance over the same interval, so the logo reads as
+   dragging the page into place rather than racing it there.
+
+   Everything animates transform and opacity, nothing else. The previous
+   version animated left/top/width/height; those are layout properties
+   and can never be composited, so every frame forced layout and paint on
+   the main thread. Combined with replacing the page's innerHTML midway
+   through the motion, and waiting on a fetch between the two stages, it
+   could not have been smooth.
+
+   Three things keep it smooth now:
+     - the destination HTML is fetched on hover, so no network wait ever
+       lands inside the animation;
+     - the innerHTML swap happens in the still beat between the two
+       stages, where a dropped frame is invisible;
+     - stages are sequenced off Animation.finished, so none can be torn
+       down before it has actually landed (the old code used setTimeout,
+       which cut the clone loose early whenever a frame slipped). */
+
+const companyPages = new Map();
+let companyTransitionRunning = false;
+
+function prefetchCompanyPage(url){
+  if(companyPages.has(url)) return companyPages.get(url);
+  const p = fetch(url)
+    .then(r => r.ok ? r.text() : Promise.reject(new Error(r.status)))
+    .then(html => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const c = doc.getElementById('content');
+      return c ? {html:c.innerHTML, title:doc.title} : null;
+    })
+    .catch(() => null);
+  companyPages.set(url, p);
+  return p;
+}
+
+function initCompanyPrefetch(){
+  document.querySelectorAll('.company-row[href]').forEach(row => {
+    const warm = () => prefetchCompanyPage(row.getAttribute('href'));
+    row.addEventListener('mouseenter', warm, {once:true, passive:true});
+    row.addEventListener('touchstart', warm, {once:true, passive:true});
+    row.addEventListener('focus', warm, {once:true});
+  });
+}
+
+const CO_EASE = 'cubic-bezier(0.4, 0, 0.2, 1)';
+const CO_LEFT_MS = 380;
+const CO_UP_MS = 440;
+const CO_FADE_MS = 140;
+const xy = (x, y) => 'translate3d(' + x + 'px,' + y + 'px,0)';
+
+async function animateCompanyEnter(evt, destUrl){
+  const row = evt.currentTarget;
+  const content = document.getElementById('content');
+  const logoEl = row.querySelector('.company-mark img, .company-mark .ai-native-icon-mark');
+
+  // Anything unusual falls through to the plain href: a modifier click
+  // (so open-in-new-tab still works), no logo to fly, a browser without
+  // element.animate, reduced-motion, or a transition already running.
+  if(!content || !logoEl || companyTransitionRunning) return;
+  if(evt.metaKey || evt.ctrlKey || evt.shiftKey || evt.altKey || evt.button) return;
+  if(typeof Element.prototype.animate !== 'function') return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  evt.preventDefault();
+  evt.stopPropagation();
+  companyTransitionRunning = true;
+
+  // All the geometry below is viewport-relative, so pin the page to the
+  // top first -- otherwise a scrolled home page would leave the
+  // destination rendered at that same offset once the transform lifts.
+  if(window.scrollY !== 0) window.scrollTo(0, 0);
+
+  const srcRect = logoEl.getBoundingClientRect();
+  // The destination wordmark always sits flush with the content column's
+  // left edge, so the horizontal target is computable outright -- no
+  // probe element, and no estimate to snap-correct later.
+  const destX = content.getBoundingClientRect().left +
+    parseFloat(getComputedStyle(content).paddingLeft);
+
+  const isMask = logoEl.classList.contains('ai-native-icon-mark');
+  let clone;
+  if(isMask){
+    clone = document.createElement('span');
+    clone.className = 'ai-native-icon-mark';
+  } else {
+    clone = document.createElement('img');
+    clone.src = logoEl.currentSrc || logoEl.src;
+    clone.alt = '';
+    if(document.documentElement.getAttribute('data-theme') === 'dark'){
+      clone.style.filter = 'invert(1)';
+    }
+  }
+  clone.setAttribute('aria-hidden', 'true');
+  clone.style.cssText = 'position:fixed;left:0;top:0;margin:0;z-index:10000;' +
+    'pointer-events:none;will-change:transform;width:' + srcRect.width +
+    'px;height:' + srcRect.height + 'px;';
+  clone.style.transform = xy(srcRect.left, srcRect.top);
+  document.body.appendChild(clone);
+
+  // Kill any inherited transition before hiding the row's own logo, so it
+  // cannot fade out slowly and read as a second copy beside the clone.
+  logoEl.style.transition = 'none';
+  logoEl.style.opacity = '0';
+  const nameEl = row.querySelector('.company-name');
+  if(nameEl){
+    nameEl.animate([{opacity:1},{opacity:0}],
+      {duration:CO_LEFT_MS, easing:'ease', fill:'forwards'});
+  }
+
+  const ready = prefetchCompanyPage(destUrl);
+
+  // STAGE 1 -- horizontal only. The old page is still on screen and
+  // untouched, so there is nothing for the clone to fall out of sync with.
+  await clone.animate(
+    [{transform: xy(srcRect.left, srcRect.top)},
+     {transform: xy(destX, srcRect.top)}],
+    {duration:CO_LEFT_MS, easing:CO_EASE, fill:'forwards'}
+  ).finished;
+
+  const data = await ready;
+  if(!data){ window.location.href = destUrl; return; }
+
+  // Swap the page in during the still beat: stage 1 has landed and stage
+  // 2 has not started, so this layout cost cannot cost a frame of motion.
+  content.innerHTML = data.html;
+  if(data.title) document.title = data.title;
+
+  const destMark = content.querySelector(
+    '.company-wordmark img, .company-wordmark .ai-native-icon-mark');
+  const destRect = destMark ? destMark.getBoundingClientRect() : null;
+  const landX = destRect ? destRect.left : destX;
+  const landY = destRect ? destRect.top : srcRect.top;
+  const up = srcRect.top - landY;
+
+  // Hold the real wordmark back until the clone has landed. The two are
+  // not always the same size (AI Native's is wider), so they crossfade
+  // instead of switching instantly.
+  if(destMark) destMark.style.opacity = '0';
+
+  // Seed the page's offset before animating so it can never paint one
+  // frame at its final position first.
+  content.style.willChange = 'transform';
+  content.style.transform = xy(0, up);
+
+  // STAGE 2 -- clone and page rise together, same distance, same curve.
+  const pageRise = content.animate(
+    [{transform: xy(0, up)}, {transform: xy(0, 0)}],
+    {duration:CO_UP_MS, easing:CO_EASE, fill:'forwards'}
+  );
+  const logoRise = clone.animate(
+    [{transform: xy(landX, srcRect.top)}, {transform: xy(landX, landY)}],
+    {duration:CO_UP_MS, easing:CO_EASE, fill:'forwards'}
+  );
+  await Promise.all([pageRise.finished, logoRise.finished]);
+
+  // Hand the logo over to the real element, then release the page. The
+  // fill above is holding it at translate3d(0,0,0), which is already its
+  // natural position, so clearing these is invisible.
+  if(destMark){
+    destMark.animate([{opacity:0},{opacity:1}],
+      {duration:CO_FADE_MS, fill:'forwards'});
+  }
+  await clone.animate([{opacity:1},{opacity:0}],
+    {duration:CO_FADE_MS, fill:'forwards'}).finished;
+  clone.remove();
+  if(destMark) destMark.style.opacity = '';
+  content.style.transform = '';
+  content.style.willChange = '';
+  pageRise.cancel();
+
+  history.pushState({}, '', destUrl);
+  companyTransitionRunning = false;
+  if(typeof applyLangToDOM === 'function') applyLangToDOM();
+  if(typeof initScrollReveal === 'function') initScrollReveal();
+  if(typeof reorderPillarFromHash === 'function') reorderPillarFromHash();
+}
+
+// pushState above leaves the browser's own rendering untouched, so a back
+// step has to actually re-render the page it returns to.
+window.addEventListener('popstate', () => { location.reload(); });
 
 
 /* ---------- persistent header ---------- */
@@ -399,6 +580,7 @@ function initPage(){
   tickClock();
   setInterval(tickClock, 15000);
   initScrollReveal();
+  initCompanyPrefetch();
 }
 
 if(document.readyState === 'loading'){
