@@ -391,6 +391,13 @@
   }
 
   .section-block{margin-bottom:0;}
+  /* On mobile home page, tighten margin before section title so it's
+     visible without scrolling. Restore at 700px and above. */
+  @media (max-width:699px){
+    body:has(#content .home-bio) .section-block{
+      margin-top:0.75rem;
+    }
+  }
   .section-title{
     font-size:0.8rem;
     font-weight:800;
