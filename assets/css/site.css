@@ -1048,14 +1048,15 @@
      (rather than staggered per-paragraph like everywhere else), with its
      CTA link fading in the same way once it's scrolled to next. */
   body:has(#content .home-bio) .body-copy,
-  body:has(#content .home-bio) .principles-list,
   body:has(#content .home-bio) .case-study-cta{
     opacity:0;
     transition:opacity 0.5s ease;
   }
   body:has(#content .home-bio) .body-copy.is-visible,
-  body:has(#content .home-bio) .principles-list.is-visible,
   body:has(#content .home-bio) .case-study-cta.is-visible{
+    opacity:1;
+  }
+  body:has(#content .home-bio) .principles-list{
     opacity:1;
   }
 
