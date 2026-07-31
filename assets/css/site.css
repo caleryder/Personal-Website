@@ -169,10 +169,18 @@
     text-decoration:none;
   }
   .theme-toggle:hover{
-    color:var(--pink);
+    color:var(--pink) !important;
+  }
+  .theme-toggle:hover svg{
+    stroke:var(--pink) !important;
+    fill:var(--pink) !important;
   }
   [data-theme="dark"] .theme-toggle:hover{
-    color:#E8E8E8;
+    color:#E8E8E8 !important;
+  }
+  [data-theme="dark"] .theme-toggle:hover svg{
+    stroke:#E8E8E8 !important;
+    fill:#E8E8E8 !important;
   }
   .theme-toggle svg{height:14px !important; width:auto; display:block;}
   .mail-icon-btn svg{height:13px !important;}
