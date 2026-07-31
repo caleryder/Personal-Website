@@ -208,6 +208,21 @@
     font-size:1.5rem;
     margin-bottom:2.75rem;
   }
+  .principles-list{
+    margin-top:2.75rem;
+    margin-bottom:0;
+    display:block !important;
+  }
+  .principle{
+    font-size:1rem;
+    line-height:1.5;
+    margin-bottom:0.75rem;
+    font-weight:400;
+    display:block;
+  }
+  .principle b{
+    font-weight:600;
+  }
   /* Base font-size only, moved here (ahead of the desktop breakpoints
      below) so those breakpoints correctly win the cascade at desktop
      widths. The rest of each rule's styling (margin, line-height, etc.)
@@ -1033,11 +1048,13 @@
      (rather than staggered per-paragraph like everywhere else), with its
      CTA link fading in the same way once it's scrolled to next. */
   body:has(#content .home-bio) .body-copy,
+  body:has(#content .home-bio) .principles-list,
   body:has(#content .home-bio) .case-study-cta{
     opacity:0;
     transition:opacity 0.5s ease;
   }
   body:has(#content .home-bio) .body-copy.is-visible,
+  body:has(#content .home-bio) .principles-list.is-visible,
   body:has(#content .home-bio) .case-study-cta.is-visible{
     opacity:1;
   }

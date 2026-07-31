@@ -119,7 +119,7 @@ function initScrollReveal(){
   // script finishing in time to be seen. Same reasoning for
   // .hero-img-primary (the header/top image on each page), excluded
   // below alongside the text elements.
-  const allTargets = document.querySelectorAll('.cs-subhead, .cs-section p, .cs-section-label, .section-title, .stat-row, .pillar-full h3, .pillar-body, .pillar-detail, .pillar-quote p, .pillar-quote-attribution, body:not(:has(#content .home-bio)) .body-copy p, .leadership-block p, .hero-img:not(.hero-img-primary), .img-placeholder, body:has(#content .home-bio) .body-copy, body:has(#content .home-bio) .case-study-cta');
+  const allTargets = document.querySelectorAll('.cs-subhead, .cs-section p, .cs-section-label, .section-title, .stat-row, .pillar-full h3, .pillar-body, .pillar-detail, .pillar-quote p, .pillar-quote-attribution, body:not(:has(#content .home-bio)) .body-copy p, .leadership-block p, .hero-img:not(.hero-img-primary), .img-placeholder, body:has(#content .home-bio) .body-copy, body:has(#content .home-bio) .principles-list, body:has(#content .home-bio) .case-study-cta');
   let targets = Array.from(allTargets);
   if(targets.length === 0) return;
 
