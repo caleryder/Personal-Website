@@ -707,7 +707,6 @@
     color:#481C1E;
   }
   .cs-section a:hover, .pillar-full a:hover,
-  .case-study-cta:hover,
   .locked-cta:hover{
     color:#6F4A48;
   }
@@ -751,9 +750,6 @@
     color:#BFC0C3;
   }
   /* Follow the same hover color as light mode for consistency across themes. */
-  [data-theme="dark"] .case-study-cta:hover{
-    color:#6F4A48;
-  }
   [data-theme="dark"] .company-wordmark ~ .section-block .body-copy a:hover,
   [data-theme="dark"] .company-wordmark ~ .section-block .pillar-links a:hover{
     color:#BFC0C3;
