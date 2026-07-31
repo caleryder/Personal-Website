@@ -772,7 +772,11 @@
     transition:background-color 0.2s ease;
   }
   .case-study-cta:hover{background-color:var(--cream-2); text-decoration:none; color:inherit;}
+  .case-study-cta:active,
+  .case-study-cta:focus{color:inherit; outline:none;}
   [data-theme="dark"] .case-study-cta:hover{background-color:var(--cream-2); color:#E8E8E8;}
+  [data-theme="dark"] .case-study-cta:active,
+  [data-theme="dark"] .case-study-cta:focus{color:#E8E8E8; outline:none;}
   .case-study-cta svg{width:0.9em; height:0.9em; flex-shrink:0; display:block;}
   .locked-cta{
     display:inline-flex;
