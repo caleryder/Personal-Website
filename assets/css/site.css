@@ -168,6 +168,12 @@
     justify-content:center;
     text-decoration:none;
   }
+  .theme-toggle:hover{
+    color:var(--pink);
+  }
+  [data-theme="dark"] .theme-toggle:hover{
+    color:#E8E8E8;
+  }
   .theme-toggle svg{height:14px !important; width:auto; display:block;}
   .mail-icon-btn svg{height:13px !important;}
   .resume-icon-btn svg{height:17px !important;}
