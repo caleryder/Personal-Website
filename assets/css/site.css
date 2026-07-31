@@ -768,8 +768,6 @@
      treatment (constant across light/dark) rather than the muted
      case-study palette above, which is fixed per-theme. */
   body:has(#content .home-bio) .case-study-cta{color:var(--pink);}
-  body:has(#content .home-bio) .case-study-cta:hover{color:var(--pink-dark);}
-  [data-theme="dark"] body:has(#content .home-bio) .case-study-cta:hover{color:#FE6F43;}
 
   /* line-height matches .home-bio and .lede so summaries read at the
      same leading as the rest of the large type. */
