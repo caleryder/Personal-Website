@@ -771,7 +771,8 @@
     padding:0.43em 1.07em;
     transition:background-color 0.2s ease;
   }
-  .case-study-cta:hover{background-color:var(--cream-2); text-decoration:none;}
+  .case-study-cta:hover{background-color:var(--cream-2); text-decoration:none; color:inherit;}
+  [data-theme="dark"] .case-study-cta:hover{background-color:var(--cream-2); color:#E8E8E8;}
   .case-study-cta svg{width:0.9em; height:0.9em; flex-shrink:0; display:block;}
   .locked-cta{
     display:inline-flex;
