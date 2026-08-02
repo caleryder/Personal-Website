@@ -569,6 +569,23 @@ function initHeaderContrast(){
   checkContrast();
 }
 
+/* ---------- pillar toggle (collapsible values) ---------- */
+function togglePillar(e){
+  const button = e.currentTarget;
+  const isExpanded = button.getAttribute('data-expanded') === 'true';
+
+  if(isExpanded){
+    button.setAttribute('data-expanded', 'false');
+    return;
+  }
+
+  document.querySelectorAll('.pillar-toggle[data-expanded="true"]').forEach(otherBtn=>{
+    otherBtn.setAttribute('data-expanded', 'false');
+  });
+
+  button.setAttribute('data-expanded', 'true');
+}
+
 /* ---------- init ---------- */
 function initPage(){
   applyThemeToDOM();
