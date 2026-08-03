@@ -557,10 +557,10 @@
   }
   @media (max-width:900px){
     .pillar-toggle{
-      max-width:75%;
+      max-width:100%;
     }
     .pillar-content{
-      max-width:75%;
+      max-width:100%;
     }
   }
   .pillar-toggle[data-expanded="true"] + .pillar-content{
