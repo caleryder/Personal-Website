@@ -517,6 +517,15 @@
     font-size:0.85rem;
     font-weight:700;
   }
+  @media (max-width:899px){
+    .pillar-detail{
+      font-size:1rem;
+      margin-bottom:1rem;
+    }
+    .pillar-detail b{
+      font-size:1rem;
+    }
+  }
   .pillar-toggle{
     all:unset;
     display:flex;
@@ -530,6 +539,12 @@
     color:inherit;
     text-align:left;
     max-width:50%;
+  }
+  @media (max-width:899px){
+    .pillar-toggle{
+      max-width:100%;
+      font-size:1rem;
+    }
   }
   .pillar-toggle-text{
     flex:1;
@@ -554,6 +569,11 @@
     opacity:0;
     transition:opacity 0.3s ease, max-height 0.3s ease;
     max-width:50%;
+  }
+  @media (max-width:899px){
+    .pillar-content{
+      max-width:100%;
+    }
   }
   .pillar-toggle[data-expanded="true"] + .pillar-content{
     opacity:1;
