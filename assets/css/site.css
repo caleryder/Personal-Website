@@ -558,10 +558,11 @@
   @media (max-width:900px){
     .pillar-toggle{
       max-width:100%;
-      font-size:1rem;
+      font-size:17px;
     }
     .pillar-content{
       max-width:100%;
+      font-size:17px;
     }
   }
   .pillar-toggle[data-expanded="true"] + .pillar-content{
