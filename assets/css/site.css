@@ -555,6 +555,14 @@
     transition:opacity 0.3s ease, max-height 0.3s ease;
     max-width:50%;
   }
+  @media (max-width:900px){
+    .pillar-toggle{
+      max-width:75%;
+    }
+    .pillar-content{
+      max-width:75%;
+    }
+  }
   .pillar-toggle[data-expanded="true"] + .pillar-content{
     opacity:1;
     max-height:1000px;
