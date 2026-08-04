@@ -506,7 +506,7 @@
 
   .pillar-full{margin-bottom:3.85rem;}
   .pillar-full h3{font-size:1.35rem; margin-bottom:0.6rem;}
-  .pillar-full .pillar-body{font-size:1.05rem; margin-bottom:0.75rem;}
+  .pillar-full .pillar-body{font-size:1rem; margin-bottom:0.75rem;}
   .pillar-detail{
     font-size:1rem;
     margin-bottom:0.6rem;
@@ -1140,7 +1140,7 @@
     .link-item{font-size:1.3125rem;}
     button.talk-row{font-size:1.3125rem;}
     .pillar-full h3{font-size:1.6875rem;}
-    .pillar-full .pillar-body{font-size:1.3125rem;}
+    .pillar-full .pillar-body{font-size:1rem;}
     .pillar-detail{font-size:1rem;}
     .pillar-quote p{font-size:1.6875rem;}
     .pillar-quote-attribution{font-size:1.0625rem;}
