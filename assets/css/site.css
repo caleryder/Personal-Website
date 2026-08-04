@@ -540,7 +540,7 @@
   .pillar-toggle-text{
     flex:1;
   }
-  .pillar-toggle:hover .pillar-toggle-text b{
+  .pillar-toggle:hover:not([data-expanded="true"]) .pillar-toggle-text b{
     text-decoration:underline;
   }
   .pillar-toggle-arrow{
