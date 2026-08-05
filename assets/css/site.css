@@ -511,14 +511,13 @@
 
   .pillar-full{margin-bottom:3.85rem;}
   .pillar-full h3{font-size:1.35rem; margin-bottom:0.6rem;}
-  .pillar-full .pillar-body{font-size:1.5rem; margin-bottom:0.75rem;}
+  /* Intro body under the principle heading matches that heading size. */
+  .pillar-full > .pillar-body{font-size:1.35rem; margin-bottom:0.75rem;}
   .pillar-detail{
-    font-size:1.5rem;
     margin-bottom:0.6rem;
   }
   @media (max-width:899px){
     .pillar-detail{
-      font-size:1rem;
       margin-bottom:1rem;
     }
   }
@@ -531,7 +530,6 @@
     padding:0;
     margin-top:0.75rem;
     margin-bottom:0;
-    font-size:1.5rem;
     color:inherit;
     text-align:left;
     /* Desktop: 3/4 of the intro .pillar-body above. Mobile: full width,
@@ -541,7 +539,20 @@
   @media (max-width:899px){
     .pillar-toggle{
       max-width:100%;
-      font-size:1rem;
+    }
+  }
+  /* Toggle title, expanded body, and detail share one size across all
+     principles. Declared after .pillar-toggle's all:unset so font-size sticks. */
+  .pillar-toggle,
+  .pillar-content .pillar-body,
+  .pillar-detail{
+    font-size:1rem;
+  }
+  @media (min-width:900px){
+    .pillar-toggle,
+    .pillar-content .pillar-body,
+    .pillar-detail{
+      font-size:1.5rem;
     }
   }
   .pillar-toggle-text{
@@ -1149,7 +1160,9 @@
     .link-item{font-size:1.3125rem;}
     button.talk-row{font-size:1.3125rem;}
     .pillar-full h3{font-size:1.6875rem;}
-    .pillar-full .pillar-body{font-size:1.7rem;}
+    .pillar-full > .pillar-body{font-size:1.6875rem;}
+    .pillar-toggle,
+    .pillar-content .pillar-body,
     .pillar-detail{font-size:1.7rem;}
     .pillar-quote p{font-size:1.6875rem;}
     .pillar-quote-attribution{font-size:1.0625rem;}
