@@ -223,13 +223,18 @@
     margin-bottom:2.75rem;
   }
   .principles-list{
-    margin-top:2.75rem;
+    /* Match .body-copy paragraph spacing (p { margin: 0 0 1rem }) so the
+       gap above the first principle equals the gap between the two lead
+       paragraphs. */
+    margin-top:1rem;
     margin-bottom:0;
     display:block !important;
   }
   .principle{
+    /* Same line-height as body copy; no extra margin so consecutive
+       principles read at paragraph leading. */
     line-height:1.6;
-    margin-bottom:0.75rem;
+    margin-bottom:0;
     font-weight:400;
     display:block;
   }
@@ -529,7 +534,9 @@
     font-size:1.5rem;
     color:inherit;
     text-align:left;
-    max-width:50%;
+    /* Desktop: 3/4 of the intro .pillar-body above. Mobile: full width,
+       matching that same intro copy. */
+    max-width:75%;
   }
   @media (max-width:899px){
     .pillar-toggle{
@@ -559,7 +566,9 @@
     transition:max-height 0.3s ease;
     opacity:0;
     transition:opacity 0.3s ease, max-height 0.3s ease;
-    max-width:50%;
+    /* Same width rule as .pillar-toggle: 3/4 of intro copy on desktop,
+       full width on mobile. */
+    max-width:75%;
   }
   @media (max-width:899px){
     .pillar-content{
