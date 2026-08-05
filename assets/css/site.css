@@ -707,12 +707,16 @@
      plus scroll/resize listeners), so the risk is accepted here as a
      deliberate tradeoff for the visual effect, the same way many sites
      with this kind of reveal do. */
-  .hero-img:not(.hero-img-primary), .img-placeholder{
-    clip-path:inset(0 0 100% 0);
-    transition:clip-path 1s ease;
-  }
-  .hero-img:not(.hero-img-primary).is-visible, .img-placeholder.is-visible{
-    clip-path:inset(0 0 0% 0);
+  /* Image wipe-in only when scripting can reveal them; otherwise images
+     stay fully visible so pages don't look empty without JS. */
+  @media (scripting: enabled){
+    .hero-img:not(.hero-img-primary), .img-placeholder{
+      clip-path:inset(0 0 100% 0);
+      transition:clip-path 1s ease;
+    }
+    .hero-img:not(.hero-img-primary).is-visible, .img-placeholder.is-visible{
+      clip-path:inset(0 0 0% 0);
+    }
   }
   .hero-img-primary{
     clip-path:inset(0 0 0% 0);
@@ -1117,34 +1121,40 @@
      content above the fold). Giving them opacity:0 here with no
      corresponding JS reveal would make them permanently invisible.
      Images are handled separately (via clip-path, not opacity) -- see
-     the clip-path reveal rules above for how images fade/wipe in. */
-  .cs-subhead,
-  .cs-section p, .cs-section-label, .section-title, .stat-row,
-  .pillar-full h3, .pillar-body, .pillar-detail, .pillar-quote p, .pillar-quote-attribution,
-  body:not(:has(#content .home-bio)) .body-copy p, .leadership-block p{
-    opacity:0;
-    transition:opacity 0.5s ease;
-  }
-  .cs-subhead.is-visible,
-  .cs-section p.is-visible, .cs-section-label.is-visible, .section-title.is-visible, .stat-row.is-visible,
-  .pillar-full h3.is-visible, .pillar-body.is-visible, .pillar-detail.is-visible, .pillar-quote p.is-visible, .pillar-quote-attribution.is-visible,
-  body:not(:has(#content .home-bio)) .body-copy p.is-visible, .leadership-block p.is-visible{
-    opacity:1;
-  }
-  /* Home page's principles paragraphs fade in together as a single block
-     (rather than staggered per-paragraph like everywhere else), with its
-     CTA link fading in the same way once it's scrolled to next. */
-  body:has(#content .home-bio) .body-copy,
-  body:has(#content .home-bio) .case-study-cta{
-    opacity:0;
-    transition:opacity 0.5s ease;
-  }
-  body:has(#content .home-bio) .body-copy.is-visible,
-  body:has(#content .home-bio) .case-study-cta.is-visible{
-    opacity:1;
-  }
-  body:has(#content .home-bio) .principles-list{
-    opacity:1;
+     the clip-path reveal rules above for how images fade/wipe in.
+
+     Scoped to scripting:enabled so content stays fully visible when JS
+     is blocked/unavailable (otherwise recruiters/corporate browsers can
+     see a "broken" page with missing body copy). */
+  @media (scripting: enabled){
+    .cs-subhead,
+    .cs-section p, .cs-section-label, .section-title, .stat-row,
+    .pillar-full h3, .pillar-body, .pillar-detail, .pillar-quote p, .pillar-quote-attribution,
+    body:not(:has(#content .home-bio)) .body-copy p, .leadership-block p{
+      opacity:0;
+      transition:opacity 0.5s ease;
+    }
+    .cs-subhead.is-visible,
+    .cs-section p.is-visible, .cs-section-label.is-visible, .section-title.is-visible, .stat-row.is-visible,
+    .pillar-full h3.is-visible, .pillar-body.is-visible, .pillar-detail.is-visible, .pillar-quote p.is-visible, .pillar-quote-attribution.is-visible,
+    body:not(:has(#content .home-bio)) .body-copy p.is-visible, .leadership-block p.is-visible{
+      opacity:1;
+    }
+    /* Home page's principles paragraphs fade in together as a single block
+       (rather than staggered per-paragraph like everywhere else), with its
+       CTA link fading in the same way once it's scrolled to next. */
+    body:has(#content .home-bio) .body-copy,
+    body:has(#content .home-bio) .case-study-cta{
+      opacity:0;
+      transition:opacity 0.5s ease;
+    }
+    body:has(#content .home-bio) .body-copy.is-visible,
+    body:has(#content .home-bio) .case-study-cta.is-visible{
+      opacity:1;
+    }
+    body:has(#content .home-bio) .principles-list{
+      opacity:1;
+    }
   }
 
   /* ---------- Desktop content text scale (1.25x) ----------
