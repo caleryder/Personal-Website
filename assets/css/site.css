@@ -541,19 +541,13 @@
       max-width:100%;
     }
   }
-  /* Toggle title, expanded body, and detail share one size across all
-     principles. Declared after .pillar-toggle's all:unset so font-size sticks. */
+  /* So I… / expanded body / At [company]… match home .body-copy
+     (body font-size: 17px → 20px on desktop). Toggle stays bold via <b>.
+     Declared after .pillar-toggle's all:unset so font-size sticks. */
   .pillar-toggle,
   .pillar-content .pillar-body,
   .pillar-detail{
-    font-size:1rem;
-  }
-  @media (min-width:900px){
-    .pillar-toggle,
-    .pillar-content .pillar-body,
-    .pillar-detail{
-      font-size:1.5rem;
-    }
+    font-size:1em;
   }
   .pillar-toggle-text{
     flex:1;
@@ -1171,9 +1165,8 @@
     button.talk-row{font-size:1.3125rem;}
     .pillar-full h3{font-size:1.6875rem;}
     .pillar-full > .pillar-body{font-size:1.6875rem;}
-    .pillar-toggle,
-    .pillar-content .pillar-body,
-    .pillar-detail{font-size:1.7rem;}
+    /* .pillar-toggle / expanded body / detail inherit body (20px) to
+       match home .body-copy; no desktop upscale here. */
     .pillar-quote p{font-size:1.6875rem;}
     .pillar-quote-attribution{font-size:1.0625rem;}
     .role-meta{font-size:1.0625rem;}
