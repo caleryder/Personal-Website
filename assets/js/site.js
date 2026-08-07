@@ -583,29 +583,49 @@ function togglePillar(e){
     return;
   }
 
-  // Keep this toggle fixed in the viewport while other open sections
-  // collapse (or the browser tries to scroll newly revealed content into
-  // view). Without this, content above shrinking jumps everything up —
-  // especially on mobile. Expanded copy should only push content below.
+  // Keep this toggle (and its pillar copy above) fixed in the viewport.
+  // Other open sections collapse above the click and would otherwise yank
+  // everything up — especially on mobile. Animate only the newly opened
+  // panel downward; collapse siblings instantly so we can correct scroll
+  // in one shot instead of fighting a dual max-height transition.
   const anchorTop = button.getBoundingClientRect().top;
+  const openButtons = document.querySelectorAll('.pillar-toggle[data-expanded="true"]');
 
-  document.querySelectorAll('.pillar-toggle[data-expanded="true"]').forEach(otherBtn=>{
+  openButtons.forEach(otherBtn=>{
+    const content = otherBtn.nextElementSibling;
+    if(content && content.classList.contains('pillar-content')){
+      content.classList.add('pillar-content--instant');
+    }
     otherBtn.setAttribute('data-expanded', 'false');
   });
 
+  // Flush the instant collapse before measuring / restoring transitions.
+  void button.offsetHeight;
+
+  openButtons.forEach(otherBtn=>{
+    const content = otherBtn.nextElementSibling;
+    if(content) content.classList.remove('pillar-content--instant');
+  });
+
+  const syncScroll = ()=>{
+    const delta = button.getBoundingClientRect().top - anchorTop;
+    if(Math.abs(delta) > 0.5){
+      // Absolute scrollTo is more reliable than scrollBy on iOS when the
+      // visualViewport / address bar is adjusting during the tap.
+      window.scrollTo(0, window.scrollY + delta);
+    }
+  };
+  syncScroll();
+
+  try{ button.focus({preventScroll:true}); }catch(_){}
+
   button.setAttribute('data-expanded', 'true');
 
-  const lockScroll = ()=>{
-    const delta = button.getBoundingClientRect().top - anchorTop;
-    if(Math.abs(delta) > 0.5) window.scrollBy(0, delta);
-  };
-  lockScroll();
+  // Catch late mobile focus / scroll-anchoring nudges after expand.
   const start = performance.now();
   const tick = (now)=>{
-    lockScroll();
-    // Cover the max-height transition (~300ms) plus a beat for mobile
-    // focus/scroll adjustments.
-    if(now - start < 400) requestAnimationFrame(tick);
+    syncScroll();
+    if(now - start < 500) requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
 }

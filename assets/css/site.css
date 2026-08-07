@@ -188,12 +188,30 @@
     stroke:var(--pink) !important;
     fill:var(--pink) !important;
   }
-  [data-theme="dark"] .theme-toggle:hover{
-    color:#E8E8E8 !important;
+  /* Dark-mode white chrome on hover is desktop/mouse only. On touch,
+     :hover sticks after tap and was painting the sun icon white. */
+  @media (hover:hover){
+    [data-theme="dark"] .theme-toggle:hover{
+      color:#E8E8E8 !important;
+    }
+    [data-theme="dark"] .theme-toggle:hover svg{
+      stroke:#E8E8E8 !important;
+      fill:#E8E8E8 !important;
+    }
   }
-  [data-theme="dark"] .theme-toggle:hover svg{
-    stroke:#E8E8E8 !important;
-    fill:#E8E8E8 !important;
+  /* Sun (leave-dark) stays site pink in dark mode; don't inherit the
+     white header treatment used on other chrome icons. Force SVG
+     stroke/fill too — sunIcon() uses currentColor, and sticky/hover
+     rules previously overrode it to #E8E8E8 on mobile. */
+  [data-theme="dark"] .theme-toggle.theme-icon,
+  [data-theme="dark"] .theme-toggle.theme-icon:hover{
+    color:var(--pink) !important;
+  }
+  [data-theme="dark"] .theme-toggle.theme-icon svg,
+  [data-theme="dark"] .theme-toggle.theme-icon:hover svg{
+    stroke:var(--pink) !important;
+    fill:var(--pink) !important;
+    color:var(--pink) !important;
   }
   .theme-toggle svg{height:14px !important; width:auto; display:block;}
   .mail-icon-btn svg{height:13px !important;}
@@ -396,6 +414,11 @@
      height, so they're dialed down slightly to match. */
   .company-mark img[alt="Meta logo"],
   .company-mark img[alt="Nike logo"]{height:80%;}
+  /* Dark mode, mobile only: Nike at 90% of the shared 80% optical height
+     (→72%). Desktop home keeps 65% via the min-width:1024px rule above. */
+  @media (max-width:1023px){
+    [data-theme="dark"] .company-mark img[alt="Nike logo"]{height:72%;}
+  }
   .ai-native-icon-mark{
     display:block;
     width:0.55em;
@@ -543,7 +566,9 @@
   .footer-state-icon{display:inline-flex; align-items:center; color:var(--pink);}
   .footer-state-icon svg{height:0.75em; width:auto; display:block;}
 
-  .pillar-full{margin-bottom:3.85rem;}
+  /* overflow-anchor:none so collapsing one pillar doesn't drag the
+     viewport when another opens (mobile accordion jump). */
+  .pillar-full{margin-bottom:3.85rem; overflow-anchor:none;}
   .pillar-full h3{font-size:1.35rem; margin-bottom:0.6rem;}
   /* Intro body under the principle heading matches that heading size.
      Margin below is 0 so the So I… gap is controlled only by the toggle. */
@@ -613,6 +638,11 @@
        full width on mobile. */
     max-width:75%;
   }
+  /* Instant sibling collapse while opening another pillar — applied only
+     for one layout flush in togglePillar, then removed. */
+  .pillar-content.pillar-content--instant{
+    transition:none !important;
+  }
   @media (max-width:899px){
     .pillar-content{
       max-width:100%;
@@ -676,6 +706,10 @@
   }
   .company-wordmark img[alt="Meta logo"]{height:80%;}
   .company-wordmark img[alt="Nike logo"]{height:80%;}
+  /* Sync with dark-mode mobile .company-mark Nike (72%) for enter animation. */
+  @media (max-width:1023px){
+    [data-theme="dark"] .company-wordmark img[alt="Nike logo"]{height:72%;}
+  }
   @media (min-width:1024px){
     /* Match home .company-mark Nike (65%) so the enter animation doesn't jump. */
     .company-wordmark img[alt="Nike logo"]{height:65%;}
@@ -1142,6 +1176,14 @@
   [data-theme="dark"]:not(:has(#content .home-bio)) .theme-toggle,
   [data-theme="dark"]:not(:has(#content .home-bio)) .footer-state-icon{
     color:#E8E8E8;
+  }
+  [data-theme="dark"]:not(:has(#content .home-bio)) .theme-toggle.theme-icon{
+    color:var(--pink) !important;
+  }
+  [data-theme="dark"]:not(:has(#content .home-bio)) .theme-toggle.theme-icon svg{
+    stroke:var(--pink) !important;
+    fill:var(--pink) !important;
+    color:var(--pink) !important;
   }
   [data-theme="dark"]:not(:has(#content .home-bio)) .footer-divider{
     border-top-color:#E8E8E8;
