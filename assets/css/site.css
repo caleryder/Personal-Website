@@ -188,8 +188,19 @@
     stroke:var(--pink) !important;
     fill:var(--pink) !important;
   }
-  /* Dark-mode white chrome on hover is desktop/mouse only. On touch,
-     :hover sticks after tap and was painting the sun icon white. */
+  /* Dark-mode header chrome (incl. sun) is white like logo/clock.
+     Hover white is desktop/mouse only so touch :hover stickiness
+     cannot override light-mode pink/#481C1E after a tap. */
+  [data-theme="dark"] .theme-toggle.theme-icon,
+  [data-theme="dark"] .theme-toggle.theme-icon:hover{
+    color:#E8E8E8 !important;
+  }
+  [data-theme="dark"] .theme-toggle.theme-icon svg,
+  [data-theme="dark"] .theme-toggle.theme-icon:hover svg{
+    stroke:#E8E8E8 !important;
+    fill:#E8E8E8 !important;
+    color:#E8E8E8 !important;
+  }
   @media (hover:hover){
     [data-theme="dark"] .theme-toggle:hover{
       color:#E8E8E8 !important;
@@ -198,20 +209,6 @@
       stroke:#E8E8E8 !important;
       fill:#E8E8E8 !important;
     }
-  }
-  /* Sun (leave-dark) stays site pink in dark mode; don't inherit the
-     white header treatment used on other chrome icons. Force SVG
-     stroke/fill too — sunIcon() uses currentColor, and sticky/hover
-     rules previously overrode it to #E8E8E8 on mobile. */
-  [data-theme="dark"] .theme-toggle.theme-icon,
-  [data-theme="dark"] .theme-toggle.theme-icon:hover{
-    color:var(--pink) !important;
-  }
-  [data-theme="dark"] .theme-toggle.theme-icon svg,
-  [data-theme="dark"] .theme-toggle.theme-icon:hover svg{
-    stroke:var(--pink) !important;
-    fill:var(--pink) !important;
-    color:var(--pink) !important;
   }
   .theme-toggle svg{height:14px !important; width:auto; display:block;}
   .mail-icon-btn svg{height:13px !important;}
@@ -1176,14 +1173,6 @@
   [data-theme="dark"]:not(:has(#content .home-bio)) .theme-toggle,
   [data-theme="dark"]:not(:has(#content .home-bio)) .footer-state-icon{
     color:#E8E8E8;
-  }
-  [data-theme="dark"]:not(:has(#content .home-bio)) .theme-toggle.theme-icon{
-    color:var(--pink) !important;
-  }
-  [data-theme="dark"]:not(:has(#content .home-bio)) .theme-toggle.theme-icon svg{
-    stroke:var(--pink) !important;
-    fill:var(--pink) !important;
-    color:var(--pink) !important;
   }
   [data-theme="dark"]:not(:has(#content .home-bio)) .footer-divider{
     border-top-color:#E8E8E8;
