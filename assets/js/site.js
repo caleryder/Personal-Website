@@ -343,6 +343,11 @@ async function animateCompanyEnter(evt, destUrl){
     parseFloat(getComputedStyle(content).paddingLeft);
 
   const isMask = logoEl.classList.contains('ai-native-icon-mark');
+  // Dark-mode marks render white via filter:invert(1). The flying clone
+  // lives on <body>, outside .company-mark, so it needs that invert
+  // applied inline -- and it must be part of the cssText below, or the
+  // assignment wipes it and the logo flashes black mid-flight.
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   let clone;
   if(isMask){
     clone = document.createElement('span');
@@ -351,14 +356,13 @@ async function animateCompanyEnter(evt, destUrl){
     clone = document.createElement('img');
     clone.src = logoEl.currentSrc || logoEl.src;
     clone.alt = '';
-    if(document.documentElement.getAttribute('data-theme') === 'dark'){
-      clone.style.filter = 'invert(1)';
-    }
   }
   clone.setAttribute('aria-hidden', 'true');
   clone.style.cssText = 'position:fixed;left:0;top:0;margin:0;z-index:10000;' +
     'pointer-events:none;will-change:transform;width:' + srcRect.width +
-    'px;height:' + srcRect.height + 'px;';
+    'px;height:' + srcRect.height + 'px;' +
+    (isDark && !isMask ? 'filter:invert(1);' : '') +
+    (isDark && isMask ? 'background-color:#BFC0C3;' : '');
   clone.style.transform = xy(srcRect.left, srcRect.top);
   document.body.appendChild(clone);
 
@@ -579,11 +583,31 @@ function togglePillar(e){
     return;
   }
 
+  // Keep this toggle fixed in the viewport while other open sections
+  // collapse (or the browser tries to scroll newly revealed content into
+  // view). Without this, content above shrinking jumps everything up —
+  // especially on mobile. Expanded copy should only push content below.
+  const anchorTop = button.getBoundingClientRect().top;
+
   document.querySelectorAll('.pillar-toggle[data-expanded="true"]').forEach(otherBtn=>{
     otherBtn.setAttribute('data-expanded', 'false');
   });
 
   button.setAttribute('data-expanded', 'true');
+
+  const lockScroll = ()=>{
+    const delta = button.getBoundingClientRect().top - anchorTop;
+    if(Math.abs(delta) > 0.5) window.scrollBy(0, delta);
+  };
+  lockScroll();
+  const start = performance.now();
+  const tick = (now)=>{
+    lockScroll();
+    // Cover the max-height transition (~300ms) plus a beat for mobile
+    // focus/scroll adjustments.
+    if(now - start < 400) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
 }
 
 /* ---------- init ---------- */

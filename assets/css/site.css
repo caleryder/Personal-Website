@@ -261,6 +261,8 @@
   .lede{font-size:1.5rem;}
   .cs-lede{font-size:1.5rem;}
   .cs-subhead{font-size:1.5rem;}
+  /* CTA labels match .cs-lede at every breakpoint. */
+  .case-study-cta{font-size:1.5rem;}
   .pillar-full{max-width:38rem;}
   /* .pillar-quote and .pillar-detail ("So I..."/"At [company]...") are
      always 75% of .pillar-full's max-width at the matching breakpoint,
@@ -279,6 +281,7 @@
     .lede{font-size:2.3125rem; max-width:63.375rem;}
     .cs-lede{font-size:2.0625rem; max-width:63.375rem;}
     .cs-subhead{font-size:2.0625rem;}
+    .case-study-cta{font-size:2.0625rem;}
     .cs-section{max-width:63.375rem;}
     .body-copy{max-width:47.53rem;}
     .leadership-block{max-width:63.375rem;}
@@ -292,6 +295,7 @@
     .lede{font-size:2.5rem; max-width:73.125rem;}
     .cs-lede{font-size:2.25rem; max-width:73.125rem;}
     .cs-subhead{font-size:2.25rem;}
+    .case-study-cta{font-size:2.25rem;}
     .cs-section{max-width:73.125rem;}
     .body-copy{max-width:54.84rem;}
     .leadership-block{max-width:73.125rem;}
@@ -305,6 +309,7 @@
     .lede{font-size:2.75rem; max-width:87.75rem;}
     .cs-lede{font-size:2.5rem; max-width:87.75rem;}
     .cs-subhead{font-size:2.5rem;}
+    .case-study-cta{font-size:2.5rem;}
     .cs-section{max-width:87.75rem;}
     .body-copy{max-width:65.81rem;}
     .leadership-block{max-width:87.75rem;}
@@ -352,9 +357,9 @@
   }
   @media (min-width:1024px){
     .company-row{font-size:4.75rem;}
-    /* Nike, desktop only: 10% smaller again on top of the 80% above
-       (80% * 0.9 = 72% of the shared optical height). */
-    body:has(#content .home-bio) .company-mark img[alt="Nike logo"]{height:72%;}
+    /* Nike, desktop only: another ~10% off the prior 72% (≈65% of the
+       shared optical height). Keep .company-wordmark Nike in sync below. */
+    body:has(#content .home-bio) .company-mark img[alt="Nike logo"]{height:65%;}
   }
   @media (min-width:1440px){
     .company-row{font-size:5.375rem;}
@@ -369,8 +374,6 @@
     .gate-company-list .company-row{font-size:4.9rem;}
   }
   .company-row:hover .company-name{color:var(--pink-dark);}
-  :root:not([data-theme="dark"]) .company-row:hover .company-mark img{filter:invert(1) brightness(0.298);}
-  [data-theme="dark"] .company-row:hover .company-mark img{filter:invert(1) brightness(0.863);}
 
   /* Every logo mark is sized to the same visual (optical) height rather
      than a shared bounding box -- the source marks have wildly different
@@ -408,12 +411,18 @@
     background-color:#000000;
   }
   [data-theme="dark"] .ai-native-icon-mark{background-color:#BFC0C3;}
-  /* Exact target color, matching what the site's other icons land on when
-     hovered (approximated via filter for pure-black logos, but the mask
-     technique here lets us hit this precisely rather than approximate it). */
-  .company-row:hover .ai-native-icon-mark{background-color:#4C4C4C;}
   [data-theme="dark"] .company-mark img,
   [data-theme="dark"] .company-wordmark img{filter:invert(1);}
+  /* Hover: land on the same charcoal (#4C4C4C) as the AI Native mask.
+     Light: black → invert → dim. Dark: already inverted (white) → dim.
+     Declared after the base dark invert so hover wins the cascade. */
+  :root:not([data-theme="dark"]) .company-row:hover .company-mark img{
+    filter:invert(1) brightness(0.298);
+  }
+  [data-theme="dark"] .company-row:hover .company-mark img{
+    filter:invert(1) brightness(0.298);
+  }
+  .company-row:hover .ai-native-icon-mark{background-color:#4C4C4C;}
   .company-name{
     font-weight:800;
     color:var(--pink);
@@ -598,6 +607,8 @@
     transition:max-height 0.3s ease;
     opacity:0;
     transition:opacity 0.3s ease, max-height 0.3s ease;
+    /* Don't let browser scroll anchoring fight the toggle scroll lock. */
+    overflow-anchor:none;
     /* Same width rule as .pillar-toggle: 3/4 of intro copy on desktop,
        full width on mobile. */
     max-width:75%;
@@ -663,8 +674,12 @@
   @media (min-width:1920px){
     .company-wordmark{height:55px;}
   }
-  .company-wordmark img[alt="Meta logo"],
+  .company-wordmark img[alt="Meta logo"]{height:80%;}
   .company-wordmark img[alt="Nike logo"]{height:80%;}
+  @media (min-width:1024px){
+    /* Match home .company-mark Nike (65%) so the enter animation doesn't jump. */
+    .company-wordmark img[alt="Nike logo"]{height:65%;}
+  }
   .role-meta{
     font-size:0.85rem;
     margin-bottom:2rem;
@@ -853,29 +868,32 @@
     color:#BFC0C3;
   }
   .hero-img img{width:100%; height:auto; display:block;}
-  /* font-size is deliberately omitted so these inherit body copy size
-     (17px, 20px at >=1024px) and stay in sync with it. Everything that
-     defines the pill is sized in em rather than rem/px so the stroke,
-     arrow, gap, and padding all scale together with that font size. */
+  /* Text + leading →, matching the home company-row click pattern.
+     No pill/border stroke. Size tracks .cs-lede (set with that scale). */
   .case-study-cta{
     display:inline-flex;
     align-items:center;
-    gap:0.36em;
+    /* Flex collapses trailing spaces in the arrow span; gap is the space. */
+    gap:0.3em;
     font-weight:400;
     margin:0;
+    padding:0;
     text-decoration:none;
-    border:0.065em solid currentColor;
-    border-radius:999px;
-    padding:0.43em 1.07em;
-    transition:background-color 0.2s ease;
+    border:0;
+    border-radius:0;
+    background:none;
   }
-  .case-study-cta:hover{background-color:var(--cream-2); text-decoration:none; color:inherit;}
+  .case-study-cta:hover{text-decoration:underline; text-underline-offset:0.15em; background:none; color:inherit;}
   .case-study-cta:active,
   .case-study-cta:focus{color:inherit; outline:none;}
-  [data-theme="dark"] .case-study-cta:hover{background-color:var(--cream-2); color:#E8E8E8;}
+  [data-theme="dark"] .case-study-cta:hover{background:none; color:#E8E8E8;}
   [data-theme="dark"] .case-study-cta:active,
   [data-theme="dark"] .case-study-cta:focus{color:#E8E8E8; outline:none;}
-  .case-study-cta svg{width:0.9em; height:0.9em; flex-shrink:0; display:block;}
+  /* Host Grotesk ExtraBold → (self-hosted face includes this glyph). */
+  .cta-arrow{
+    font-family:"Host Grotesk", "Helvetica Neue", Arial, sans-serif;
+    font-weight:800;
+  }
   .locked-cta{
     display:inline-flex;
     align-items:center;
@@ -1197,8 +1215,7 @@
     .pillar-quote p{font-size:1.6875rem;}
     .pillar-quote-attribution{font-size:1.0625rem;}
     .role-meta{font-size:1.0625rem;}
-    /* .case-study-cta intentionally has no font-size here either; it
-       tracks the body font-size bump at this breakpoint on its own. */
+    /* .case-study-cta size tracks .cs-lede in the type scale above. */
     .locked-cta{font-size:1.3125rem;}
     .cs-section-label{font-size:0.975rem;}
     .stat-num{font-size:3.046875rem;}
