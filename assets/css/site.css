@@ -182,36 +182,26 @@
     text-decoration:none;
   }
   /* Pink hover is desktop/mouse only so touch :hover stickiness
-     cannot lock pink over non-home #481C1E after a tap. */
+     cannot lock pink over non-home #481C1E after a tap.
+     Color only — never blanket fill/stroke on .theme-toggle svg.
+     Mail/resume/LinkedIn rect are stroke-only; fill:!important paints
+     them as solid boxes. Icons use stroke/fill="currentColor". */
   @media (hover:hover){
     .theme-toggle:hover{
       color:var(--pink) !important;
     }
-    .theme-toggle:hover svg{
-      stroke:var(--pink) !important;
-      fill:var(--pink) !important;
-    }
   }
-  /* Dark-mode header chrome (incl. sun) is white like logo/clock.
-     Includes :hover so sticky tap state stays white in dark mode.
-     Other dark header icons get white hover on fine pointers only. */
-  [data-theme="dark"] .theme-toggle.theme-icon,
-  [data-theme="dark"] .theme-toggle.theme-icon:hover{
-    color:#E8E8E8 !important;
-  }
-  [data-theme="dark"] .theme-toggle.theme-icon svg,
-  [data-theme="dark"] .theme-toggle.theme-icon:hover svg{
-    stroke:#E8E8E8 !important;
-    fill:#E8E8E8 !important;
+  /* Non-home dark: sun (and sticky :hover) stay #E8E8E8 like logo/clock.
+     Scoped off home so dark-mode sun there keeps --pink (incl. touch;
+     no global white bleach). Other dark header icons: white hover on
+     fine pointers only, also non-home. Color only (see pink hover). */
+  [data-theme="dark"]:not(:has(#content .home-bio)) .theme-toggle.theme-icon,
+  [data-theme="dark"]:not(:has(#content .home-bio)) .theme-toggle.theme-icon:hover{
     color:#E8E8E8 !important;
   }
   @media (hover:hover){
-    [data-theme="dark"] .theme-toggle:hover{
+    [data-theme="dark"]:not(:has(#content .home-bio)) .theme-toggle:hover{
       color:#E8E8E8 !important;
-    }
-    [data-theme="dark"] .theme-toggle:hover svg{
-      stroke:#E8E8E8 !important;
-      fill:#E8E8E8 !important;
     }
   }
   .theme-toggle svg{height:14px !important; width:auto; display:block;}
@@ -1170,15 +1160,11 @@
   }
   /* Light non-home: brown must beat pink hover !important (incl. sticky
      :hover after a theme tap). Scoped to :not([data-theme="dark"]) so
-     this cannot override dark-mode white theme-icon rules. */
+     this cannot override non-home dark white theme-icon rules.
+     Color only — fill:!important on all .theme-toggle svg was filling
+     stroke-only mail/resume/LinkedIn border into solid boxes. */
   :root:not([data-theme="dark"]):not(:has(#content .home-bio)) .theme-toggle,
   :root:not([data-theme="dark"]):not(:has(#content .home-bio)) .theme-toggle:hover{
-    color:#481C1E !important;
-  }
-  :root:not([data-theme="dark"]):not(:has(#content .home-bio)) .theme-toggle svg,
-  :root:not([data-theme="dark"]):not(:has(#content .home-bio)) .theme-toggle:hover svg{
-    stroke:#481C1E !important;
-    fill:#481C1E !important;
     color:#481C1E !important;
   }
   body:not(:has(#content .home-bio)) .footer-divider{
