@@ -181,16 +181,20 @@
     justify-content:center;
     text-decoration:none;
   }
-  .theme-toggle:hover{
-    color:var(--pink) !important;
-  }
-  .theme-toggle:hover svg{
-    stroke:var(--pink) !important;
-    fill:var(--pink) !important;
+  /* Pink hover is desktop/mouse only so touch :hover stickiness
+     cannot lock pink over non-home #481C1E after a tap. */
+  @media (hover:hover){
+    .theme-toggle:hover{
+      color:var(--pink) !important;
+    }
+    .theme-toggle:hover svg{
+      stroke:var(--pink) !important;
+      fill:var(--pink) !important;
+    }
   }
   /* Dark-mode header chrome (incl. sun) is white like logo/clock.
-     Hover white is desktop/mouse only so touch :hover stickiness
-     cannot override light-mode pink/#481C1E after a tap. */
+     Includes :hover so sticky tap state stays white in dark mode.
+     Other dark header icons get white hover on fine pointers only. */
   [data-theme="dark"] .theme-toggle.theme-icon,
   [data-theme="dark"] .theme-toggle.theme-icon:hover{
     color:#E8E8E8 !important;
@@ -1163,6 +1167,19 @@
   body:not(:has(#content .home-bio)) .theme-toggle,
   body:not(:has(#content .home-bio)) .footer-state-icon{
     color:#481C1E;
+  }
+  /* Light non-home: brown must beat pink hover !important (incl. sticky
+     :hover after a theme tap). Scoped to :not([data-theme="dark"]) so
+     this cannot override dark-mode white theme-icon rules. */
+  :root:not([data-theme="dark"]):not(:has(#content .home-bio)) .theme-toggle,
+  :root:not([data-theme="dark"]):not(:has(#content .home-bio)) .theme-toggle:hover{
+    color:#481C1E !important;
+  }
+  :root:not([data-theme="dark"]):not(:has(#content .home-bio)) .theme-toggle svg,
+  :root:not([data-theme="dark"]):not(:has(#content .home-bio)) .theme-toggle:hover svg{
+    stroke:#481C1E !important;
+    fill:#481C1E !important;
+    color:#481C1E !important;
   }
   body:not(:has(#content .home-bio)) .footer-divider{
     border-top-color:#481C1E;
