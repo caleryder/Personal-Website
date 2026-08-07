@@ -2,6 +2,19 @@
   navigation: auto;
 }
 
+/* Self-hosted ExtraBold includes → (U+2192). Google Fonts' latin subset
+   ships ↑/↓ but omits →, which caused company-list arrows to fall back
+   to another face. Declared before other Host Grotesk faces so weight
+   800 can resolve this file for the arrow glyph. */
+@font-face{
+  font-family:"Host Grotesk";
+  font-style:normal;
+  font-weight:800;
+  font-display:swap;
+  src:url("/assets/fonts/HostGrotesk-ExtraBold.woff2") format("woff2"),
+      url("/assets/fonts/HostGrotesk-ExtraBold.ttf") format("truetype");
+}
+
 /* Company-row clicks are handled by animateCompanyEnter in site.js, not
    by the browser's default shared-element view-transition. The native
    one interpolates the logo straight to its destination, but the motion
@@ -405,6 +418,18 @@
     font-weight:800;
     color:var(--pink);
   }
+  /* Home company list: → is real Host Grotesk ExtraBold text (see HTML +
+     self-hosted @font-face). Keep solid pink on gradient names; light + dark. */
+  body:has(#content .home-bio) .company-arrow{
+    font-family:"Host Grotesk", "Helvetica Neue", Arial, sans-serif;
+    font-weight:800;
+    color:var(--pink);
+    -webkit-text-fill-color:var(--pink);
+  }
+  body:has(#content .home-bio) .company-row:hover .company-arrow{
+    color:var(--pink-dark);
+    -webkit-text-fill-color:var(--pink-dark);
+  }
   .company-name-gradient{
     background:linear-gradient(90deg, #FACD74 0%, #ED6A39 33%, #C13488 66%, #6058A6 100%);
     -webkit-background-clip:text;
@@ -511,8 +536,9 @@
 
   .pillar-full{margin-bottom:3.85rem;}
   .pillar-full h3{font-size:1.35rem; margin-bottom:0.6rem;}
-  /* Intro body under the principle heading matches that heading size. */
-  .pillar-full > .pillar-body{font-size:1.35rem; margin-bottom:0.75rem;}
+  /* Intro body under the principle heading matches that heading size.
+     Margin below is 0 so the So I… gap is controlled only by the toggle. */
+  .pillar-full > .pillar-body{font-size:1.35rem; margin-bottom:0;}
   .pillar-detail{
     margin-bottom:0.6rem;
   }
@@ -528,7 +554,8 @@
     gap:0.75rem;
     cursor:pointer;
     padding:0;
-    margin-top:0.75rem;
+    /* 2× the h3 → intro gap (0.6rem). */
+    margin-top:1.2rem;
     margin-bottom:0;
     color:inherit;
     text-align:left;
