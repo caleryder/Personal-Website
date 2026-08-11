@@ -270,8 +270,9 @@
   .lede{font-size:1.5rem;}
   .cs-lede{font-size:1.5rem;}
   .cs-subhead{font-size:1.5rem;}
-  /* CTA labels match .cs-lede at every breakpoint. */
-  .case-study-cta{font-size:1.5rem;}
+  /* CTA labels (and the coming-soon note) match .cs-lede at every breakpoint. */
+  .case-study-cta,
+  .cs-note{font-size:1.5rem;}
   .pillar-full{max-width:38rem;}
   /* .pillar-quote and .pillar-detail ("So I..."/"At [company]...") are
      always 75% of .pillar-full's max-width at the matching breakpoint,
@@ -290,7 +291,8 @@
     .lede{font-size:2.3125rem; max-width:63.375rem;}
     .cs-lede{font-size:2.0625rem; max-width:63.375rem;}
     .cs-subhead{font-size:2.0625rem;}
-    .case-study-cta{font-size:2.0625rem;}
+    .case-study-cta,
+    .cs-note{font-size:2.0625rem;}
     .cs-section{max-width:63.375rem;}
     .body-copy{max-width:47.53rem;}
     .leadership-block{max-width:63.375rem;}
@@ -304,7 +306,8 @@
     .lede{font-size:2.5rem; max-width:73.125rem;}
     .cs-lede{font-size:2.25rem; max-width:73.125rem;}
     .cs-subhead{font-size:2.25rem;}
-    .case-study-cta{font-size:2.25rem;}
+    .case-study-cta,
+    .cs-note{font-size:2.25rem;}
     .cs-section{max-width:73.125rem;}
     .body-copy{max-width:54.84rem;}
     .leadership-block{max-width:73.125rem;}
@@ -318,7 +321,8 @@
     .lede{font-size:2.75rem; max-width:87.75rem;}
     .cs-lede{font-size:2.5rem; max-width:87.75rem;}
     .cs-subhead{font-size:2.5rem;}
-    .case-study-cta{font-size:2.5rem;}
+    .case-study-cta,
+    .cs-note{font-size:2.5rem;}
     .cs-section{max-width:87.75rem;}
     .body-copy{max-width:65.81rem;}
     .leadership-block{max-width:87.75rem;}
@@ -894,7 +898,8 @@
   }
   .hero-img img{width:100%; height:auto; display:block;}
   /* Text + leading →, matching the home company-row click pattern.
-     No pill/border stroke. Size tracks .cs-lede (set with that scale). */
+     No pill/border stroke. Size tracks .cs-lede (set with that scale).
+     .cs-note is the non-link stand-in (e.g. “Case Study Coming Soon”). */
   .case-study-cta{
     display:inline-flex;
     align-items:center;
@@ -908,9 +913,16 @@
     border-radius:0;
     background:none;
   }
-  .case-study-cta:hover{text-decoration:underline; text-underline-offset:0.15em; background:none; color:inherit;}
+  .cs-note{
+    font-weight:400;
+    margin:0;
+  }
+  /* Keep non-home CTA chrome at #481C1E on hover (underline only).
+     Do not use color:inherit -- body is --pink, so inherit flipped
+     these links pink/red on hover. Dark already pins #E8E8E8. */
+  .case-study-cta:hover{text-decoration:underline; text-underline-offset:0.15em; background:none; color:#481C1E;}
   .case-study-cta:active,
-  .case-study-cta:focus{color:inherit; outline:none;}
+  .case-study-cta:focus{color:#481C1E; outline:none;}
   [data-theme="dark"] .case-study-cta:hover{background:none; color:#E8E8E8;}
   [data-theme="dark"] .case-study-cta:active,
   [data-theme="dark"] .case-study-cta:focus{color:#E8E8E8; outline:none;}
@@ -938,6 +950,9 @@
      treatment (constant across light/dark) rather than the muted
      case-study palette above, which is fixed per-theme. */
   body:has(#content .home-bio) .case-study-cta{color:var(--pink);}
+  body:has(#content .home-bio) .case-study-cta:hover,
+  body:has(#content .home-bio) .case-study-cta:active,
+  body:has(#content .home-bio) .case-study-cta:focus{color:var(--pink);}
 
   /* line-height matches .home-bio and .lede so summaries read at the
      same leading as the rest of the large type. */
@@ -1249,7 +1264,7 @@
     .pillar-quote p{font-size:1.6875rem;}
     .pillar-quote-attribution{font-size:1.0625rem;}
     .role-meta{font-size:1.0625rem;}
-    /* .case-study-cta size tracks .cs-lede in the type scale above. */
+    /* .case-study-cta / .cs-note size tracks .cs-lede in the type scale above. */
     .locked-cta{font-size:1.3125rem;}
     .cs-section-label{font-size:0.975rem;}
     .stat-num{font-size:3.046875rem;}
