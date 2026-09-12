@@ -428,7 +428,8 @@
     mask-position:left center;
     background-color:#000000;
   }
-  [data-theme="dark"] .ai-native-icon-mark{background-color:#BFC0C3;}
+  /* Match inverted company marks (white), not the old gray #BFC0C3. */
+  [data-theme="dark"] .ai-native-icon-mark{background-color:#FFFFFF;}
   [data-theme="dark"] .company-mark img,
   [data-theme="dark"] .company-wordmark img{filter:invert(1);}
   /* Hover: land on the same charcoal (#4C4C4C) as the AI Native mask.
