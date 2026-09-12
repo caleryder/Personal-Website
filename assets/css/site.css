@@ -722,6 +722,10 @@
     margin-bottom:4.125rem;
     background:var(--cream-2);
   }
+  /* Transparent art: light mode keeps cream behind it. Dark mode would
+     otherwise show the near-black page through the alpha, so mat those
+     images on white, same box as the image. */
+  [data-theme="dark"] .hero-img.hero-img-mat{background:#fff;}
   .hero-img.rounded-corners{
     border-radius:9.8px;
   }
