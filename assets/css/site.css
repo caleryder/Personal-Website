@@ -1377,7 +1377,7 @@
     display:block;
     position:absolute;
     top:0;
-    left:calc(60% + 1.95rem);
+    left:calc(40% + 1.3rem);
     width:clamp(19rem, 30vw, 36rem);
     aspect-ratio:384 / 369;
     pointer-events:none;
@@ -1395,6 +1395,7 @@
   /* Set by animateCompanyEnter so the panel doesn't linger over the
      staged click animation. */
   #content.company-leaving .home-hover{opacity:0;}
+  .home-hero .company-list{position:relative; z-index:1;}
 }
 
 @media (min-width:1024px) and (hover:hover){
