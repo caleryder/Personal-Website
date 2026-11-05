@@ -1412,3 +1412,44 @@
   .home-hover, .home-hover img{transition:none;}
   .home-hover img{transform:none;}
 }
+
+/* ---------- Principles page (/values/) ----------
+   All principles are open (no accordion). The principle linked from the
+   home page (#id) is moved to the top by reorderPillarFromHash(). */
+.values-title{margin-top:4.5rem; margin-bottom:3rem;}
+.values-label{font-size:0.75rem; font-weight:700; margin-bottom:1.25rem;}
+.values-page .pillar-full{max-width:none; margin-bottom:3.5rem;}
+.values-page .pillar-full h3{font-size:1.75rem; line-height:1; margin-bottom:0.6rem;}
+.values-page .pillar-full > .pillar-body{font-size:1rem; font-weight:700; line-height:1.15; margin-bottom:0;}
+.values-page .pillar-build{font-size:1rem; font-weight:700; line-height:1; margin:1.5rem 0 1.25rem; max-width:none;}
+.values-page .pillar-content{max-height:none; opacity:1; overflow:visible; max-width:none; display:block;}
+.values-page .pillar-content .pillar-body,
+.values-page .pillar-detail{font-size:1rem; font-weight:400; line-height:1.15; margin:0 0 1rem; max-width:none;}
+.values-page .pillar-quote{max-width:none;}
+@media (min-width:1024px){
+  .values-title{
+    font-size:clamp(3rem, 5vw, 5.5rem);
+    line-height:1.09;
+    max-width:min(53vw, 62rem);
+    margin:4.5rem 0 6.5rem 6.125rem;
+  }
+  .values-list{display:grid; grid-template-columns:6.125rem minmax(0,1fr);}
+  .values-label{padding-top:0.55rem; margin:0; font-size:clamp(0.75rem,0.95vw,1rem);}
+  .values-stack{max-width:min(53vw, 62rem);}
+  .values-page .pillar-full{margin-bottom:5rem;}
+  .values-page .pillar-full h3{font-size:clamp(2rem, 2.5vw, 3rem); margin-bottom:0.6rem;}
+  .values-page .pillar-full > .pillar-body,
+  .values-page .pillar-build,
+  .values-page .pillar-content .pillar-body,
+  .values-page .pillar-detail{font-size:clamp(1rem, 1.25vw, 1.5rem);}
+  .values-page .pillar-build{margin:1.9rem 0 1.25rem;}
+  .values-page .pillar-content{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    column-gap:15%;
+    align-items:start;
+  }
+  .values-page .pillar-content .pillar-body,
+  .values-page .pillar-detail{margin:0;}
+  .values-page .pillar-quote{grid-column:1 / -1;}
+}
