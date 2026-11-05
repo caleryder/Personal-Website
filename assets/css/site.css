@@ -1463,3 +1463,26 @@
   .values-page .pillar-detail{margin:0;}
   .values-page .pillar-quote{grid-column:1 / -1;}
 }
+
+/* Header wordmark and language label: Figma specifies 15px Bold (desktop). */
+@media (min-width:1024px){
+  .logo,
+  .lang-toggle{
+    font-size:0.9375rem;
+    font-weight:700;
+    letter-spacing:0;
+  }
+}
+
+/* Header position per Figma (1280 frame): wordmark at x=55, language
+   label ends at x=1225, text top at y=25. Bottom margin grows by the
+   top padding removed, so page content does not move. */
+@media (min-width:1024px){
+  .top-row{padding:22.5px 4.297vw 0; margin-bottom:calc(4.5rem + 13.5px);}
+}
+@media (min-width:1440px){
+  .top-row{margin-bottom:calc(4.5rem + 17.5px);}
+}
+@media (min-width:1920px){
+  .top-row{margin-bottom:calc(4.5rem + 25.5px);}
+}
