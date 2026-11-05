@@ -1390,8 +1390,7 @@
     height:100%;
     object-fit:contain;
     opacity:0;
-    transform:translateY(8px);
-    transition:opacity 0.22s ease, transform 0.22s ease;
+    transition:opacity 0.22s ease;
   }
   /* Set by animateCompanyEnter so the panel doesn't linger over the
      staged click animation. */
