@@ -54,7 +54,7 @@ function applyLangToDOM(){
     el.placeholder = LANG === 'es' ? el.getAttribute('data-es-placeholder') : el.getAttribute('data-en-placeholder');
   });
   document.querySelectorAll('.lang-toggle').forEach(btn=>{
-    btn.textContent = LANG === 'en' ? 'ES' : 'EN';
+    btn.textContent = LANG === 'en' ? 'ENG' : 'ESP';
   });
 }
 function toggleLang(){

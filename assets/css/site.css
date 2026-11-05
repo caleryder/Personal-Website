@@ -207,6 +207,7 @@
   .theme-toggle svg{height:14px !important; width:auto; display:block;}
   .mail-icon-btn svg{height:13px !important;}
   .resume-icon-btn svg{height:17px !important;}
+  .linkedin-box svg{height:13px !important;}
   .linkedin-box{
     display:flex;
     align-items:center;
@@ -1369,13 +1370,14 @@
   }
   .home-principles a{font-size:clamp(1rem, 1.25vw, 1.5rem); line-height:1;}
 
-  /* Hover panel: anchored to the right edge of the hero, top-aligned with
-     the first company row. 384x369 at a 1280px viewport, scaling with it. */
+  /* Hover panel: left edge lines up with the 4th principle column below
+     (3 columns + 3 gaps in, gap = 3.25rem), top-aligned with the first
+     company row. 384x369 at a 1280px viewport, scaling with it. */
   .home-hover{
     display:block;
     position:absolute;
     top:0;
-    right:0;
+    left:calc(60% + 1.95rem);
     width:clamp(19rem, 30vw, 36rem);
     aspect-ratio:384 / 369;
     pointer-events:none;
