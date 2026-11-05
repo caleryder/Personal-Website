@@ -1486,3 +1486,9 @@
 @media (min-width:1920px){
   .top-row{margin-bottom:calc(4.5rem + 25.5px);}
 }
+
+/* Principles page: all text one color (dark brown; light gray in dark mode). */
+.values-page, .values-page *,
+.values-label, .values-page .pillar-build, .values-page .pillar-build *{color:#481C1E;}
+[data-theme="dark"] .values-page, [data-theme="dark"] .values-page *,
+[data-theme="dark"] .values-label, [data-theme="dark"] .values-page .pillar-build, [data-theme="dark"] .values-page .pillar-build *{color:#E8E8E8;}
