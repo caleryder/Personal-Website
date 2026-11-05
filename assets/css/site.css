@@ -1377,7 +1377,7 @@
     display:block;
     position:absolute;
     top:0;
-    left:calc(40% + 1.3rem);
+    left:calc(60% + 1.95rem - 7.656vw);
     width:clamp(19rem, 30vw, 36rem);
     aspect-ratio:384 / 369;
     pointer-events:none;
