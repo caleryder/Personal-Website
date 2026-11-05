@@ -1325,9 +1325,14 @@
 }
 
 @media (min-width:1024px){
+  /* Figma 1280 frame: labels at x=55 (4.297vw), copy at x=153 (11.953vw).
+     --cl is the left edge of the centered .page content box, so the
+     home layout can be placed by viewport position (as in Figma) while
+     .page itself stays put (the company-click animation measures it). */
+  :root{--cl:calc(3rem + max(0px, (100vw - 1110px) / 2));}
   .home-kicker,
   .home-hero,
-  .home-principles{margin-left:6.125rem;}
+  .home-principles{margin-left:calc(11.953vw - var(--cl));}
   .home-kicker{font-size:clamp(1.75rem, 2.5vw, 3.5rem); line-height:1;}
 
   .home-hero{
@@ -1346,7 +1351,8 @@
 
   .home-row{
     display:grid;
-    grid-template-columns:6.125rem minmax(0,1fr);
+    grid-template-columns:7.656vw minmax(0,1fr);
+    margin-left:calc(4.297vw - var(--cl));
     align-items:start;
     margin-top:0;
   }
@@ -1365,7 +1371,8 @@
 
   .home-principles{
     grid-template-columns:repeat(5, minmax(0,1fr));
-    column-gap:3.25rem;
+    column-gap:4.11vw;
+    width:72.73vw;
     margin-top:8.4rem;
   }
   .home-principles a{font-size:clamp(1rem, 1.25vw, 1.5rem); line-height:1;}
@@ -1377,7 +1384,7 @@
     display:block;
     position:absolute;
     top:0;
-    left:calc(60% + 1.95rem - 7.656vw);
+    left:46.09vw;
     width:clamp(19rem, 30vw, 36rem);
     aspect-ratio:384 / 369;
     pointer-events:none;
@@ -1413,6 +1420,9 @@
   .home-hover img{transform:none;}
 }
 
+@media (min-width:1440px){:root{--cl:calc(3rem + (100vw - 1266px) / 2);}}
+@media (min-width:1920px){:root{--cl:calc(3.5rem + (100vw - 1516px) / 2);}}
+
 /* ---------- Principles page (/values/) ----------
    All principles are open (no accordion). The principle linked from the
    home page (#id) is moved to the top by reorderPillarFromHash(). */
@@ -1431,9 +1441,9 @@
     font-size:clamp(3rem, 5vw, 5.5rem);
     line-height:1.09;
     max-width:min(53vw, 62rem);
-    margin:4.5rem 0 6.5rem 6.125rem;
+    margin:4.5rem 0 6.5rem calc(11.953vw - var(--cl));
   }
-  .values-list{display:grid; grid-template-columns:6.125rem minmax(0,1fr);}
+  .values-list{display:grid; grid-template-columns:7.656vw minmax(0,1fr); margin-left:calc(4.297vw - var(--cl));}
   .values-label{padding-top:0.55rem; margin:0; font-size:clamp(0.75rem,0.95vw,1rem);}
   .values-stack{max-width:min(53vw, 62rem);}
   .values-page .pillar-full{margin-bottom:5rem;}
