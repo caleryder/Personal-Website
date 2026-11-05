@@ -54,7 +54,7 @@ function applyLangToDOM(){
     el.placeholder = LANG === 'es' ? el.getAttribute('data-es-placeholder') : el.getAttribute('data-en-placeholder');
   });
   document.querySelectorAll('.lang-toggle').forEach(btn=>{
-    btn.textContent = LANG === 'en' ? 'ES' : 'EN';
+    btn.textContent = LANG === 'en' ? 'ENG' : 'ESP';
   });
 }
 function toggleLang(){
@@ -329,6 +329,7 @@ async function animateCompanyEnter(evt, destUrl){
   evt.preventDefault();
   evt.stopPropagation();
   companyTransitionRunning = true;
+  content.classList.add('company-leaving');
 
   // All the geometry below is viewport-relative, so pin the page to the
   // top first -- otherwise a scrolled home page would leave the
@@ -435,6 +436,7 @@ async function animateCompanyEnter(evt, destUrl){
   if(destMark) destMark.style.opacity = '';
   content.style.transform = '';
   content.style.willChange = '';
+  content.classList.remove('company-leaving');
   pageRise.cancel();
 
   history.pushState({}, '', destUrl);

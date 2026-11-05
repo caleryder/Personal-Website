@@ -207,6 +207,7 @@
   .theme-toggle svg{height:14px !important; width:auto; display:block;}
   .mail-icon-btn svg{height:13px !important;}
   .resume-icon-btn svg{height:17px !important;}
+  .linkedin-box svg{height:13px !important;}
   .linkedin-box{
     display:flex;
     align-items:center;
@@ -1275,3 +1276,219 @@
     .stat-num{font-size:3.046875rem;}
     .stat-label{font-size:1.0625rem;}
   }
+
+/* ---------- Home page: Nov 2026 layout + company hover images ----------
+   Scoped to the home markup (.home-*), so no other page is affected.
+   Desktop (>=1024px) follows the Figma frame; below that the page keeps
+   the existing fluid sizing with the new copy and structure. The hover
+   panel is desktop + hover-capable only. */
+.home-kicker{
+  font-family:"Host Grotesk", sans-serif;
+  font-weight:700;
+  color:var(--pink);
+  font-size:1.1rem;
+  line-height:1.1;
+  margin:0;
+}
+.home-row{margin-top:3rem;}
+.home-label{
+  font-family:"Host Grotesk", sans-serif;
+  font-weight:700;
+  color:var(--pink);
+  font-size:0.85rem;
+  line-height:1.2;
+  margin:0 0 0.6rem;
+}
+.home-row .home-bio{font-weight:700; margin-bottom:0;}
+.home-hero{position:relative;}
+.home-hover{display:none;}
+.home-principles{
+  display:grid !important;
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:1rem 1.5rem;
+  margin-top:3rem;
+}
+.home-principles a{
+  font-family:"Host Grotesk", sans-serif;
+  font-weight:700;
+  font-size:1rem;
+  line-height:1.1;
+  text-decoration:none;
+  color:var(--pink);
+}
+.home-principles a:hover{color:var(--pink-dark);}
+
+@media (max-width:699px){
+  /* An older mobile rule pulls .section-block up under the previous block;
+     keep the home rows evenly spaced instead. */
+  body:has(#content .home-bio) .home-row.section-block{margin-top:2.5rem;}
+}
+
+@media (min-width:1024px){
+  /* Figma 1280 frame: labels at x=55 (4.297vw), copy at x=153 (11.953vw).
+     --cl is the left edge of the centered .page content box, so the
+     home layout can be placed by viewport position (as in Figma) while
+     .page itself stays put (the company-click animation measures it). */
+  :root{--cl:calc(3rem + max(0px, (100vw - 1110px) / 2));}
+  .home-kicker,
+  .home-hero,
+  .home-principles{margin-left:calc(11.953vw - var(--cl));}
+  .home-kicker{font-size:clamp(1.75rem, 2.5vw, 3.5rem); line-height:1;}
+
+  .home-hero{
+    --row-fs:clamp(3.5rem, 5vw, 6.25rem);
+    margin-top:2.5rem;
+    margin-bottom:6rem;
+  }
+  body:has(#content .home-bio) .home-hero .company-list{
+    margin:0;
+    gap:calc(var(--row-fs) * 0.156);
+  }
+  body:has(#content .home-bio) .home-hero .company-row{
+    font-size:var(--row-fs);
+    line-height:1.09;
+  }
+
+  .home-row{
+    display:grid;
+    grid-template-columns:7.656vw minmax(0,1fr);
+    margin-left:calc(4.297vw - var(--cl));
+    align-items:start;
+    margin-top:0;
+  }
+  .home-row + .home-row{margin-top:6.25rem;}
+  .home-label{font-size:0.9375rem; padding-top:0.2rem; margin:0;}
+  .home-row .home-bio,
+  .home-row .body-copy p{
+    font-size:clamp(1.75rem, 2.5vw, 3.5rem);
+    line-height:1;
+    font-weight:700;
+    max-width:clamp(40rem, 60.7vw, 62rem);
+  }
+  .home-row .body-copy{max-width:none;}
+  .home-row .body-copy p{margin:0 0 1em;}
+  .home-row .body-copy p:last-child{margin-bottom:0;}
+
+  .home-principles{
+    grid-template-columns:repeat(5, minmax(0,1fr));
+    column-gap:4.11vw;
+    width:72.73vw;
+    margin-top:8.4rem;
+  }
+  .home-principles a{font-size:clamp(1rem, 1.25vw, 1.5rem); line-height:1;}
+
+  /* Hover panel: left edge lines up with the 4th principle column below
+     (3 columns + 3 gaps in, gap = 3.25rem), top-aligned with the first
+     company row. 384x369 at a 1280px viewport, scaling with it. */
+  .home-hover{
+    display:block;
+    position:absolute;
+    top:0;
+    left:46.09vw;
+    width:clamp(19rem, 30vw, 36rem);
+    aspect-ratio:384 / 369;
+    pointer-events:none;
+    transition:opacity 0.14s ease;
+  }
+  .home-hover img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    opacity:0;
+    transition:opacity 0.22s ease;
+  }
+  /* Set by animateCompanyEnter so the panel doesn't linger over the
+     staged click animation. */
+  #content.company-leaving .home-hover{opacity:0;}
+  .home-hero .company-list{position:relative; z-index:1;}
+}
+
+@media (min-width:1024px) and (hover:hover){
+  .home-hero:has(.company-row[data-hover="stori"]:is(:hover,:focus-visible)) .home-hover img[data-for="stori"],
+  .home-hero:has(.company-row[data-hover="meta"]:is(:hover,:focus-visible)) .home-hover img[data-for="meta"],
+  .home-hero:has(.company-row[data-hover="nike"]:is(:hover,:focus-visible)) .home-hover img[data-for="nike"],
+  .home-hero:has(.company-row[data-hover="foureyes"]:is(:hover,:focus-visible)) .home-hover img[data-for="foureyes"],
+  .home-hero:has(.company-row[data-hover="ai-native"]:is(:hover,:focus-visible)) .home-hover img[data-for="ai-native"]{
+    opacity:1;
+    transform:none;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .home-hover, .home-hover img{transition:none;}
+  .home-hover img{transform:none;}
+}
+
+@media (min-width:1440px){:root{--cl:calc(3rem + (100vw - 1266px) / 2);}}
+@media (min-width:1920px){:root{--cl:calc(3.5rem + (100vw - 1516px) / 2);}}
+
+/* ---------- Principles page (/values/) ----------
+   All principles are open (no accordion). The principle linked from the
+   home page (#id) is moved to the top by reorderPillarFromHash(). */
+.values-title{margin-top:4.5rem; margin-bottom:3rem;}
+.values-label{font-size:0.75rem; font-weight:700; margin-bottom:1.25rem;}
+.values-page .pillar-full{max-width:none; margin-bottom:3.5rem;}
+.values-page .pillar-full h3{font-size:1.75rem; line-height:1; margin-bottom:0.6rem;}
+.values-page .pillar-full > .pillar-body{font-size:1rem; font-weight:700; line-height:1.15; margin-bottom:0;}
+.values-page .pillar-build{font-size:1rem; font-weight:700; line-height:1; margin:1.5rem 0 1.25rem; max-width:none;}
+.values-page .pillar-content{max-height:none; opacity:1; overflow:visible; max-width:none; display:block;}
+.values-page .pillar-content .pillar-body,
+.values-page .pillar-detail{font-size:1rem; font-weight:400; line-height:1.15; margin:0 0 1rem; max-width:none;}
+.values-page .pillar-quote{max-width:none;}
+@media (min-width:1024px){
+  .values-title{
+    font-size:clamp(3rem, 5vw, 5.5rem);
+    line-height:1.09;
+    max-width:min(53vw, 62rem);
+    margin:4.5rem 0 6.5rem calc(11.953vw - var(--cl));
+  }
+  .values-list{display:grid; grid-template-columns:7.656vw minmax(0,1fr); margin-left:calc(4.297vw - var(--cl));}
+  .values-label{padding-top:0.55rem; margin:0; font-size:clamp(0.75rem,0.95vw,1rem);}
+  .values-stack{max-width:min(53vw, 62rem);}
+  .values-page .pillar-full{margin-bottom:5rem;}
+  .values-page .pillar-full h3{font-size:clamp(2rem, 2.5vw, 3rem); margin-bottom:0.6rem;}
+  .values-page .pillar-full > .pillar-body,
+  .values-page .pillar-build,
+  .values-page .pillar-content .pillar-body,
+  .values-page .pillar-detail{font-size:clamp(1rem, 1.25vw, 1.5rem);}
+  .values-page .pillar-build{margin:1.9rem 0 1.25rem;}
+  .values-page .pillar-content{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    column-gap:15%;
+    align-items:start;
+  }
+  .values-page .pillar-content .pillar-body,
+  .values-page .pillar-detail{margin:0;}
+  .values-page .pillar-quote{grid-column:1 / -1;}
+}
+
+/* Header wordmark and language label: Figma specifies 15px Bold (desktop). */
+@media (min-width:1024px){
+  .logo,
+  .lang-toggle{
+    font-size:0.9375rem;
+    font-weight:700;
+    letter-spacing:0;
+  }
+}
+
+/* Header position per Figma (1280 frame): wordmark at x=55, language
+   label ends at x=1225, text top at y=25. Bottom margin grows by the
+   top padding removed, so page content does not move. */
+@media (min-width:1024px){
+  .top-row{padding:22.5px 4.297vw 0; margin-bottom:calc(4.5rem + 13.5px);}
+}
+@media (min-width:1440px){
+  .top-row{margin-bottom:calc(4.5rem + 17.5px);}
+}
+@media (min-width:1920px){
+  .top-row{margin-bottom:calc(4.5rem + 25.5px);}
+}
+
+/* Principles page: all text one color (dark brown; light gray in dark mode). */
+.values-page, .values-page *,
+.values-label, .values-page .pillar-build, .values-page .pillar-build *{color:#481C1E;}
+[data-theme="dark"] .values-page, [data-theme="dark"] .values-page *,
+[data-theme="dark"] .values-label, [data-theme="dark"] .values-page .pillar-build, [data-theme="dark"] .values-page .pillar-build *{color:#E8E8E8;}
