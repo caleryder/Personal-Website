@@ -1275,3 +1275,139 @@
     .stat-num{font-size:3.046875rem;}
     .stat-label{font-size:1.0625rem;}
   }
+
+/* ---------- Home page: Nov 2026 layout + company hover images ----------
+   Scoped to the home markup (.home-*), so no other page is affected.
+   Desktop (>=1024px) follows the Figma frame; below that the page keeps
+   the existing fluid sizing with the new copy and structure. The hover
+   panel is desktop + hover-capable only. */
+.home-kicker{
+  font-family:"Host Grotesk", sans-serif;
+  font-weight:700;
+  color:var(--pink);
+  font-size:1.1rem;
+  line-height:1.1;
+  margin:0;
+}
+.home-row{margin-top:3rem;}
+.home-label{
+  font-family:"Host Grotesk", sans-serif;
+  font-weight:700;
+  color:var(--pink);
+  font-size:0.85rem;
+  line-height:1.2;
+  margin:0 0 0.6rem;
+}
+.home-row .home-bio{font-weight:700; margin-bottom:0;}
+.home-break{display:block;}
+.home-hero{position:relative;}
+.home-hover{display:none;}
+.home-principles{
+  display:grid !important;
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:1rem 1.5rem;
+  margin-top:3rem;
+}
+.home-principles a{
+  font-family:"Host Grotesk", sans-serif;
+  font-weight:700;
+  font-size:1rem;
+  line-height:1.1;
+  text-decoration:none;
+  color:var(--pink);
+}
+.home-principles a:hover{color:var(--pink-dark);}
+
+@media (max-width:699px){
+  /* An older mobile rule pulls .section-block up under the previous block;
+     keep the home rows evenly spaced instead. */
+  body:has(#content .home-bio) .home-row.section-block{margin-top:2.5rem;}
+}
+
+@media (min-width:1024px){
+  .home-kicker,
+  .home-hero,
+  .home-principles{margin-left:6.125rem;}
+  .home-kicker{font-size:clamp(1.75rem, 2.5vw, 3.5rem); line-height:1;}
+
+  .home-hero{
+    --row-fs:clamp(3.5rem, 5vw, 6.25rem);
+    margin-top:2.5rem;
+    margin-bottom:6rem;
+  }
+  body:has(#content .home-bio) .home-hero .company-list{
+    margin:0;
+    gap:calc(var(--row-fs) * 0.156);
+  }
+  body:has(#content .home-bio) .home-hero .company-row{
+    font-size:var(--row-fs);
+    line-height:1.09;
+  }
+
+  .home-row{
+    display:grid;
+    grid-template-columns:6.125rem minmax(0,1fr);
+    align-items:start;
+    margin-top:0;
+  }
+  .home-row + .home-row{margin-top:6.25rem;}
+  .home-label{font-size:0.9375rem; padding-top:0.2rem; margin:0;}
+  .home-row .home-bio,
+  .home-row .body-copy p{
+    font-size:clamp(1.75rem, 2.5vw, 3.5rem);
+    line-height:1;
+    font-weight:700;
+    max-width:clamp(40rem, 60.7vw, 62rem);
+  }
+  .home-row .body-copy{max-width:none;}
+  .home-row .body-copy p{margin:0 0 1em;}
+  .home-row .body-copy p:last-child{margin-bottom:0;}
+
+  .home-principles{
+    grid-template-columns:repeat(5, minmax(0,1fr));
+    column-gap:3.25rem;
+    margin-top:8.4rem;
+  }
+  .home-principles a{font-size:clamp(1rem, 1.25vw, 1.5rem); line-height:1;}
+
+  /* Hover panel: anchored to the right edge of the hero, top-aligned with
+     the first company row. 384x369 at a 1280px viewport, scaling with it. */
+  .home-hover{
+    display:block;
+    position:absolute;
+    top:0;
+    right:0;
+    width:clamp(19rem, 30vw, 36rem);
+    aspect-ratio:384 / 369;
+    pointer-events:none;
+    transition:opacity 0.14s ease;
+  }
+  .home-hover img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity 0.22s ease, transform 0.22s ease;
+  }
+  /* Set by animateCompanyEnter so the panel doesn't linger over the
+     staged click animation. */
+  #content.company-leaving .home-hover{opacity:0;}
+}
+
+@media (min-width:1024px) and (hover:hover){
+  .home-hero:has(.company-row[data-hover="stori"]:is(:hover,:focus-visible)) .home-hover img[data-for="stori"],
+  .home-hero:has(.company-row[data-hover="meta"]:is(:hover,:focus-visible)) .home-hover img[data-for="meta"],
+  .home-hero:has(.company-row[data-hover="nike"]:is(:hover,:focus-visible)) .home-hover img[data-for="nike"],
+  .home-hero:has(.company-row[data-hover="foureyes"]:is(:hover,:focus-visible)) .home-hover img[data-for="foureyes"],
+  .home-hero:has(.company-row[data-hover="ai-native"]:is(:hover,:focus-visible)) .home-hover img[data-for="ai-native"]{
+    opacity:1;
+    transform:none;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .home-hover, .home-hover img{transition:none;}
+  .home-hover img{transform:none;}
+}
