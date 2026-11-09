@@ -1396,8 +1396,11 @@
     width:100%;
     height:100%;
     object-fit:contain;
-    opacity:0;
-    transition:opacity 0.22s ease;
+    /* Same wipe the case study images use (top edge down), 1s ease. It
+       only animates in; leaving a row hides the image at once so two
+       images never overlap while moving down the list. */
+    clip-path:inset(0 0 100% 0);
+    transition:none;
   }
   /* Set by animateCompanyEnter so the panel doesn't linger over the
      staged click animation. */
@@ -1411,13 +1414,12 @@
   .home-hero:has(.company-row[data-hover="nike"]:is(:hover,:focus-visible)) .home-hover img[data-for="nike"],
   .home-hero:has(.company-row[data-hover="foureyes"]:is(:hover,:focus-visible)) .home-hover img[data-for="foureyes"],
   .home-hero:has(.company-row[data-hover="ai-native"]:is(:hover,:focus-visible)) .home-hover img[data-for="ai-native"]{
-    opacity:1;
-    transform:none;
+    clip-path:inset(0 0 0% 0);
+    transition:clip-path 1s ease;
   }
 }
 @media (prefers-reduced-motion:reduce){
-  .home-hover, .home-hover img{transition:none;}
-  .home-hover img{transform:none;}
+  .home-hover, .home-hover img{transition:none !important;}
 }
 
 @media (min-width:1440px){:root{--cl:calc(3rem + (100vw - 1266px) / 2);}}
