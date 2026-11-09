@@ -1463,7 +1463,8 @@
   }
   .values-page .pillar-content .pillar-body,
   .values-page .pillar-detail{margin:0;}
-  .values-page .pillar-quote{grid-column:1 / -1;}
+  /* Quotes sit in the left column, the same width as the "So I..." copy. */
+  .values-page .pillar-quote{grid-column:1;}
 }
 
 /* Header wordmark and language label: Figma specifies 15px Bold (desktop). */
