@@ -1545,3 +1545,31 @@
   .footer-meta{font-size:0.9375rem; font-weight:700; letter-spacing:0; line-height:1;}
   .footer-block{padding-left:4.297vw; padding-right:4.297vw;}
 }
+
+/* Principles page, desktop spacing per Figma "MacBook Air - 20" (1280 frame).
+   --pfs is the 16px body unit of that frame, scaled with the viewport. */
+@media (min-width:1024px){
+  .values-page{--pfs:clamp(1rem, 1.25vw, 1.5rem);}
+  .values-title{
+    margin-top:calc(20.625vw - 128px);
+    margin-bottom:calc(6.625 * var(--pfs));
+  }
+  .values-label{padding-top:0.08rem; line-height:1.2;}
+  .values-page .pillar-full{margin-bottom:calc(5.125 * var(--pfs));}
+  .values-page .pillar-full h3{line-height:1; margin-bottom:calc(1.5625 * var(--pfs));}
+  .values-page .pillar-full > .pillar-body,
+  .values-page .pillar-build,
+  .values-page .pillar-content .pillar-body,
+  .values-page .pillar-detail{line-height:1;}
+  .values-page .pillar-build{margin:calc(2.625 * var(--pfs)) 0 calc(1.375 * var(--pfs));}
+  .values-page .pillar-content{column-gap:16.05%;}
+}
+@media (min-width:1440px){ .values-title{margin-top:calc(20.625vw - 132px);} }
+@media (min-width:1920px){ .values-title{margin-top:calc(20.625vw - 140px);} }
+@media (min-width:1024px){
+  /* Figma's column boxes are 114px tall at 1280, which sets the gap to the next principle. */
+  .values-page .pillar-content{min-height:calc(7.125 * var(--pfs));}
+}
+@media (min-width:1024px){
+  .values-page .pillar-quote{margin-top:calc(2.625 * var(--pfs));}
+}
