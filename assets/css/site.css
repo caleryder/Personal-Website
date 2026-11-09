@@ -1596,3 +1596,10 @@
 .logo,
 .lang-toggle,
 .footer-meta{font-weight:700;}
+
+/* Home hover images: no dead zone between company rows, so hover
+   never drops while the pointer travels down the list. */
+@media (min-width:1024px){
+  body:has(#content .home-bio) .company-row{position:relative;}
+  body:has(#content .home-bio) .company-row::after{content:"";position:absolute;left:0;right:0;top:-2px;bottom:-2px;}
+}
