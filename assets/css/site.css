@@ -1492,3 +1492,24 @@
 .values-label, .values-page .pillar-build, .values-page .pillar-build *{color:#481C1E;}
 [data-theme="dark"] .values-page, [data-theme="dark"] .values-page *,
 [data-theme="dark"] .values-label, [data-theme="dark"] .values-page .pillar-build, [data-theme="dark"] .values-page .pillar-build *{color:#E8E8E8;}
+
+/* Fixed-width language label so ENG/ESP never moves the icons beside it. */
+.lang-toggle{
+  box-sizing:content-box;
+  width:2.25rem;
+  min-width:2.25rem;
+  text-align:right;
+  display:inline-flex;
+  justify-content:flex-end;
+  white-space:nowrap;
+}
+
+/* Fixed-width theme button so the moon/sun swap never moves its neighbors. */
+.theme-icon{
+  box-sizing:content-box;
+  width:14px;
+  min-width:14px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
