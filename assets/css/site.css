@@ -1538,3 +1538,10 @@
 @media (min-width:1024px){
   .company-wordmark{margin-top:0;}
 }
+
+/* Footer text uses the header's CALE / ENG treatment (15px Bold on desktop)
+   and lines up with the header's left and right edges. */
+@media (min-width:1024px){
+  .footer-meta{font-size:0.9375rem; font-weight:700; letter-spacing:0; line-height:1;}
+  .footer-block{padding-left:4.297vw; padding-right:4.297vw;}
+}
