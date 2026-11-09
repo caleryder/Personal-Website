@@ -1546,12 +1546,13 @@
   .footer-block{padding-left:4.297vw; padding-right:4.297vw;}
 }
 
-/* Principles page, desktop spacing per Figma "MacBook Air - 20" (1280 frame).
+/* The title's top matches the case study headline's top (wordmark height + 2.5rem below the header).
+   Principles page, desktop spacing per Figma "MacBook Air - 20" (1280 frame).
    --pfs is the 16px body unit of that frame, scaled with the viewport. */
 @media (min-width:1024px){
   .values-page{--pfs:clamp(1rem, 1.25vw, 1.5rem);}
   .values-title{
-    margin-top:calc(20.625vw - 128px);
+    margin-top:calc(41.8px + 2.5rem + 2px);
     margin-bottom:calc(6.625 * var(--pfs));
   }
   .values-label{padding-top:0.08rem; line-height:1.2;}
@@ -1564,8 +1565,8 @@
   .values-page .pillar-build{margin:calc(2.625 * var(--pfs)) 0 calc(1.375 * var(--pfs));}
   .values-page .pillar-content{column-gap:16.05%;}
 }
-@media (min-width:1440px){ .values-title{margin-top:calc(20.625vw - 132px);} }
-@media (min-width:1920px){ .values-title{margin-top:calc(20.625vw - 140px);} }
+@media (min-width:1440px){ .values-title{margin-top:calc(47.3px + 2.5rem + 2px);} }
+@media (min-width:1920px){ .values-title{margin-top:calc(55px + 2.5rem + 2px);} }
 @media (min-width:1024px){
   /* Figma's column boxes are 114px tall at 1280, which sets the gap to the next principle. */
   .values-page .pillar-content{min-height:calc(7.125 * var(--pfs));}
