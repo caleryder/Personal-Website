@@ -1591,3 +1591,8 @@
   .home-row.section-block .body-copy,
   .home-row.section-block .body-copy p{font-size:1.7rem;}
 }
+
+/* Header and footer text is Bold at every width, as on desktop. */
+.logo,
+.lang-toggle,
+.footer-meta{font-weight:700;}
