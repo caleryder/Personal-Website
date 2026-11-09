@@ -1529,3 +1529,10 @@
   body:has(#content .home-bio) .company-mark{height:55px;}
   body:has(#content .home-bio) .ai-native-icon-mark{width:55px; height:55px;}
 }
+
+/* Desktop: the logo rises to the same height as the home page's
+   "Product Design leader" line (the home kicker sits directly under the
+   header with no extra top margin, so the wordmark does too). */
+@media (min-width:1024px){
+  .company-wordmark{margin-top:0;}
+}
