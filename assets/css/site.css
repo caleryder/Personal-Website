@@ -1514,3 +1514,18 @@
   align-items:center;
   justify-content:center;
 }
+
+/* Home list logos use the same height as the case study wordmark at every
+   desktop breakpoint, so the logo keeps one size from click to landing. */
+@media (min-width:1024px){
+  body:has(#content .home-bio) .company-mark{height:41.8px;}
+  body:has(#content .home-bio) .ai-native-icon-mark{width:41.8px; height:41.8px;}
+}
+@media (min-width:1440px){
+  body:has(#content .home-bio) .company-mark{height:47.3px;}
+  body:has(#content .home-bio) .ai-native-icon-mark{width:47.3px; height:47.3px;}
+}
+@media (min-width:1920px){
+  body:has(#content .home-bio) .company-mark{height:55px;}
+  body:has(#content .home-bio) .ai-native-icon-mark{width:55px; height:55px;}
+}
