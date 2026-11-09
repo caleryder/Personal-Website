@@ -1575,3 +1575,19 @@
 @media (min-width:1024px){
   .values-page .pillar-quote{margin-top:calc(2.625 * var(--pfs));}
 }
+
+/* Home "How I lead" copy uses the same type as the "Me" statement
+   (.home-bio) below desktop width too. Desktop is already matched. */
+@media (max-width:1023px){
+  .home-row.section-block .body-copy,
+  .home-row.section-block .body-copy p{
+    font-family:"Host Grotesk", sans-serif;
+    font-size:1.5rem;
+    font-weight:700;
+    line-height:1.25;
+  }
+}
+@media (min-width:700px) and (max-width:1023px){
+  .home-row.section-block .body-copy,
+  .home-row.section-block .body-copy p{font-size:1.7rem;}
+}
