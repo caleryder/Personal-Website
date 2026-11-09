@@ -1496,8 +1496,8 @@
 /* Fixed-width language label so ENG/ESP never moves the icons beside it. */
 .lang-toggle{
   box-sizing:content-box;
-  width:2.25rem;
-  min-width:2.25rem;
+  width:2.05em;
+  min-width:2.05em;
   text-align:right;
   display:inline-flex;
   justify-content:flex-end;
@@ -1507,8 +1507,9 @@
 /* Fixed-width theme button so the moon/sun swap never moves its neighbors. */
 .theme-icon{
   box-sizing:content-box;
-  width:14px;
-  min-width:14px;
+  width:12px;
+  min-width:12px;
+  margin-right:-2px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
