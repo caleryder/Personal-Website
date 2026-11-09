@@ -397,6 +397,9 @@ async function animateCompanyEnter(evt, destUrl){
 
   const destMark = content.querySelector(
     '.company-wordmark img, .company-wordmark .ai-native-icon-mark');
+  // An <img> that has not loaded yet reports a placeholder size, so wait
+  // for it before measuring where (and how large) the logo has to land.
+  if(destMark && destMark.decode){ try{ await destMark.decode(); }catch(_){} }
   const destRect = destMark ? destMark.getBoundingClientRect() : null;
   const landX = destRect ? destRect.left : destX;
   const landY = destRect ? destRect.top : srcRect.top;
@@ -417,8 +420,16 @@ async function animateCompanyEnter(evt, destUrl){
     [{transform: xy(0, up)}, {transform: xy(0, 0)}],
     {duration:CO_UP_MS, easing:CO_EASE, fill:'forwards'}
   );
+  // The destination wordmark is larger than the logo in the home list, so
+  // the clone grows to the wordmark's exact size on the way up. It then
+  // lands pixel-for-pixel on the real element and the hand-off below is
+  // invisible (no size jump at the top).
+  const sx = destRect && srcRect.width ? destRect.width / srcRect.width : 1;
+  const sy = destRect && srcRect.height ? destRect.height / srcRect.height : 1;
+  clone.style.transformOrigin = '0 0';
   const logoRise = clone.animate(
-    [{transform: xy(landX, srcRect.top)}, {transform: xy(landX, landY)}],
+    [{transform: xy(landX, srcRect.top) + ' scale(1, 1)'},
+     {transform: xy(landX, landY) + ' scale(' + sx + ', ' + sy + ')'}],
     {duration:CO_UP_MS, easing:CO_EASE, fill:'forwards'}
   );
   await Promise.all([pageRise.finished, logoRise.finished]);
