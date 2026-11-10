@@ -1612,3 +1612,20 @@
 @media(min-width:700px) and (max-width:1023px){
   .home-kicker{font-size:1.7rem;}
 }
+
+/* Home: principle links one step larger than the Me / How I lead
+   labels, and 1/3 more space between companies, Me, How I lead and
+   the principles. */
+.home-row{margin-top:4rem;}
+.home-principles{margin-top:4rem;}
+.home-principles a{font-size:1.125rem;}
+@media (max-width:699px){
+  body:has(#content .home-bio) .home-row.section-block{margin-top:3.3333rem;}
+}
+@media (min-width:1024px){
+  .home-row{margin-top:0;}
+  .home-hero{margin-bottom:8rem;}
+  .home-row + .home-row{margin-top:8.3333rem;}
+  .home-principles{margin-top:11.2rem;}
+  .home-principles a{font-size:clamp(1.125rem, 1.4vw, 1.75rem);}
+}
