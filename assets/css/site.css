@@ -1629,3 +1629,27 @@
   .home-principles{margin-top:11.2rem;}
   .home-principles a{font-size:clamp(1.125rem, 1.4vw, 1.75rem);}
 }
+
+/* Home: the three gaps (companies to Me, Me to How I lead, How I lead to
+   principles) are equal as seen, about 144px at a 1280 viewport. Values
+   are tuned on the visible text edges, not the element boxes. */
+@media (min-width:1024px){
+  .home-hero{margin-bottom:8.2rem;}
+  .home-row + .home-row{margin-top:8.5rem;}
+  .home-principles{margin-top:9.1rem;}
+}
+@media (min-width:1280px){
+  .home-hero{margin-bottom:8rem;}
+}
+@media (min-width:1440px){
+  .home-hero{margin-bottom:7.85rem;}
+  .home-row + .home-row{margin-top:8.4rem;}
+}
+@media (min-width:1920px){
+  .home-hero{margin-bottom:7.45rem;}
+  .home-row + .home-row{margin-top:8.9rem;}
+}
+
+@media (max-width:699px){
+  body:has(#content .home-bio) .home-row.section-block{margin-top:4rem;}
+}
