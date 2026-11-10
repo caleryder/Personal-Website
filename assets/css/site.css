@@ -1603,3 +1603,12 @@
   body:has(#content .home-bio) .company-row{position:relative;}
   body:has(#content .home-bio) .company-row::after{content:"";position:absolute;left:0;right:0;top:-2px;bottom:-2px;}
 }
+
+/* "Product Design leader" matches the bio and How I lead copy below
+   1024px too (desktop already did). */
+@media(max-width:1023px){
+  .home-kicker{font-size:1.5rem;line-height:1.25;}
+}
+@media(min-width:700px) and (max-width:1023px){
+  .home-kicker{font-size:1.7rem;}
+}
