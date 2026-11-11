@@ -29,7 +29,7 @@ let THEME = safeStorageGet('theme') || 'light';
 function applyThemeToDOM(){
   document.documentElement.setAttribute('data-theme', THEME);
   document.querySelectorAll('.theme-toggle.theme-icon').forEach(btn=>{
-    btn.innerHTML = THEME === 'dark' ? sunIcon() : moonIcon();
+    btn.innerHTML = THEME === 'dark' ? moonIcon() : sunIcon();
   });
 }
 function toggleTheme(){
