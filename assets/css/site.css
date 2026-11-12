@@ -1666,14 +1666,14 @@
 .pal-icon[hidden]{display:none}
 .pal-icon svg{width:auto;height:14px;display:block}
 .pal-icon:focus-visible{outline:2px solid currentColor;outline-offset:4px}
-.pal-sw{all:unset;box-sizing:border-box;position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;cursor:pointer!important;
-  background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.14),0 4px 14px rgba(0,0,0,.18);
+.pal-sw{all:unset;box-sizing:border-box;position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;cursor:pointer!important;
+  background:var(--c);box-shadow:none;
   opacity:0;transform:translate(0,0) scale(.3);pointer-events:none;
   transition:transform .38s cubic-bezier(.34,1.56,.64,1),opacity .2s ease;transition-delay:calc(var(--i)*30ms)}
 .pal.pal-open .pal-sw{opacity:1;transform:translate(var(--dx),var(--dy)) scale(1);pointer-events:auto}
 .pal.pal-open .pal-sw:hover{transform:translate(var(--dx),var(--dy)) scale(1.1);transition-delay:0s}
 .pal-sw:focus-visible{outline:2px solid var(--pink);outline-offset:3px}
-.pal-sw[aria-pressed="true"]{box-shadow:inset 0 0 0 1px rgba(0,0,0,.14),0 0 0 2px var(--cream),0 0 0 4px var(--pink),0 4px 14px rgba(0,0,0,.18)}
+.pal-sw[aria-pressed="true"]{box-shadow:0 0 0 2px var(--cream),0 0 0 3.5px var(--pink)}
 html.pal-recolor,html.pal-recolor *{transition:background-color .45s ease,color .45s ease,border-color .45s ease,fill .45s ease,stroke .45s ease!important}
 html[data-palette] .home-label{color:color-mix(in srgb,var(--pink) 62%,var(--cream))}
 html[data-palette] .footer-meta,html[data-palette] .footer-meta span{color:var(--pink)}

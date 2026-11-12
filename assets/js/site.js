@@ -681,7 +681,7 @@ var tb=document.querySelector('.theme-toggle.theme-icon'); if(tb) tb.parentNode.
 var swb={};
 PALS.forEach(function(p,i){
   var b=mk('button','pal-sw'); b.type='button'; b.style.setProperty('--c',p.c); b.style.setProperty('--i',String(PALS.length-1-i));
-  var OFF=[[-78,50],[-26,62],[26,62],[78,50]][i]; b.style.setProperty('--dx',OFF[0]+'px'); b.style.setProperty('--dy',OFF[1]+'px');
+  var OFF=[[-57,34],[-19,34],[19,34],[57,34]][i]; b.style.setProperty('--dx',OFF[0]+'px'); b.style.setProperty('--dy',OFF[1]+'px');
   b.setAttribute('aria-label',p.n+' colours'); b.setAttribute('aria-pressed',String(p.k==='orig'));
   b.onclick=function(e){e.stopPropagation();setPal(p.k);}; pal.appendChild(b); swb[p.k]=b;
 });
