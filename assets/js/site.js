@@ -662,3 +662,62 @@ if(document.readyState === 'loading'){
 } else {
   initPage();
 }
+
+/* ---------- colour palette (header icon opens a fan of swatches) ---------- */
+(function(){
+  function mk(tag,cls){var e=document.createElement(tag);e.className=cls;return e;}
+  function boot(){
+var PALS=[
+ {k:'orig',n:'Original',c:'#FBF6E6'},
+ {k:'blue',n:'Blue',c:'#3A78F9',bg:'#3A78F9',fg:'#C9F7FF',dark:false},
+ {k:'green',n:'Green',c:'#5DAF6A',bg:'#5DAF6A',fg:'#D3FF4F',dark:false},
+ {k:'plum',n:'Plum',c:'#350A4E',bg:'#350A4E',fg:'#F8EBFF',dark:true}
+];
+var ANG=[160,125,90,55], R=66, palKey='orig', selfChange=false;
+var pal=mk('div','pal'); pal.id='pal';
+var pbtn=mk('button','theme-toggle pal-icon'); pbtn.type='button'; pbtn.setAttribute('aria-label','Colour palette'); pbtn.setAttribute('aria-expanded','false');
+pbtn.innerHTML='<svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true"><path d="M8 1.3C4.3 1.3 1.3 4.1 1.3 7.6c0 3.3 2.7 5.7 5.7 5.7.8 0 1.3-.5 1.3-1.2 0-.3-.1-.6-.3-.9-.2-.3-.3-.5-.3-.9 0-.7.5-1.2 1.2-1.2h1.5c1.9 0 3.3-1.5 3.3-3.3 0-2.7-2.9-4.5-6.7-4.5z" stroke="currentColor"/><circle cx="4.6" cy="7.4" r=".9" fill="currentColor"/><circle cx="6.4" cy="4.6" r=".9" fill="currentColor"/><circle cx="9.6" cy="4.4" r=".9" fill="currentColor"/><circle cx="11.9" cy="6.6" r=".9" fill="currentColor"/></svg>';
+var tb=document.querySelector('.theme-toggle.theme-icon'); if(tb) tb.parentNode.insertBefore(pbtn,tb);
+var swb={};
+PALS.forEach(function(p,i){
+  var b=mk('button','pal-sw'); b.type='button'; b.style.setProperty('--c',p.c); b.style.setProperty('--i',String(PALS.length-1-i));
+  var OFF=[[-78,50],[-26,62],[26,62],[78,50]][i]; b.style.setProperty('--dx',OFF[0]+'px'); b.style.setProperty('--dy',OFF[1]+'px');
+  b.setAttribute('aria-label',p.n+' colours'); b.setAttribute('aria-pressed',String(p.k==='orig'));
+  b.onclick=function(e){e.stopPropagation();setPal(p.k);}; pal.appendChild(b); swb[p.k]=b;
+});
+document.body.appendChild(pal);
+function placePal(){var r=pbtn.getBoundingClientRect();pal.style.left=(r.left+r.width/2)+'px';pal.style.top=(r.top+r.height/2)+'px';}
+function openPal(o){if(o)placePal();pal.classList.toggle('pal-open',o);pbtn.setAttribute('aria-expanded',String(o));}
+window.addEventListener('scroll',function(){if(pal.classList.contains('pal-open'))openPal(false);},{passive:true});
+window.addEventListener('resize',function(){if(pal.classList.contains('pal-open'))placePal();});
+pbtn.onclick=function(e){e.stopPropagation();openPal(!pal.classList.contains('pal-open'));};
+document.addEventListener('click',function(e){if(!pal.contains(e.target)&&!pbtn.contains(e.target))openPal(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')openPal(false);});
+function setPal(k){
+  palKey=k; try{if(k==='orig')localStorage.removeItem('palette');else localStorage.setItem('palette',k);}catch(e){} var p=PALS.filter(function(x){return x.k===k;})[0], root=document.documentElement;
+  root.classList.add('pal-recolor'); clearTimeout(setPal.t); setPal.t=setTimeout(function(){root.classList.remove('pal-recolor');},520);
+  selfChange=true;
+  if(k==='orig'){
+    ['--cream','--cream-2','--pink','--pink-dark'].forEach(function(v){root.style.removeProperty(v);});
+    root.removeAttribute('data-palette');
+    root.setAttribute('data-theme',THEME);
+  }else{
+    root.style.setProperty('--cream',p.bg);
+    root.style.setProperty('--cream-2','color-mix(in srgb,'+p.bg+' 90%,'+p.fg+')');
+    root.style.setProperty('--pink',p.fg);
+    root.style.setProperty('--pink-dark','color-mix(in srgb,'+p.fg+' 78%,'+p.bg+')');
+    root.setAttribute('data-palette',k);
+    root.setAttribute('data-theme',p.dark?'dark':'light');
+  }
+  Object.keys(swb).forEach(function(x){swb[x].setAttribute('aria-pressed',String(x===k));});
+  [].forEach.call(document.querySelectorAll('.pal-none'),function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-k')===k));});
+  setTimeout(function(){selfChange=false;},0);
+}
+/* the site's own light/dark toggle wins: using it puts the original colours back */
+new MutationObserver(function(){ if(!selfChange&&palKey!=='orig') setPal('orig'); }).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+    var saved=null;try{saved=localStorage.getItem('palette');}catch(e){}
+    if(saved&&saved!=='orig')setPal(saved);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
