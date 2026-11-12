@@ -1653,3 +1653,8 @@
 @media (max-width:699px){
   body:has(#content .home-bio) .home-row.section-block{margin-top:4rem;}
 }
+
+/* Principles quotes span four of the eight columns the text stack spans (half its width). */
+@media (min-width:1024px){
+  .values-page .pillar-quote{grid-column:1 / -1; width:50%; max-width:none;}
+}
