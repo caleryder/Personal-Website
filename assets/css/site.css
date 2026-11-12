@@ -1666,7 +1666,7 @@
 .pal-icon[hidden]{display:none}
 .pal-icon svg{width:auto;height:14px;display:block}
 .pal-icon:focus-visible{outline:2px solid currentColor;outline-offset:4px}
-.pal-sw{all:unset;box-sizing:border-box;position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;cursor:pointer!important;
+.pal-sw{all:unset;box-sizing:border-box;position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;cursor:pointer!important;
   background:var(--c);box-shadow:none;
   opacity:0;transform:translate(0,0) scale(.3);pointer-events:none;
   transition:transform .38s cubic-bezier(.34,1.56,.64,1),opacity .2s ease;transition-delay:calc(var(--i)*30ms)}
