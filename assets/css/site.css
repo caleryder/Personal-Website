@@ -1361,7 +1361,7 @@
   .home-row .home-bio,
   .home-row .body-copy p{
     font-size:clamp(1.75rem, 2.5vw, 3.5rem);
-    line-height:1;
+    line-height:1.15;
     font-weight:700;
     max-width:clamp(40rem, 60.7vw, 62rem);
   }
@@ -1375,7 +1375,7 @@
     width:72.73vw;
     margin-top:8.4rem;
   }
-  .home-principles a{font-size:clamp(1rem, 1.25vw, 1.5rem); line-height:1;}
+  .home-principles a{font-size:clamp(1rem, 1.25vw, 1.5rem); line-height:1.15;}
 
   /* Hover panel: left edge lines up with the 4th principle column below
      (3 columns + 3 gaps in, gap = 3.25rem), top-aligned with the first
@@ -1679,3 +1679,4 @@ html[data-palette] .home-label,html[data-palette] .footer-meta,html[data-palette
 @media (prefers-reduced-motion:reduce){.pal-sw,.pal-icon,.pal-icon svg{transition:none}html.pal-recolor,html.pal-recolor *{transition:none!important}}
 }
 @media (max-width:639px){.pal-icon{display:none!important}}
+
