@@ -676,7 +676,7 @@ var PALS=[
 var ANG=[160,125,90,55], R=66, palKey='orig', selfChange=false;
 var pal=mk('div','pal'); pal.id='pal';
 var pbtn=mk('button','theme-toggle pal-icon'); pbtn.type='button'; pbtn.setAttribute('aria-label','Colour palette'); pbtn.setAttribute('aria-expanded','false');
-pbtn.innerHTML='<svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true"><path d="M8 1.3C4.3 1.3 1.3 4.1 1.3 7.6c0 3.3 2.7 5.7 5.7 5.7.8 0 1.3-.5 1.3-1.2 0-.3-.1-.6-.3-.9-.2-.3-.3-.5-.3-.9 0-.7.5-1.2 1.2-1.2h1.5c1.9 0 3.3-1.5 3.3-3.3 0-2.7-2.9-4.5-6.7-4.5z" stroke="currentColor"/><circle cx="4.6" cy="7.4" r=".9" fill="currentColor"/><circle cx="6.4" cy="4.6" r=".9" fill="currentColor"/><circle cx="9.6" cy="4.4" r=".9" fill="currentColor"/><circle cx="11.9" cy="6.6" r=".9" fill="currentColor"/></svg>';
+pbtn.innerHTML='<svg viewBox="0.8 0.8 14.4 13" fill="none" aria-hidden="true"><path d="M8 1.3C4.3 1.3 1.3 4.1 1.3 7.6c0 3.3 2.7 5.7 5.7 5.7.8 0 1.3-.5 1.3-1.2 0-.3-.1-.6-.3-.9-.2-.3-.3-.5-.3-.9 0-.7.5-1.2 1.2-1.2h1.5c1.9 0 3.3-1.5 3.3-3.3 0-2.7-2.9-4.5-6.7-4.5z" stroke="currentColor" stroke-width="0.9"/><circle cx="4.6" cy="7.4" r=".9" fill="currentColor"/><circle cx="6.4" cy="4.6" r=".9" fill="currentColor"/><circle cx="9.6" cy="4.4" r=".9" fill="currentColor"/><circle cx="11.9" cy="6.6" r=".9" fill="currentColor"/></svg>';
 var tb=document.querySelector('.theme-toggle.theme-icon'); if(tb) tb.parentNode.insertBefore(pbtn,tb);
 var swb={};
 PALS.forEach(function(p,i){
