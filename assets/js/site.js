@@ -362,7 +362,7 @@ async function animateCompanyEnter(evt, destUrl){
   clone.style.cssText = 'position:fixed;left:0;top:0;margin:0;z-index:10000;' +
     'pointer-events:none;will-change:transform;width:' + srcRect.width +
     'px;height:' + srcRect.height + 'px;' +
-    (isDark && !isMask ? 'filter:invert(1);' : '') +
+    (isDark && !isMask ? 'filter:brightness(0) invert(1);' : '') +
     (isDark && isMask ? 'background-color:#BFC0C3;' : '');
   clone.style.transform = xy(srcRect.left, srcRect.top);
   document.body.appendChild(clone);

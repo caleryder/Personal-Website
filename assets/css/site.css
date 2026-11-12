@@ -427,20 +427,20 @@
     mask-repeat:no-repeat;
     -webkit-mask-position:left center;
     mask-position:left center;
-    background-color:#000000;
+    background-color:#481C1E;
   }
   /* Match inverted company marks (white), not the old gray #BFC0C3. */
   [data-theme="dark"] .ai-native-icon-mark{background-color:#FFFFFF;}
   [data-theme="dark"] .company-mark img,
-  [data-theme="dark"] .company-wordmark img{filter:invert(1);}
+  [data-theme="dark"] .company-wordmark img{filter:brightness(0) invert(1);}
   /* Hover: land on the same charcoal (#4C4C4C) as the AI Native mask.
      Light: black → invert → dim. Dark: already inverted (white) → dim.
      Declared after the base dark invert so hover wins the cascade. */
   :root:not([data-theme="dark"]) .company-row:hover .company-mark img{
-    filter:invert(1) brightness(0.298);
+    filter:brightness(0) invert(1) brightness(0.298);
   }
   [data-theme="dark"] .company-row:hover .company-mark img{
-    filter:invert(1) brightness(0.298);
+    filter:brightness(0) invert(1) brightness(0.298);
   }
   .company-row:hover .ai-native-icon-mark{background-color:#4C4C4C;}
   .company-name{
@@ -1038,7 +1038,7 @@
     flex-shrink:0;
   }
   .gate-logo img{max-height:100%; width:auto; object-fit:contain;}
-  [data-theme="dark"] .gate-logo img{filter:invert(1);}
+  [data-theme="dark"] .gate-logo img{filter:brightness(0) invert(1);}
   .gate-company-list{margin-top:2.5rem;}
   .gate-field input{
     flex:1;
