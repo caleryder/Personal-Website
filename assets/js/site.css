@@ -272,8 +272,8 @@
     width:17px;
     height:17px;
     transform:scale(1.653125);
-    -webkit-mask-image:url(/assets/img/logos/ai-native.svg);
-    mask-image:url(/assets/img/logos/ai-native.svg);
+    -webkit-mask-image:url(/assets/img/logos/ai-native.svg?v=20261112a);
+    mask-image:url(/assets/img/logos/ai-native.svg?v=20261112a);
     -webkit-mask-size:contain;
     mask-size:contain;
     -webkit-mask-repeat:no-repeat;
