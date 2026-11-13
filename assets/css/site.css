@@ -1677,6 +1677,14 @@
 html.pal-recolor,html.pal-recolor *{transition:background-color .45s ease,color .45s ease,border-color .45s ease,fill .45s ease,stroke .45s ease!important}
 html[data-palette] .home-label{color:color-mix(in srgb,var(--pink) 62%,var(--cream))}
 html[data-palette] .footer-meta,html[data-palette] .footer-meta span{color:var(--pink)}
+/* With a palette on, header and footer use the palette text colour on every page, same as home */
+html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) #siteHeader,
+html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) #siteFooter,
+html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .logo:not(.logo-contrast-dark):not(.logo-contrast-light),
+html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .footer-state-icon{color:var(--pink)}
+html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .theme-toggle,
+html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .theme-toggle:hover{color:var(--pink) !important}
+html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .footer-divider{border-top-color:var(--pink)}
 @media (prefers-reduced-motion:reduce){.pal-sw,.pal-icon,.pal-icon svg{transition:none}html.pal-recolor,html.pal-recolor *{transition:none!important}}
 }
 @media (max-width:639px){.pal-icon{display:none!important}}
