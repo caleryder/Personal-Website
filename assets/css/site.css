@@ -1342,11 +1342,11 @@
   }
   body:has(#content .home-bio) .home-hero .company-list{
     margin:0;
-    gap:calc(var(--row-fs) * 0.156);
+    gap:calc(var(--row-fs) * 0.052);
   }
   body:has(#content .home-bio) .home-hero .company-row{
     font-size:var(--row-fs);
-    line-height:1.09;
+    line-height:1;
   }
 
   .home-row{
