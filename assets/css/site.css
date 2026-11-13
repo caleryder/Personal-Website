@@ -1682,6 +1682,8 @@ html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)
 html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) #siteFooter,
 html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .logo:not(.logo-contrast-dark):not(.logo-contrast-light),
 html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .footer-state-icon{color:var(--pink)}
+/* contrast helper must not recolour CALE when a palette is on */
+html[data-palette] .logo.logo-contrast-dark,html[data-palette] .logo.logo-contrast-light,html[data-palette] .logo{color:var(--pink) !important}
 html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .theme-toggle,
 html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .theme-toggle:hover{color:var(--pink) !important}
 html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .footer-divider{border-top-color:var(--pink)}
