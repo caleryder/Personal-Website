@@ -1687,6 +1687,10 @@ html[data-palette] .logo.logo-contrast-dark,html[data-palette] .logo.logo-contra
 html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .theme-toggle,
 html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .theme-toggle:hover{color:var(--pink) !important}
 html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .footer-divider{border-top-color:var(--pink)}
+/* With a palette on, page copy on every non-home page uses the palette text colour (secondary labels use the same 62% mix as the home labels) */
+html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) #content :is(h1,h2,h3,h4,p,a,li,span,b,strong,em,div,small,label,figcaption,blockquote){color:var(--pink)}
+html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) #content :is(.cs-section-label,.values-label,.stat-label,.company-wordmark ~ .section-block .section-title,.cs-section a:hover,.company-wordmark ~ .section-block .body-copy a:hover,.company-wordmark ~ .section-block .pillar-links a:hover){color:color-mix(in srgb,var(--pink) 62%,var(--cream))}
+html[data-palette][data-palette][data-palette] body:not(:has(#content .home-bio)) .theme-toggle{color:var(--pink) !important}
 @media (prefers-reduced-motion:reduce){.pal-sw,.pal-icon,.pal-icon svg{transition:none}html.pal-recolor,html.pal-recolor *{transition:none!important}}
 }
 @media (max-width:639px){.pal-icon{display:none!important}}
