@@ -308,3 +308,8 @@ html[data-palette] .pg-about-img::after{color:var(--pink);opacity:.55}
   .pg-about-img{flex:none;width:calc((100vw - 48px) / 2);height:auto;aspect-ratio:177/234}
 }
 @media (prefers-reduced-motion:reduce){.pg-about-row{animation:none}}
+
+/* real photos in the About strip */
+.pg-about-img.has-img{background:transparent;overflow:hidden}
+.pg-about-img.has-img::after{display:none}
+.pg-about-img img{display:block;width:100%;height:100%;object-fit:cover}
